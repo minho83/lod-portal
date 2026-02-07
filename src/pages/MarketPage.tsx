@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react"
 import { Link } from "react-router-dom"
-import { Search, Plus, Package, ShoppingCart, Store } from "lucide-react"
+import { Search, Plus, Package, ShoppingCart, Store, LayoutGrid, List } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -19,6 +19,7 @@ import { EmptyState } from "@/components/game/EmptyState"
 import { Pagination } from "@/components/game/Pagination"
 import { PriceSummaryPanel } from "@/components/game/trade/PriceSummaryPanel"
 import { TradeCard } from "@/components/game/trade/TradeCard"
+import { TradeRow } from "@/components/game/trade/TradeRow"
 import type { Trade, TradeCategory, TradeType, MarketPrice } from "@/types"
 import { TRADE_CATEGORIES } from "@/types"
 
@@ -29,6 +30,16 @@ export function MarketPage() {
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
+
+  // 뷰 모드
+  const [viewMode, setViewMode] = useState<"grid" | "list">(() => {
+    return (localStorage.getItem("market-view") as "grid" | "list") || "grid"
+  })
+
+  const toggleView = (mode: "grid" | "list") => {
+    setViewMode(mode)
+    localStorage.setItem("market-view", mode)
+  }
 
   // 필터
   const [keyword, setKeyword] = useState("")
@@ -87,14 +98,35 @@ export function MarketPage() {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold">거래소</h2>
-        {user && (
-          <Button asChild size="sm">
-            <Link to="/market/new">
-              <Plus className="mr-1.5 h-4 w-4" />
-              글 등록
-            </Link>
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {/* 뷰 토글 */}
+          <div className="flex rounded-md border border-border">
+            <Button
+              variant={viewMode === "grid" ? "secondary" : "ghost"}
+              size="icon-xs"
+              onClick={() => toggleView("grid")}
+              title="타일 보기"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              variant={viewMode === "list" ? "secondary" : "ghost"}
+              size="icon-xs"
+              onClick={() => toggleView("list")}
+              title="리스트 보기"
+            >
+              <List className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+          {user && (
+            <Button asChild size="sm">
+              <Link to="/market/new">
+                <Plus className="mr-1.5 h-4 w-4" />
+                글 등록
+              </Link>
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* 거래유형 탭 */}
@@ -160,17 +192,31 @@ export function MarketPage() {
 
       {/* 매물 목록 */}
       {loading ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-40 rounded-lg" />
-          ))}
-        </div>
+        viewMode === "grid" ? (
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-32 rounded-lg" />
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-14 rounded-lg" />
+            ))}
+          </div>
+        )
       ) : trades.length === 0 ? (
         <EmptyState icon={Package} title="등록된 매물이 없습니다" />
-      ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      ) : viewMode === "grid" ? (
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {trades.map((trade) => (
             <TradeCard key={trade.id} trade={trade} priceMap={priceMap} />
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {trades.map((trade) => (
+            <TradeRow key={trade.id} trade={trade} priceMap={priceMap} />
           ))}
         </div>
       )}

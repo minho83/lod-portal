@@ -17,27 +17,27 @@ export function TradeCard({ trade, priceMap }: { trade: Trade; priceMap: Map<str
 
   return (
     <Link to={`/market/${trade.id}`}>
-      <Card className="transition-colors hover:border-primary/50">
-        <CardContent className="space-y-3 p-4">
+      <Card className="transition-colors hover:border-primary/50 h-full">
+        <CardContent className="space-y-2 p-3">
           {/* 상단: 거래유형 + 카테고리/묶음 + 협상 */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5">
             <TradeBadge tradeType={trade.trade_type} />
             {isBundle ? (
-              <Badge variant="secondary">
-                <Layers className="mr-1 h-3 w-3" />
+              <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                <Layers className="mr-0.5 h-2.5 w-2.5" />
                 묶음 {trade.items!.length}건
               </Badge>
             ) : (
-              <Badge variant="secondary">{trade.item_category}</Badge>
+              <Badge variant="secondary" className="text-[10px] px-1.5 py-0">{trade.item_category}</Badge>
             )}
             {trade.is_negotiable && (
-              <Badge variant="outline" className="text-xs">
-                <Handshake className="mr-1 h-3 w-3" />
-                협상가능
+              <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                <Handshake className="mr-0.5 h-2.5 w-2.5" />
+                협상
               </Badge>
             )}
             {!isBundle && trade.quantity > 1 && (
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-[10px] px-1.5 py-0">
                 x{trade.quantity}
               </Badge>
             )}
@@ -45,73 +45,57 @@ export function TradeCard({ trade, priceMap }: { trade: Trade; priceMap: Map<str
 
           {isBundle ? (
             <>
-              {/* 묶음: 아이템 목록 */}
-              <h3 className="text-base font-semibold">{trade.item_name}</h3>
-              <div className="space-y-1 rounded-md bg-muted/30 p-2">
-                {trade.items!.slice(0, 3).map((item, i) => {
+              <h3 className="text-sm font-semibold leading-tight truncate">{trade.item_name}</h3>
+              <div className="space-y-0.5 rounded bg-muted/30 p-1.5">
+                {trade.items!.slice(0, 2).map((item, i) => {
                   const mp = priceMap.get(item.item_name)
                   const delta = mp ? formatPriceDelta(item.price, mp.median_price) : null
                   return (
-                    <div key={i} className="flex items-center justify-between text-xs">
+                    <div key={i} className="flex items-center justify-between text-[11px]">
                       <span className="truncate">
                         <span className="text-muted-foreground">{item.item_category}</span>
-                        {" "}
-                        {item.item_name}
-                        {item.quantity > 1 && <span className="text-muted-foreground"> x{item.quantity}</span>}
+                        {" "}{item.item_name}
                       </span>
-                      <span className="ml-2 flex shrink-0 items-center gap-1">
+                      <span className="ml-1 flex shrink-0 items-center gap-0.5">
                         <span className="font-medium text-primary">{formatPrice(item.price)}</span>
                         {delta?.text && <span className={delta.color}>{delta.text}</span>}
                       </span>
                     </div>
                   )
                 })}
-                {trade.items!.length > 3 && (
-                  <p className="text-xs text-muted-foreground">외 {trade.items!.length - 3}건...</p>
+                {trade.items!.length > 2 && (
+                  <p className="text-[10px] text-muted-foreground">외 {trade.items!.length - 2}건</p>
                 )}
               </div>
-              {/* 총 가격 */}
-              <div className="flex items-baseline gap-1.5">
-                <Tag className="h-4 w-4 text-primary" />
-                <span className="text-xs text-muted-foreground">총</span>
-                <span className="text-lg font-bold text-primary">
-                  {formatPrice(trade.price)}
-                </span>
-                <span className="text-xs text-muted-foreground">{trade.price_unit}</span>
+              <div className="flex items-baseline gap-1">
+                <Tag className="h-3.5 w-3.5 text-primary" />
+                <span className="text-base font-bold text-primary">{formatPrice(trade.price)}</span>
+                <span className="text-[10px] text-muted-foreground">{trade.price_unit}</span>
               </div>
             </>
           ) : (
             <>
-              {/* 단일: 아이템명 */}
-              <h3 className="text-base font-semibold">{trade.item_name}</h3>
-
-              {/* 가격 + 시세 */}
-              <div className="flex items-baseline gap-1.5">
-                <Tag className="h-4 w-4 text-primary" />
-                <span className="text-lg font-bold text-primary">
-                  {formatPrice(trade.price)}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {trade.price_unit}
-                </span>
+              <h3 className="text-sm font-semibold leading-tight truncate">{trade.item_name}</h3>
+              <div className="flex items-baseline gap-1">
+                <Tag className="h-3.5 w-3.5 text-primary" />
+                <span className="text-base font-bold text-primary">{formatPrice(trade.price)}</span>
+                <span className="text-[10px] text-muted-foreground">{trade.price_unit}</span>
                 {singleDelta?.text && (
-                  <span className={`text-xs ${singleDelta.color}`}>{singleDelta.text}</span>
+                  <span className={`text-[10px] ${singleDelta.color}`}>{singleDelta.text}</span>
                 )}
               </div>
-
-              {/* 시세 참조 */}
               {singlePrice && (
-                <div className="text-xs text-muted-foreground">
-                  시세 {formatPrice(singlePrice.median_price)} ({singlePrice.trade_count}건, {singlePrice.window_days}일)
-                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  시세 {formatPrice(singlePrice.median_price)} ({singlePrice.trade_count}건)
+                </p>
               )}
             </>
           )}
 
           {/* 하단: 판매자 + 시간 */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>{sellerName}</span>
-            <span>{timeAgo(trade.created_at)}</span>
+          <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1 border-t border-border/50">
+            <span className="truncate">{sellerName}</span>
+            <span className="shrink-0">{timeAgo(trade.created_at)}</span>
           </div>
         </CardContent>
       </Card>
