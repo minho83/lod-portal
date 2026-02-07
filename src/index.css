@@ -66,62 +66,62 @@
   --color-brand-foreground: var(--brand-foreground);
 }
 
-/* ── 다크 전용 테마 (LOD 중세 판타지 스타일) ── */
+/* ── 다크 전용 테마 (모던 다크 그레이 스타일) ── */
 :root {
   --radius: 0.625rem;
 
-  /* 어둠의전설2 스타일 - 따뜻한 브라운/골드 톤 */
-  --background: oklch(0.15 0.03 40);         /* 매우 어두운 브라운 배경 */
-  --foreground: oklch(0.90 0.03 70);         /* 따뜻한 크림 텍스트 */
-  --card: oklch(0.22 0.04 40);               /* 중간 브라운 카드 */
-  --card-foreground: oklch(0.90 0.03 70);
-  --popover: oklch(0.22 0.04 40);            /* 카드와 동일한 브라운 */
-  --popover-foreground: oklch(0.90 0.03 70);
-  --primary: oklch(0.68 0.14 75);            /* 황금빛 골드 액센트 */
-  --primary-foreground: oklch(0.15 0.03 40); /* 어두운 브라운 텍스트 */
-  --secondary: oklch(0.28 0.04 45);          /* 조금 밝은 브라운 */
-  --secondary-foreground: oklch(0.88 0.03 70);
-  --muted: oklch(0.25 0.03 40);              /* 뮤트된 브라운 */
-  --muted-foreground: oklch(0.62 0.02 60);   /* 중간 톤 크림 */
-  --accent: oklch(0.30 0.05 50);             /* 액센트 브라운 */
-  --accent-foreground: oklch(0.90 0.03 70);
-  --destructive: oklch(0.55 0.20 25);        /* 붉은 경고색 */
-  --border: oklch(0.30 0.04 45);             /* 우드 톤 테두리 */
-  --input: oklch(0.30 0.04 45);              /* 입력창 테두리 */
-  --ring: oklch(0.68 0.14 75);               /* 포커스 링 (골드) */
-  --chart-1: oklch(0.68 0.14 75);            /* 골드 */
-  --chart-2: oklch(0.60 0.12 180);           /* 시안 */
-  --chart-3: oklch(0.75 0.18 70);            /* 밝은 골드 */
-  --chart-4: oklch(0.62 0.26 300);           /* 퍼플 */
-  --chart-5: oklch(0.64 0.24 20);            /* 오렌지 */
-  --sidebar: oklch(0.18 0.03 40);            /* 사이드바 브라운 */
-  --sidebar-foreground: oklch(0.90 0.03 70);
-  --sidebar-primary: oklch(0.68 0.14 75);    /* 골드 */
-  --sidebar-primary-foreground: oklch(0.15 0.03 40);
-  --sidebar-accent: oklch(0.28 0.04 45);
-  --sidebar-accent-foreground: oklch(0.90 0.03 70);
-  --sidebar-border: oklch(0.30 0.04 45);
-  --sidebar-ring: oklch(0.68 0.14 75);
+  /* 쿨톤 모던 다크 - 그레이/메탈릭 스타일 */
+  --background: oklch(0.12 0.01 270);         /* 다크 블랙 배경 */
+  --foreground: oklch(0.95 0.01 270);         /* 밝은 화이트 텍스트 */
+  --card: oklch(0.20 0.015 270);              /* 중간 다크 그레이 카드 */
+  --card-foreground: oklch(0.95 0.01 270);
+  --popover: oklch(0.20 0.015 270);           /* 카드와 동일 */
+  --popover-foreground: oklch(0.95 0.01 270);
+  --primary: oklch(0.60 0.10 240);            /* 실버/블루 액센트 */
+  --primary-foreground: oklch(0.98 0 0);      /* 화이트 텍스트 */
+  --secondary: oklch(0.30 0.01 270);          /* 중간 그레이 */
+  --secondary-foreground: oklch(0.95 0.01 270);
+  --muted: oklch(0.25 0.01 270);              /* 뮤트된 그레이 */
+  --muted-foreground: oklch(0.65 0.01 270);   /* 중간 톤 그레이 */
+  --accent: oklch(0.35 0.015 270);            /* 액센트 그레이 */
+  --accent-foreground: oklch(0.95 0.01 270);
+  --destructive: oklch(0.55 0.22 25);         /* 레드 경고색 */
+  --border: oklch(0.35 0.01 270);             /* 라이트 그레이 테두리 */
+  --input: oklch(0.35 0.01 270);              /* 입력창 테두리 */
+  --ring: oklch(0.60 0.10 240);               /* 포커스 링 (실버/블루) */
+  --chart-1: oklch(0.60 0.10 240);            /* 블루 */
+  --chart-2: oklch(0.60 0.12 180);            /* 시안 */
+  --chart-3: oklch(0.65 0.15 280);            /* 퍼플 */
+  --chart-4: oklch(0.62 0.26 300);            /* 핑크 */
+  --chart-5: oklch(0.64 0.20 140);            /* 그린 */
+  --sidebar: oklch(0.16 0.01 270);            /* 사이드바 다크 그레이 */
+  --sidebar-foreground: oklch(0.95 0.01 270);
+  --sidebar-primary: oklch(0.60 0.10 240);    /* 블루 */
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.30 0.01 270);
+  --sidebar-accent-foreground: oklch(0.95 0.01 270);
+  --sidebar-border: oklch(0.35 0.01 270);
+  --sidebar-ring: oklch(0.60 0.10 240);
 
-  /* 게임 클래스 색상 - 브라운 배경에 최적화 */
-  --warrior: #f56b5a;      /* 전사 - 밝은 레드 */
-  --warrior-bg: rgba(245, 107, 90, 0.15);
-  --rogue: #b47dc7;        /* 도적 - 밝은 퍼플 */
-  --rogue-bg: rgba(180, 125, 199, 0.15);
-  --mage: #5eb3e4;         /* 법사 - 밝은 블루 */
-  --mage-bg: rgba(94, 179, 228, 0.15);
-  --cleric: #f5d142;       /* 직자 - 골드 옐로우 */
-  --cleric-bg: rgba(245, 209, 66, 0.15);
-  --taoist: #42d4b8;       /* 도가 - 밝은 틸 */
-  --taoist-bg: rgba(66, 212, 184, 0.15);
+  /* 게임 클래스 색상 - 다크 배경에 최적화 */
+  --warrior: #ff6b6b;      /* 전사 - 밝은 레드 */
+  --warrior-bg: rgba(255, 107, 107, 0.15);
+  --rogue: #c084fc;        /* 도적 - 밝은 퍼플 */
+  --rogue-bg: rgba(192, 132, 252, 0.15);
+  --mage: #60a5fa;         /* 법사 - 밝은 블루 */
+  --mage-bg: rgba(96, 165, 250, 0.15);
+  --cleric: #facc15;       /* 직자 - 밝은 옐로우 */
+  --cleric-bg: rgba(250, 204, 21, 0.15);
+  --taoist: #34d399;       /* 도가 - 밝은 그린 */
+  --taoist-bg: rgba(52, 211, 153, 0.15);
 
   /* 상태 색상 */
-  --success: #4eca73;      /* 밝은 그린 */
-  --warning: #f39c4a;      /* 따뜻한 오렌지 */
+  --success: #10b981;      /* 그린 */
+  --warning: #f59e0b;      /* 오렌지 */
 
-  /* 브랜드 - 황금빛 골드 */
-  --brand: oklch(0.68 0.14 75);
-  --brand-foreground: oklch(0.15 0.03 40);
+  /* 브랜드 - 실버/블루 */
+  --brand: oklch(0.60 0.10 240);
+  --brand-foreground: oklch(0.98 0 0);
 }
 
 @layer base {
