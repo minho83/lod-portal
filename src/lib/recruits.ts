@@ -139,6 +139,29 @@ export async function createRecruit(
   return recruit as PartyRecruit
 }
 
+export type UpdateRecruitInput = Partial<
+  Pick<CreateRecruitInput, "title" | "description" | "location" | "scheduled_at" | "join_mode" | "job_slots">
+>
+
+export async function updateRecruit(
+  id: string,
+  input: UpdateRecruitInput,
+): Promise<void> {
+  const update: Record<string, unknown> = { ...input }
+
+  // job_slots 변경 시 max_members도 재계산
+  if (input.job_slots) {
+    update.max_members = Object.values(input.job_slots).reduce((a, b) => a + b, 0)
+  }
+
+  const { error } = await supabase
+    .from("party_recruits")
+    .update(update)
+    .eq("id", id)
+
+  if (error) throw error
+}
+
 export async function updateRecruitStatus(
   id: string,
   status: RecruitStatus,

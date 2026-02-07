@@ -9,11 +9,17 @@ import {
   Zap,
   Shield,
   Send,
+  Pencil,
+  X,
+  Check,
+  Minus,
+  Plus,
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Select,
@@ -25,6 +31,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext"
 import {
   fetchRecruitById,
+  updateRecruit,
   updateRecruitStatus,
   applyToRecruit,
   handleApplication,
@@ -35,7 +42,7 @@ import { SlotDisplay } from "@/components/game/SlotDisplay"
 import { MemberList } from "@/components/game/MemberList"
 import { STATUS_CONFIG } from "@/components/game/RecruitCard"
 import { JOB_OPTIONS } from "@/lib/constants"
-import type { PartyRecruit, JobClass, RecruitStatus } from "@/types"
+import type { PartyRecruit, JobClass, JobSlots, RecruitStatus } from "@/types"
 
 export function RecruitDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -44,6 +51,22 @@ export function RecruitDetailPage() {
   const [recruit, setRecruit] = useState<PartyRecruit | null>(null)
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
+
+  // 편집 모드
+  const [editing, setEditing] = useState(false)
+  const [editTitle, setEditTitle] = useState("")
+  const [editDesc, setEditDesc] = useState("")
+  const [editLocation, setEditLocation] = useState("")
+  const [editHour, setEditHour] = useState(0)
+  const [editMinute, setEditMinute] = useState(0)
+  const [editSlots, setEditSlots] = useState<JobSlots>({
+    warrior: 0,
+    rogue: 0,
+    mage: 0,
+    cleric: 0,
+    taoist: 0,
+  })
+  const [editError, setEditError] = useState("")
 
   // 신청 폼
   const [applyClass, setApplyClass] = useState<JobClass>("warrior")
@@ -62,11 +85,66 @@ export function RecruitDetailPage() {
     loadRecruit()
   }, [loadRecruit])
 
-  // 프로필 변경 시 기본값 업데이트
   useEffect(() => {
     if (profile?.game_nickname) setApplyName(profile.game_nickname)
     if (profile?.game_class) setApplyClass(profile.game_class)
   }, [profile])
+
+  const startEditing = () => {
+    if (!recruit) return
+    setEditTitle(recruit.title)
+    setEditDesc(recruit.description ?? "")
+    setEditLocation(recruit.location ?? "")
+    if (recruit.scheduled_at) {
+      const d = new Date(recruit.scheduled_at)
+      setEditHour(d.getHours())
+      setEditMinute(d.getMinutes())
+    } else {
+      setEditHour(new Date().getHours())
+      setEditMinute(0)
+    }
+    setEditSlots({ ...recruit.job_slots })
+    setEditError("")
+    setEditing(true)
+  }
+
+  const cancelEditing = () => {
+    setEditing(false)
+    setEditError("")
+  }
+
+  const saveEdit = async () => {
+    if (!recruit) return
+    setEditError("")
+
+    if (!editTitle.trim()) return setEditError("제목을 입력해주세요")
+    const totalSlots = Object.values(editSlots).reduce((a, b) => a + b, 0)
+    if (totalSlots < 2) return setEditError("최소 2명 이상의 슬롯을 설정해주세요")
+
+    const scheduled = new Date()
+    scheduled.setHours(editHour, editMinute, 0, 0)
+
+    setUpdating(true)
+    try {
+      await updateRecruit(recruit.id, {
+        title: editTitle.trim(),
+        description: editDesc.trim() || undefined,
+        location: editLocation.trim() || undefined,
+        scheduled_at: scheduled.toISOString(),
+        job_slots: editSlots,
+      })
+      await loadRecruit()
+      setEditing(false)
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : "수정 실패")
+    }
+    setUpdating(false)
+  }
+
+  const updateEditSlot = (job: JobClass, value: string) => {
+    const num = Math.max(0, Math.min(10, Number(value) || 0))
+    setEditSlots((prev) => ({ ...prev, [job]: num }))
+  }
 
   const handleStatusChange = async (status: RecruitStatus) => {
     if (!recruit) return
@@ -160,6 +238,8 @@ export function RecruitDetailPage() {
     !myMembership &&
     recruit.status === "open"
 
+  const canEdit = isAuthor && ["open", "full"].includes(recruit.status)
+
   const statusInfo = STATUS_CONFIG[recruit.status]
   const authorName =
     recruit.author?.game_nickname ??
@@ -197,59 +277,199 @@ export function RecruitDetailPage() {
                 {recruit.location}
               </Badge>
             )}
+            {/* 편집 버튼 */}
+            {canEdit && !editing && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-auto h-7 gap-1 px-2 text-xs"
+                onClick={startEditing}
+              >
+                <Pencil className="h-3 w-3" />
+                수정
+              </Button>
+            )}
           </div>
           <CardTitle className="text-xl">{recruit.title}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* 설명 */}
-          {recruit.description && (
-            <p className="whitespace-pre-wrap text-sm text-muted-foreground">
-              {recruit.description}
-            </p>
+          {/* 편집 모드 */}
+          {editing ? (
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <label className="text-xs font-medium">제목 *</label>
+                <Input
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-medium">설명</label>
+                <Textarea
+                  rows={3}
+                  value={editDesc}
+                  onChange={(e) => setEditDesc(e.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-medium">장소</label>
+                  <Input
+                    value={editLocation}
+                    onChange={(e) => setEditLocation(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-medium">예정 시간</label>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8 shrink-0"
+                      onClick={() =>
+                        setEditHour((p) => (p <= 0 ? 23 : p - 1))
+                      }
+                    >
+                      <Minus className="h-3 w-3" />
+                    </Button>
+                    <Input
+                      type="number"
+                      min={0}
+                      max={23}
+                      value={editHour}
+                      onChange={(e) =>
+                        setEditHour(
+                          Math.max(0, Math.min(23, Number(e.target.value) || 0)),
+                        )
+                      }
+                      className="h-8 w-12 text-center px-1"
+                    />
+                    <span className="text-sm font-medium">:</span>
+                    <Input
+                      type="number"
+                      min={0}
+                      max={59}
+                      step={10}
+                      value={String(editMinute).padStart(2, "0")}
+                      onChange={(e) =>
+                        setEditMinute(
+                          Math.max(0, Math.min(59, Number(e.target.value) || 0)),
+                        )
+                      }
+                      className="h-8 w-12 text-center px-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8 shrink-0"
+                      onClick={() =>
+                        setEditMinute((p) => (p >= 50 ? 0 : p + 10))
+                      }
+                    >
+                      <Plus className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-medium">
+                  직업별 모집 인원 (총{" "}
+                  {Object.values(editSlots).reduce((a, b) => a + b, 0)}명)
+                </label>
+                <div className="grid grid-cols-5 gap-2">
+                  {JOB_OPTIONS.map(({ value, label }) => (
+                    <div key={value} className="space-y-1 text-center">
+                      <span className="text-xs font-medium">{label}</span>
+                      <Input
+                        type="number"
+                        min={0}
+                        max={10}
+                        value={editSlots[value]}
+                        onChange={(e) => updateEditSlot(value, e.target.value)}
+                        className="text-center"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {editError && (
+                <p className="text-sm text-destructive">{editError}</p>
+              )}
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  className="flex-1"
+                  disabled={updating}
+                  onClick={saveEdit}
+                >
+                  <Check className="mr-1 h-3.5 w-3.5" />
+                  저장
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={cancelEditing}
+                >
+                  <X className="mr-1 h-3.5 w-3.5" />
+                  취소
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* 설명 */}
+              {recruit.description && (
+                <p className="whitespace-pre-wrap text-sm text-muted-foreground">
+                  {recruit.description}
+                </p>
+              )}
+
+              {/* 슬롯 현황 */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium">모집 현황</h4>
+                <SlotDisplay
+                  jobSlots={recruit.job_slots}
+                  members={members}
+                />
+              </div>
+
+              {/* 작성자 정보 */}
+              <div className="flex items-center gap-4 rounded-lg bg-muted/50 p-3">
+                <User className="h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="text-sm font-medium">{authorName}</p>
+                  <p className="text-xs text-muted-foreground">파티장</p>
+                </div>
+              </div>
+
+              {/* 시간 정보 */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Clock className="h-3.5 w-3.5" />
+                  등록: {timeAgo(recruit.created_at)}
+                </span>
+                {recruit.scheduled_at && (
+                  <span>
+                    예정:{" "}
+                    {new Date(recruit.scheduled_at).toLocaleString("ko-KR", {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                )}
+                <span>
+                  만료: {new Date(recruit.expires_at).toLocaleDateString("ko-KR")}
+                </span>
+              </div>
+            </>
           )}
 
-          {/* 슬롯 현황 */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">모집 현황</h4>
-            <SlotDisplay
-              jobSlots={recruit.job_slots}
-              members={members}
-            />
-          </div>
-
-          {/* 작성자 정보 */}
-          <div className="flex items-center gap-4 rounded-lg bg-muted/50 p-3">
-            <User className="h-5 w-5 text-muted-foreground" />
-            <div>
-              <p className="text-sm font-medium">{authorName}</p>
-              <p className="text-xs text-muted-foreground">파티장</p>
-            </div>
-          </div>
-
-          {/* 시간 정보 */}
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <Clock className="h-3.5 w-3.5" />
-              등록: {timeAgo(recruit.created_at)}
-            </span>
-            {recruit.scheduled_at && (
-              <span>
-                예정:{" "}
-                {new Date(recruit.scheduled_at).toLocaleString("ko-KR", {
-                  month: "short",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-            )}
-            <span>
-              만료: {new Date(recruit.expires_at).toLocaleDateString("ko-KR")}
-            </span>
-          </div>
-
           {/* 작성자 액션 */}
-          {isAuthor && recruit.status === "open" && (
+          {!editing && isAuthor && recruit.status === "open" && (
             <div className="flex gap-2 border-t border-border pt-4">
               <Button
                 variant="secondary"
@@ -271,7 +491,7 @@ export function RecruitDetailPage() {
             </div>
           )}
 
-          {isAuthor && recruit.status === "full" && (
+          {!editing && isAuthor && recruit.status === "full" && (
             <div className="flex gap-2 border-t border-border pt-4">
               <Button
                 variant="secondary"
@@ -285,7 +505,7 @@ export function RecruitDetailPage() {
             </div>
           )}
 
-          {isAuthor && recruit.status === "closed" && (
+          {!editing && isAuthor && recruit.status === "closed" && (
             <div className="flex gap-2 border-t border-border pt-4">
               <Button
                 variant="secondary"
@@ -340,7 +560,7 @@ export function RecruitDetailPage() {
               disabled={updating}
               onClick={() => handleLeave(myMembership.id)}
             >
-              탈퇴
+              {myMembership.status === "pending" ? "신청 취소" : "탈퇴"}
             </Button>
           </CardContent>
         </Card>
