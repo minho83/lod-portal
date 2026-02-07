@@ -1,8 +1,10 @@
 const STORAGE_KEY = "partyServerUrl"
 const DEFAULT_TIMEOUT = 8000
 
+const ENV_SERVER_URL = (import.meta.env.VITE_SERVER_URL ?? "").replace(/\/+$/, "")
+
 export function getServerUrl(): string {
-  return localStorage.getItem(STORAGE_KEY) || ""
+  return localStorage.getItem(STORAGE_KEY) || ENV_SERVER_URL
 }
 
 export function setServerUrl(url: string): void {
