@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ArrowLeft, Send } from "lucide-react"
+import { ArrowLeft, Send, Minus, Plus } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Select,
   SelectContent,
@@ -17,6 +18,11 @@ import { createRecruit } from "@/lib/recruits"
 import { JOB_OPTIONS } from "@/lib/constants"
 import type { JobClass, JobSlots, RecruitJoinMode } from "@/types"
 
+function getDefaultHour(): number {
+  const now = new Date()
+  return Math.min(now.getHours() + 1, 23)
+}
+
 export function NewRecruitPage() {
   const { user, profile } = useAuth()
   const navigate = useNavigate()
@@ -24,8 +30,11 @@ export function NewRecruitPage() {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [location, setLocation] = useState("")
-  const [scheduledAt, setScheduledAt] = useState("")
   const [joinMode, setJoinMode] = useState<RecruitJoinMode>("approval")
+
+  // 예정 시간: 오늘 날짜 기본, 시/분만 조작
+  const [hour, setHour] = useState(getDefaultHour)
+  const [minute, setMinute] = useState(0)
 
   // 직업 슬롯
   const [slots, setSlots] = useState<JobSlots>({
@@ -36,7 +45,8 @@ export function NewRecruitPage() {
     taoist: 1,
   })
 
-  // 리더 정보
+  // 리더 참여 여부
+  const [leaderJoins, setLeaderJoins] = useState(true)
   const [leaderName, setLeaderName] = useState(profile?.game_nickname ?? "")
   const [leaderClass, setLeaderClass] = useState<JobClass>(
     profile?.game_class ?? "warrior",
@@ -50,6 +60,24 @@ export function NewRecruitPage() {
   const updateSlot = (job: JobClass, value: string) => {
     const num = Math.max(0, Math.min(10, Number(value) || 0))
     setSlots((prev) => ({ ...prev, [job]: num }))
+  }
+
+  const adjustHour = (delta: number) => {
+    setHour((prev) => {
+      const next = prev + delta
+      if (next < 0) return 23
+      if (next > 23) return 0
+      return next
+    })
+  }
+
+  const adjustMinute = (delta: number) => {
+    setMinute((prev) => {
+      const next = prev + delta
+      if (next < 0) return 50
+      if (next >= 60) return 0
+      return next
+    })
   }
 
   if (!user) {
@@ -69,7 +97,12 @@ export function NewRecruitPage() {
 
     if (!title.trim()) return setError("제목을 입력해주세요")
     if (totalSlots < 2) return setError("최소 2명 이상의 슬롯을 설정해주세요")
-    if (!leaderName.trim()) return setError("리더 캐릭터명을 입력해주세요")
+    if (leaderJoins && !leaderName.trim())
+      return setError("리더 캐릭터명을 입력해주세요")
+
+    // 오늘 날짜 + 선택한 시:분으로 ISO string 생성
+    const scheduled = new Date()
+    scheduled.setHours(hour, minute, 0, 0)
 
     setSubmitting(true)
     try {
@@ -78,12 +111,13 @@ export function NewRecruitPage() {
           title: title.trim(),
           description: description.trim() || undefined,
           location: location.trim() || undefined,
-          scheduled_at: scheduledAt || undefined,
+          scheduled_at: scheduled.toISOString(),
           join_mode: joinMode,
           job_slots: slots,
         },
-        leaderName.trim(),
-        leaderClass,
+        leaderJoins
+          ? { name: leaderName.trim(), jobClass: leaderClass }
+          : undefined,
       )
       navigate(`/recruit/${recruit.id}`)
     } catch (err) {
@@ -92,6 +126,12 @@ export function NewRecruitPage() {
       setSubmitting(false)
     }
   }
+
+  const todayStr = new Date().toLocaleDateString("ko-KR", {
+    month: "long",
+    day: "numeric",
+    weekday: "short",
+  })
 
   return (
     <div className="mx-auto max-w-lg space-y-4 p-4">
@@ -132,7 +172,7 @@ export function NewRecruitPage() {
             />
           </div>
 
-          {/* 장소 + 시간 */}
+          {/* 장소 + 예정 시간 */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
               <label htmlFor="location" className="text-sm font-medium">
@@ -146,15 +186,48 @@ export function NewRecruitPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="scheduled" className="text-sm font-medium">
-                예정 시간
-              </label>
-              <Input
-                id="scheduled"
-                type="datetime-local"
-                value={scheduledAt}
-                onChange={(e) => setScheduledAt(e.target.value)}
-              />
+              <label className="text-sm font-medium">예정 시간</label>
+              <p className="text-xs text-muted-foreground">{todayStr}</p>
+              <div className="flex items-center gap-1">
+                {/* 시 */}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 shrink-0"
+                  onClick={() => adjustHour(-1)}
+                >
+                  <Minus className="h-3 w-3" />
+                </Button>
+                <Input
+                  type="number"
+                  min={0}
+                  max={23}
+                  value={hour}
+                  onChange={(e) => setHour(Math.max(0, Math.min(23, Number(e.target.value) || 0)))}
+                  className="h-8 w-12 text-center px-1"
+                />
+                <span className="text-sm font-medium">:</span>
+                {/* 분 */}
+                <Input
+                  type="number"
+                  min={0}
+                  max={59}
+                  step={10}
+                  value={String(minute).padStart(2, "0")}
+                  onChange={(e) => setMinute(Math.max(0, Math.min(59, Number(e.target.value) || 0)))}
+                  className="h-8 w-12 text-center px-1"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 shrink-0"
+                  onClick={() => adjustMinute(10)}
+                >
+                  <Plus className="h-3 w-3" />
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -208,31 +281,42 @@ export function NewRecruitPage() {
             </div>
           </div>
 
-          {/* 리더 정보 */}
-          <div className="space-y-2 rounded-lg border border-border p-3">
-            <label className="text-sm font-medium">리더 정보 (본인)</label>
-            <div className="grid grid-cols-2 gap-2">
-              <Input
-                placeholder="캐릭터명 *"
-                value={leaderName}
-                onChange={(e) => setLeaderName(e.target.value)}
+          {/* 리더 참여 체크박스 + 정보 */}
+          <div className="space-y-3 rounded-lg border border-border p-3">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="leaderJoins"
+                checked={leaderJoins}
+                onCheckedChange={(checked) => setLeaderJoins(checked === true)}
               />
-              <Select
-                value={leaderClass}
-                onValueChange={(v) => setLeaderClass(v as JobClass)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {JOB_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <label htmlFor="leaderJoins" className="text-sm font-medium cursor-pointer">
+                파티장도 파티에 참여
+              </label>
             </div>
+            {leaderJoins && (
+              <div className="grid grid-cols-2 gap-2">
+                <Input
+                  placeholder="캐릭터명 *"
+                  value={leaderName}
+                  onChange={(e) => setLeaderName(e.target.value)}
+                />
+                <Select
+                  value={leaderClass}
+                  onValueChange={(v) => setLeaderClass(v as JobClass)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {JOB_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
 
           {/* 에러 */}

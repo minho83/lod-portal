@@ -95,8 +95,7 @@ export interface CreateRecruitInput {
 
 export async function createRecruit(
   input: CreateRecruitInput,
-  leaderName: string,
-  leaderClass: JobClass,
+  leader?: { name: string; jobClass: JobClass },
 ): Promise<PartyRecruit> {
   const {
     data: { session },
@@ -123,17 +122,19 @@ export async function createRecruit(
 
   if (recruitError) throw recruitError
 
-  // 2. 리더를 멤버로 자동 등록
-  const { error: memberError } = await supabase.from("party_members").insert({
-    recruit_id: recruit.id,
-    user_id: session.user.id,
-    role: "leader",
-    job_class: leaderClass,
-    status: "accepted",
-    character_name: leaderName,
-  })
+  // 2. 리더가 파티에 참여하는 경우 멤버로 등록
+  if (leader) {
+    const { error: memberError } = await supabase.from("party_members").insert({
+      recruit_id: recruit.id,
+      user_id: session.user.id,
+      role: "leader",
+      job_class: leader.jobClass,
+      status: "accepted",
+      character_name: leader.name,
+    })
 
-  if (memberError) throw memberError
+    if (memberError) throw memberError
+  }
 
   return recruit as PartyRecruit
 }
