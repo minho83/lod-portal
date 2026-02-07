@@ -1,16 +1,9 @@
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import {
   Calculator,
@@ -20,7 +13,10 @@ import {
   Minus,
   Plus,
   RotateCcw,
-  Info,
+  Settings,
+  ChevronDown,
+  ChevronRight,
+  Battery,
 } from "lucide-react"
 import {
   calculateHpExp,
@@ -28,15 +24,37 @@ import {
   calculateTotalExp,
   calculateDansu,
   formatExp,
-  getNecklaceBonus,
+  formatCash,
+  formatCurrency,
   dansuTable,
+  hpRarTiers,
+  mpRarTiers,
+  calculateTierRar,
+  calculateReverseRar,
+  calculateFullExpRar,
+  RAR_GOLD_PRICE,
   type DansuResult,
 } from "@/lib/calculator"
 
-// ── Constants ──
+// ── Types & Constants ──
 
-const LAR_EXP = 700_000_000
-const LAR_PRICE = 700_000
+interface CalcSettings {
+  discountRate: number
+  exchangeRate: number
+  dailyFreeRar: number
+  weeklyFreeRar: number
+  targetDays: number
+}
+
+const DEFAULT_SETTINGS: CalcSettings = {
+  discountRate: 0,
+  exchangeRate: 6000,
+  dailyFreeRar: 0,
+  weeklyFreeRar: 0,
+  targetDays: 0,
+}
+
+const STORAGE_KEY = "lodCalcSettings"
 
 const QUICK_BUTTONS = [
   { label: "+100만", value: 1_000_000 },
@@ -46,7 +64,30 @@ const QUICK_BUTTONS = [
   { label: "+백", value: 100 },
 ] as const
 
-// ── Shared sub-components ──
+// ── Settings Persistence ──
+
+function loadSettings(): CalcSettings {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (!saved) return DEFAULT_SETTINGS
+    const s = JSON.parse(saved)
+    return {
+      discountRate: Math.max(0, Math.min(99, Number(s.discountRate) || 0)),
+      exchangeRate: Math.max(100, Number(String(s.exchangeRate).replace(/,/g, "")) || 6000),
+      dailyFreeRar: Math.max(0, Number(String(s.dailyFreeRar).replace(/,/g, "")) || 0),
+      weeklyFreeRar: Math.max(0, Number(String(s.weeklyFreeRar).replace(/,/g, "")) || 0),
+      targetDays: Math.max(0, Number(String(s.targetDays).replace(/,/g, "")) || 0),
+    }
+  } catch {
+    return DEFAULT_SETTINGS
+  }
+}
+
+function saveSettings(settings: CalcSettings) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
+}
+
+// ── Shared Sub-Components ──
 
 function ProgressBar({
   value,
@@ -83,17 +124,6 @@ function StatInputGroup({
 }) {
   const numValue = parseInt(value) || 0
 
-  const handleQuickAdd = useCallback(
-    (amount: number) => {
-      onChange(String(numValue + amount))
-    },
-    [numValue, onChange],
-  )
-
-  const handleReset = useCallback(() => {
-    onChange("0")
-  }, [onChange])
-
   return (
     <div className="space-y-2">
       <label className={cn("text-sm font-medium", colorClass)}>{label}</label>
@@ -111,59 +141,17 @@ function StatInputGroup({
               key={btn.label}
               variant="outline"
               size="xs"
-              onClick={() => handleQuickAdd(btn.value)}
+              onClick={() => onChange(String(numValue + btn.value))}
             >
               {btn.label}
             </Button>
           ))}
-          <Button variant="ghost" size="xs" onClick={handleReset}>
+          <Button variant="ghost" size="xs" onClick={() => onChange("0")}>
             <RotateCcw className="h-3 w-3" />
             초기화
           </Button>
         </div>
       )}
-    </div>
-  )
-}
-
-function NecklaceStepper({
-  value,
-  onChange,
-}: {
-  value: number
-  onChange: (v: number) => void
-}) {
-  const bonus = getNecklaceBonus(value)
-
-  return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-muted-foreground">
-        목걸이 레벨
-      </label>
-      <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="icon-xs"
-          onClick={() => onChange(Math.max(0, value - 1))}
-          disabled={value <= 0}
-        >
-          <Minus className="h-3 w-3" />
-        </Button>
-        <span className="min-w-8 text-center text-sm font-semibold">{value}</span>
-        <Button
-          variant="outline"
-          size="icon-xs"
-          onClick={() => onChange(Math.min(30, value + 1))}
-          disabled={value >= 30}
-        >
-          <Plus className="h-3 w-3" />
-        </Button>
-        {value > 0 && (
-          <Badge variant="secondary" className="text-xs">
-            +{(bonus * 100).toFixed(0)}% 보너스
-          </Badge>
-        )}
-      </div>
     </div>
   )
 }
@@ -222,23 +210,269 @@ function ResultRow({
   )
 }
 
-// ── Utility: calculate Lar needed for given exp ──
+/** 라르 비용 요약 (총 라르, 골드, 현금, 무료라르 기간) */
+function CostSummary({
+  totalRar,
+  settings,
+}: {
+  totalRar: number
+  settings: CalcSettings
+}) {
+  if (totalRar <= 0) return null
 
-function calcLarCount(expNeeded: number, necklaceLevel: number): number {
-  if (expNeeded <= 0) return 0
-  const bonus = getNecklaceBonus(necklaceLevel)
-  const effectivePerLar = LAR_EXP * (1 + bonus)
-  return Math.ceil(expNeeded / effectivePerLar)
+  const totalGold = totalRar * RAR_GOLD_PRICE
+  const totalCash = (totalGold / 100_000_000) * settings.exchangeRate
+
+  const weeklyFreeTotal = settings.dailyFreeRar * 7 + settings.weeklyFreeRar
+  const weeksNeeded = weeklyFreeTotal > 0 ? Math.ceil(totalRar / weeklyFreeTotal) : null
+
+  return (
+    <div className="space-y-3">
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div className="rounded-lg bg-secondary/50 p-3 text-center">
+          <div className="text-lg font-bold text-primary">{totalRar.toLocaleString()}개</div>
+          <div className="text-xs text-muted-foreground">필요 라르</div>
+        </div>
+        <div className="rounded-lg bg-secondary/50 p-3 text-center">
+          <div className="text-lg font-bold text-blue-400">{formatCurrency(totalGold)}</div>
+          <div className="text-xs text-muted-foreground">총 비용 (골드)</div>
+        </div>
+        <div className="rounded-lg bg-secondary/50 p-3 text-center">
+          <div className="text-lg font-bold text-sky-400">{formatCash(totalCash)}</div>
+          <div className="text-xs text-muted-foreground">예상 현금</div>
+        </div>
+      </div>
+      {weeksNeeded !== null && (
+        <div className="text-center">
+          <Badge variant="secondary" className="text-xs">
+            무료 라르만으로 약 {weeksNeeded}주 ({weeksNeeded * 7}일) 소요
+          </Badge>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Settings Panel ──
+
+function SettingsPanel({
+  settings,
+  onChange,
+}: {
+  settings: CalcSettings
+  onChange: (s: CalcSettings) => void
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const update = useCallback(
+    (key: keyof CalcSettings, value: number) => {
+      onChange({ ...settings, [key]: value })
+    },
+    [settings, onChange],
+  )
+
+  return (
+    <Card>
+      <button
+        className="flex w-full items-center gap-3 p-4 text-left transition-colors hover:bg-accent/50"
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+      >
+        <Settings className="h-5 w-5 text-primary shrink-0" />
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium">계산 설정</div>
+          <div className="text-xs text-muted-foreground truncate">
+            할인{" "}
+            <span className="text-purple-400">{settings.discountRate}%</span>
+            {" · "}시세{" "}
+            <span className="text-blue-400">
+              {settings.exchangeRate.toLocaleString()}원
+            </span>
+            {" · "}무료라르{" "}
+            <span className="text-green-400">
+              일{settings.dailyFreeRar}/주{settings.weeklyFreeRar}
+            </span>
+          </div>
+        </div>
+        {isOpen ? (
+          <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+        ) : (
+          <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+        )}
+      </button>
+
+      {isOpen && (
+        <CardContent className="space-y-4 border-t pt-4">
+          {/* 라르 할인율 */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-purple-400">
+              라르 할인율
+            </label>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon-xs"
+                onClick={() =>
+                  update("discountRate", Math.max(0, settings.discountRate - 10))
+                }
+                disabled={settings.discountRate <= 0}
+              >
+                <Minus className="h-3 w-3" />
+              </Button>
+              <div className="relative flex-1">
+                <Input
+                  type="number"
+                  value={settings.discountRate}
+                  onChange={(e) =>
+                    update(
+                      "discountRate",
+                      Math.max(0, Math.min(99, parseInt(e.target.value) || 0)),
+                    )
+                  }
+                  className="text-center pr-8"
+                  min={0}
+                  max={99}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-purple-400">
+                  %
+                </span>
+              </div>
+              <Button
+                variant="outline"
+                size="icon-xs"
+                onClick={() =>
+                  update("discountRate", Math.min(99, settings.discountRate + 10))
+                }
+                disabled={settings.discountRate >= 99}
+              >
+                <Plus className="h-3 w-3" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground text-center">
+              10% 단위 조절 (0~99%)
+            </p>
+          </div>
+
+          {/* 어둠돈 환율 */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-blue-400">
+              어둠돈 1억 = 현금
+            </label>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon-xs"
+                onClick={() =>
+                  update(
+                    "exchangeRate",
+                    Math.max(100, settings.exchangeRate - 100),
+                  )
+                }
+                disabled={settings.exchangeRate <= 100}
+              >
+                <Minus className="h-3 w-3" />
+              </Button>
+              <div className="relative flex-1">
+                <Input
+                  type="number"
+                  value={settings.exchangeRate}
+                  onChange={(e) =>
+                    update(
+                      "exchangeRate",
+                      Math.max(100, parseInt(e.target.value) || 6000),
+                    )
+                  }
+                  className="text-center pr-8"
+                  min={100}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-blue-400">
+                  원
+                </span>
+              </div>
+              <Button
+                variant="outline"
+                size="icon-xs"
+                onClick={() =>
+                  update("exchangeRate", settings.exchangeRate + 100)
+                }
+              >
+                <Plus className="h-3 w-3" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground text-center">
+              100원 단위 조절
+            </p>
+          </div>
+
+          {/* 무료 라르 */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-green-400">
+              무료 라르 (목표 기간 계산)
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="space-y-1">
+                <span className="text-xs text-muted-foreground">매일</span>
+                <Input
+                  type="number"
+                  value={settings.dailyFreeRar || ""}
+                  onChange={(e) =>
+                    update(
+                      "dailyFreeRar",
+                      Math.max(0, parseInt(e.target.value) || 0),
+                    )
+                  }
+                  className="text-center"
+                  min={0}
+                  placeholder="0"
+                />
+              </div>
+              <div className="space-y-1">
+                <span className="text-xs text-muted-foreground">주간</span>
+                <Input
+                  type="number"
+                  value={settings.weeklyFreeRar || ""}
+                  onChange={(e) =>
+                    update(
+                      "weeklyFreeRar",
+                      Math.max(0, parseInt(e.target.value) || 0),
+                    )
+                  }
+                  className="text-center"
+                  min={0}
+                  placeholder="0"
+                />
+              </div>
+              <div className="space-y-1">
+                <span className="text-xs text-muted-foreground">목표(일)</span>
+                <Input
+                  type="number"
+                  value={settings.targetDays || ""}
+                  onChange={(e) =>
+                    update(
+                      "targetDays",
+                      Math.max(0, parseInt(e.target.value) || 0),
+                    )
+                  }
+                  className="text-center"
+                  min={0}
+                  placeholder="30"
+                />
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      )}
+    </Card>
+  )
 }
 
 // ── Mode 1: 필요 라르는? ──
 
-function RequiredMode() {
+function RequiredMode({ settings }: { settings: CalcSettings }) {
   const [currentHp, setCurrentHp] = useState("0")
   const [currentMp, setCurrentMp] = useState("0")
   const [targetHp, setTargetHp] = useState("0")
   const [targetMp, setTargetMp] = useState("0")
-  const [necklaceLevel, setNecklaceLevel] = useState(0)
 
   const curHp = parseInt(currentHp) || 0
   const curMp = parseInt(currentMp) || 0
@@ -246,29 +480,19 @@ function RequiredMode() {
   const tgtMp = parseInt(targetMp) || 0
 
   const result = useMemo(() => {
+    const hpRar = calculateTierRar(curHp, tgtHp, hpRarTiers, settings.discountRate)
+    const mpRar = calculateTierRar(curMp, tgtMp, mpRarTiers, settings.discountRate)
+    const totalRar = hpRar.totalRar + mpRar.totalRar
+
     const currentExp = calculateTotalExp(curHp, curMp)
     const targetExp = calculateTotalExp(tgtHp, tgtMp)
-    const neededExp = Math.max(0, targetExp - currentExp)
-    const larCount = calcLarCount(neededExp, necklaceLevel)
-    const cost = larCount * LAR_PRICE
-
     const currentDansu = calculateDansu(currentExp)
     const targetDansu = calculateDansu(targetExp)
 
-    return {
-      currentExp,
-      targetExp,
-      neededExp,
-      larCount,
-      cost,
-      currentDansu,
-      targetDansu,
-      hpDiff: tgtHp - curHp,
-      mpDiff: tgtMp - curMp,
-    }
-  }, [curHp, curMp, tgtHp, tgtMp, necklaceLevel])
+    return { hpRar, mpRar, totalRar, currentDansu, targetDansu }
+  }, [curHp, curMp, tgtHp, tgtMp, settings.discountRate])
 
-  const hasInput = tgtHp > 0 || tgtMp > 0
+  const hasInput = tgtHp > curHp || tgtMp > curMp
 
   return (
     <div className="space-y-6">
@@ -315,45 +539,44 @@ function RequiredMode() {
               colorClass="text-mage"
               showQuickButtons
             />
-            <NecklaceStepper value={necklaceLevel} onChange={setNecklaceLevel} />
           </CardContent>
         </Card>
       </div>
 
       {hasInput && (
         <ResultCard title="계산 결과">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <CostSummary totalRar={result.totalRar} settings={settings} />
+          <div className="grid gap-4 sm:grid-cols-2 pt-2">
             <div className="space-y-2">
               <ResultRow
-                label="HP 변화"
-                value={`${curHp.toLocaleString()} → ${tgtHp.toLocaleString()} (+${result.hpDiff.toLocaleString()})`}
+                label="HP 라르"
+                value={`${result.hpRar.totalRar.toLocaleString()}개`}
                 valueClass="text-warrior"
               />
               <ResultRow
-                label="MP 변화"
-                value={`${curMp.toLocaleString()} → ${tgtMp.toLocaleString()} (+${result.mpDiff.toLocaleString()})`}
+                label="MP 라르"
+                value={`${result.mpRar.totalRar.toLocaleString()}개`}
+                valueClass="text-mage"
+              />
+            </div>
+            <div className="space-y-2">
+              <ResultRow
+                label="HP"
+                value={`${curHp.toLocaleString()} → ${tgtHp.toLocaleString()}`}
+                valueClass="text-warrior"
+              />
+              <ResultRow
+                label="MP"
+                value={`${curMp.toLocaleString()} → ${tgtMp.toLocaleString()}`}
                 valueClass="text-mage"
               />
               <ResultRow
-                label="단수 변화"
+                label="단수"
                 value={`${result.currentDansu.dansu}단 → ${result.targetDansu.dansu}단`}
                 valueClass="text-primary"
               />
             </div>
-            <div className="space-y-2">
-              <ResultRow label="필요 경험치" value={formatExp(result.neededExp)} />
-              <ResultRow
-                label="필요 라르"
-                value={`${result.larCount.toLocaleString()}개`}
-                valueClass="text-primary"
-              />
-              <ResultRow
-                label="예상 비용"
-                value={`${formatExp(result.cost)} 아데나`}
-              />
-            </div>
           </div>
-          <DansuDisplay result={result.targetDansu} />
         </ResultCard>
       )}
     </div>
@@ -362,82 +585,99 @@ function RequiredMode() {
 
 // ── Mode 2: 목표 단수는? ──
 
-function TargetDansuMode() {
+function TargetDansuMode({ settings }: { settings: CalcSettings }) {
   const [currentHp, setCurrentHp] = useState("0")
   const [currentMp, setCurrentMp] = useState("0")
   const [targetDansu, setTargetDansu] = useState("7")
   const [statChoice, setStatChoice] = useState<"both" | "hp" | "mp">("both")
-  const [necklaceLevel, setNecklaceLevel] = useState(0)
 
   const curHp = parseInt(currentHp) || 0
   const curMp = parseInt(currentMp) || 0
   const tgtDansu = parseInt(targetDansu) || 7
 
   const result = useMemo(() => {
-    const currentExp = calculateTotalExp(curHp, curMp)
-    const currentDansuResult = calculateDansu(currentExp)
-
     const targetEntry = dansuTable.find((e) => e.dansu === tgtDansu)
     if (!targetEntry) return null
 
+    const currentExp = calculateTotalExp(curHp, curMp)
+    const currentDansuResult = calculateDansu(currentExp)
     const neededExp = Math.max(0, targetEntry.exp - currentExp)
-    const larCount = calcLarCount(neededExp, necklaceLevel)
-    const cost = larCount * LAR_PRICE
+    if (neededExp <= 0) return { currentDansu: currentDansuResult, neededExp: 0, totalRar: 0, targetHp: curHp, targetMp: curMp }
 
-    return {
-      currentExp,
-      currentDansu: currentDansuResult,
-      targetExp: targetEntry.exp,
-      neededExp,
-      larCount,
-      cost,
+    let targetHp = curHp
+    let targetMp = curMp
+
+    if (statChoice === "hp") {
+      // HP만으로 목표 달성: binary search
+      const neededHpExp = targetEntry.exp - calculateMpExp(curMp)
+      let lo = curHp
+      let hi = 10_000_000
+      while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2)
+        if (calculateHpExp(mid) < neededHpExp) lo = mid + 1
+        else hi = mid
+      }
+      targetHp = lo
+    } else if (statChoice === "mp") {
+      // MP만으로 목표 달성: binary search
+      const neededMpExp = targetEntry.exp - calculateHpExp(curHp)
+      let lo = curMp
+      let hi = 10_000_000
+      while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2)
+        if (calculateMpExp(mid) < neededMpExp) lo = mid + 1
+        else hi = mid
+      }
+      targetMp = lo
+    } else {
+      // 둘 다: 동일 수치 증가로 목표 달성
+      let lo = 0
+      let hi = 10_000_000
+      while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2)
+        if (calculateTotalExp(curHp + mid, curMp + mid) < targetEntry.exp) lo = mid + 1
+        else hi = mid
+      }
+      targetHp = curHp + lo
+      targetMp = curMp + lo
     }
-  }, [curHp, curMp, tgtDansu, necklaceLevel, statChoice])
+
+    const hpRar = calculateTierRar(curHp, targetHp, hpRarTiers, settings.discountRate)
+    const mpRar = calculateTierRar(curMp, targetMp, mpRarTiers, settings.discountRate)
+    const totalRar = hpRar.totalRar + mpRar.totalRar
+
+    return { currentDansu: currentDansuResult, neededExp, totalRar, targetHp, targetMp, hpRar: hpRar.totalRar, mpRar: mpRar.totalRar }
+  }, [curHp, curMp, tgtDansu, statChoice, settings.discountRate])
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">현재 스탯</CardTitle>
+          <CardTitle className="text-sm">현재 스탯 &amp; 목표</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <StatInputGroup
-              label="HP"
-              value={currentHp}
-              onChange={setCurrentHp}
-              colorClass="text-warrior"
-            />
-            <StatInputGroup
-              label="MP"
-              value={currentMp}
-              onChange={setCurrentMp}
-              colorClass="text-mage"
-            />
+            <StatInputGroup label="HP" value={currentHp} onChange={setCurrentHp} colorClass="text-warrior" />
+            <StatInputGroup label="MP" value={currentMp} onChange={setCurrentMp} colorClass="text-mage" />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              목표 단수
-            </label>
-            <Select value={targetDansu} onValueChange={setTargetDansu}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="목표 단수 선택" />
-              </SelectTrigger>
-              <SelectContent>
-                {dansuTable.map((entry) => (
-                  <SelectItem key={entry.dansu} value={String(entry.dansu)}>
-                    {entry.dansu}단 ({formatExp(entry.exp)})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <label className="text-sm font-medium text-muted-foreground">목표 단수</label>
+            <select
+              value={targetDansu}
+              onChange={(e) => setTargetDansu(e.target.value)}
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              {dansuTable.map((entry) => (
+                <option key={entry.dansu} value={String(entry.dansu)}>
+                  {entry.dansu}단 ({formatExp(entry.exp)})
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              스탯 선택
-            </label>
+            <label className="text-sm font-medium text-muted-foreground">올릴 스탯</label>
             <div className="flex gap-2">
               {(
                 [
@@ -457,36 +697,45 @@ function TargetDansuMode() {
               ))}
             </div>
           </div>
-
-          <NecklaceStepper value={necklaceLevel} onChange={setNecklaceLevel} />
         </CardContent>
       </Card>
 
-      {result && (
+      {result && result.totalRar > 0 && (
         <ResultCard title="계산 결과">
-          <ResultRow
-            label="현재 단수"
-            value={`${result.currentDansu.dansu}단`}
-            valueClass="text-muted-foreground"
-          />
-          <ResultRow
-            label="목표 단수"
-            value={`${tgtDansu}단`}
-            valueClass="text-primary"
-          />
-          <ResultRow label="현재 경험치" value={formatExp(result.currentExp)} />
-          <ResultRow label="목표 경험치" value={formatExp(result.targetExp)} />
-          <ResultRow label="필요 경험치" value={formatExp(result.neededExp)} />
-          <ResultRow
-            label="필요 라르"
-            value={`${result.larCount.toLocaleString()}개`}
-            valueClass="text-primary"
-          />
-          <ResultRow
-            label="예상 비용"
-            value={`${formatExp(result.cost)} 아데나`}
-          />
+          <CostSummary totalRar={result.totalRar} settings={settings} />
+          <div className="space-y-2 pt-2">
+            <ResultRow
+              label="현재 단수"
+              value={`${result.currentDansu.dansu}단`}
+              valueClass="text-muted-foreground"
+            />
+            <ResultRow label="목표 단수" value={`${tgtDansu}단`} valueClass="text-primary" />
+            <ResultRow
+              label="목표 HP"
+              value={result.targetHp.toLocaleString()}
+              valueClass="text-warrior"
+            />
+            <ResultRow
+              label="목표 MP"
+              value={result.targetMp.toLocaleString()}
+              valueClass="text-mage"
+            />
+            {result.hpRar !== undefined && (
+              <>
+                <ResultRow label="HP 라르" value={`${result.hpRar.toLocaleString()}개`} valueClass="text-warrior" />
+                <ResultRow label="MP 라르" value={`${result.mpRar!.toLocaleString()}개`} valueClass="text-mage" />
+              </>
+            )}
+          </div>
         </ResultCard>
+      )}
+
+      {result && result.neededExp <= 0 && (curHp > 0 || curMp > 0) && (
+        <Card className="border-green-500/30">
+          <CardContent className="py-6 text-center">
+            <p className="text-sm font-medium text-green-400">이미 목표 단수에 도달했습니다!</p>
+          </CardContent>
+        </Card>
       )}
     </div>
   )
@@ -494,12 +743,11 @@ function TargetDansuMode() {
 
 // ── Mode 3: 올릴 수 있는 수치는? ──
 
-function RaiseMode() {
+function ReverseMode({ settings }: { settings: CalcSettings }) {
   const [currentHp, setCurrentHp] = useState("0")
   const [currentMp, setCurrentMp] = useState("0")
   const [larCount, setLarCount] = useState("0")
   const [statChoice, setStatChoice] = useState<"hp" | "mp">("hp")
-  const [necklaceLevel, setNecklaceLevel] = useState(0)
 
   const curHp = parseInt(currentHp) || 0
   const curMp = parseInt(currentMp) || 0
@@ -508,94 +756,52 @@ function RaiseMode() {
   const result = useMemo(() => {
     if (lars <= 0) return null
 
-    const bonus = getNecklaceBonus(necklaceLevel)
-    const totalExpGain = lars * LAR_EXP * (1 + bonus)
-
     const currentTotalExp = calculateTotalExp(curHp, curMp)
     const currentDansu = calculateDansu(currentTotalExp)
 
-    // Simulate stat increase by binary-searching for the max stat achievable
-    let lo = 0
-    let hi = 100_000_000
-
     if (statChoice === "hp") {
-      // Find max HP we can reach from curHp with totalExpGain
-      while (lo < hi) {
-        const mid = Math.floor((lo + hi + 1) / 2)
-        const targetHp = curHp + mid
-        const expNeeded = calculateHpExp(targetHp) - calculateHpExp(curHp)
-        if (expNeeded <= totalExpGain) {
-          lo = mid
-        } else {
-          hi = mid - 1
-        }
-      }
-      const finalHp = curHp + lo
-      const afterTotalExp = calculateTotalExp(finalHp, curMp)
+      const rev = calculateReverseRar(curHp, lars, hpRarTiers, settings.discountRate)
+      const afterTotalExp = calculateTotalExp(rev.finalValue, curMp)
       const afterDansu = calculateDansu(afterTotalExp)
-
       return {
-        statGain: lo,
         statLabel: "HP",
-        finalStat: finalHp,
+        statGain: rev.totalGain,
+        finalStat: rev.finalValue,
         currentDansu,
         afterDansu,
-        totalExpGain,
+        usedRar: lars - rev.remainingRar,
         colorClass: "text-warrior" as const,
       }
     } else {
-      while (lo < hi) {
-        const mid = Math.floor((lo + hi + 1) / 2)
-        const targetMp = curMp + mid
-        const expNeeded = calculateMpExp(targetMp) - calculateMpExp(curMp)
-        if (expNeeded <= totalExpGain) {
-          lo = mid
-        } else {
-          hi = mid - 1
-        }
-      }
-      const finalMp = curMp + lo
-      const afterTotalExp = calculateTotalExp(curHp, finalMp)
+      const rev = calculateReverseRar(curMp, lars, mpRarTiers, settings.discountRate)
+      const afterTotalExp = calculateTotalExp(curHp, rev.finalValue)
       const afterDansu = calculateDansu(afterTotalExp)
-
       return {
-        statGain: lo,
         statLabel: "MP",
-        finalStat: finalMp,
+        statGain: rev.totalGain,
+        finalStat: rev.finalValue,
         currentDansu,
         afterDansu,
-        totalExpGain,
+        usedRar: lars - rev.remainingRar,
         colorClass: "text-mage" as const,
       }
     }
-  }, [curHp, curMp, lars, statChoice, necklaceLevel])
+  }, [curHp, curMp, lars, statChoice, settings.discountRate])
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">현재 스탯 &amp; 라르 수량</CardTitle>
+          <CardTitle className="text-sm">현재 스탯 &amp; 보유 라르</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <StatInputGroup
-              label="HP"
-              value={currentHp}
-              onChange={setCurrentHp}
-              colorClass="text-warrior"
-            />
-            <StatInputGroup
-              label="MP"
-              value={currentMp}
-              onChange={setCurrentMp}
-              colorClass="text-mage"
-            />
+            <StatInputGroup label="HP" value={currentHp} onChange={setCurrentHp} colorClass="text-warrior" />
+            <StatInputGroup label="MP" value={currentMp} onChange={setCurrentMp} colorClass="text-mage" />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              라르 개수
-            </label>
+            <label className="text-sm font-medium text-muted-foreground">보유 라르</label>
             <Input
               type="number"
               value={larCount}
@@ -606,9 +812,7 @@ function RaiseMode() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              올릴 스탯
-            </label>
+            <label className="text-sm font-medium text-muted-foreground">올릴 스탯</label>
             <div className="flex gap-2">
               <Button
                 variant={statChoice === "hp" ? "default" : "outline"}
@@ -626,16 +830,14 @@ function RaiseMode() {
               </Button>
             </div>
           </div>
-
-          <NecklaceStepper value={necklaceLevel} onChange={setNecklaceLevel} />
         </CardContent>
       </Card>
 
       {result && (
         <ResultCard title="계산 결과">
           <ResultRow
-            label="투입 경험치"
-            value={formatExp(result.totalExpGain)}
+            label="사용 라르"
+            value={`${result.usedRar.toLocaleString()}개`}
           />
           <ResultRow
             label={`${result.statLabel} 상승량`}
@@ -661,7 +863,7 @@ function RaiseMode() {
 
 // ── Mode 4: 풀경험치 라르 ──
 
-function FullExpMode() {
+function FullExpMode({ settings }: { settings: CalcSettings }) {
   const [hp, setHp] = useState("0")
   const [mp, setMp] = useState("0")
 
@@ -669,19 +871,20 @@ function FullExpMode() {
   const mpVal = parseInt(mp) || 0
 
   const result = useMemo(() => {
-    const hpExp = calculateHpExp(hpVal)
-    const mpExp = calculateMpExp(mpVal)
-    const totalExp = hpExp + mpExp
-    const dansu = calculateDansu(totalExp)
+    if (hpVal <= 0 && mpVal <= 0) return null
+    return calculateFullExpRar(hpVal, mpVal, settings.discountRate)
+  }, [hpVal, mpVal, settings.discountRate])
 
-    return { hpExp, mpExp, totalExp, dansu }
+  const dansu = useMemo(() => {
+    const totalExp = calculateTotalExp(hpVal, mpVal)
+    return calculateDansu(totalExp)
   }, [hpVal, mpVal])
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">스탯 입력</CardTitle>
+          <CardTitle className="text-sm">현재 스탯</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -700,27 +903,53 @@ function FullExpMode() {
               showQuickButtons
             />
           </div>
+          <DansuDisplay result={dansu} />
         </CardContent>
       </Card>
 
-      <ResultCard title="경험치 정보">
-        <ResultRow
-          label="HP 경험치"
-          value={formatExp(result.hpExp)}
-          valueClass="text-warrior"
-        />
-        <ResultRow
-          label="MP 경험치"
-          value={formatExp(result.mpExp)}
-          valueClass="text-mage"
-        />
-        <ResultRow
-          label="총 경험치"
-          value={formatExp(result.totalExp)}
-          valueClass="text-primary"
-        />
-        <DansuDisplay result={result.dansu} />
-      </ResultCard>
+      {result && (
+        <ResultCard title="풀경험치 라르 계산">
+          <ResultRow label="현재 단수" value={`${result.dansu}단`} valueClass="text-primary" />
+          <ResultRow label="최대 보유 경험치" value={formatExp(result.maxExp)} />
+
+          <div className="grid gap-3 sm:grid-cols-2 pt-2">
+            <Card className={cn("border", result.recommended === "hp" ? "border-warrior/50" : "border-border")}>
+              <CardContent className="space-y-2 py-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-warrior">HP로 소비</span>
+                  {result.recommended === "hp" && (
+                    <Badge variant="secondary" className="text-xs">추천</Badge>
+                  )}
+                </div>
+                <div className="text-lg font-bold text-warrior">
+                  {result.hp.rar.toLocaleString()}개
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  HP {result.hp.start.toLocaleString()} → {result.hp.target.toLocaleString()} (+{result.hp.gain.toLocaleString()})
+                </div>
+              </CardContent>
+            </Card>
+            <Card className={cn("border", result.recommended === "mp" ? "border-mage/50" : "border-border")}>
+              <CardContent className="space-y-2 py-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-mage">MP로 소비</span>
+                  {result.recommended === "mp" && (
+                    <Badge variant="secondary" className="text-xs">추천</Badge>
+                  )}
+                </div>
+                <div className="text-lg font-bold text-mage">
+                  {result.mp.rar.toLocaleString()}개
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  MP {result.mp.start.toLocaleString()} → {result.mp.target.toLocaleString()} (+{result.mp.gain.toLocaleString()})
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <CostSummary totalRar={result.minRar} settings={settings} />
+        </ResultCard>
+      )}
     </div>
   )
 }
@@ -728,6 +957,19 @@ function FullExpMode() {
 // ── Main Page ──
 
 export function CalculatorPage() {
+  const [settings, setSettings] = useState<CalcSettings>(DEFAULT_SETTINGS)
+
+  // localStorage에서 설정 로드
+  useEffect(() => {
+    setSettings(loadSettings())
+  }, [])
+
+  // 설정 변경 시 저장
+  const handleSettingsChange = useCallback((newSettings: CalcSettings) => {
+    setSettings(newSettings)
+    saveSettings(newSettings)
+  }, [])
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
@@ -735,15 +977,7 @@ export function CalculatorPage() {
         <h2 className="text-lg font-bold">라르 계산기</h2>
       </div>
 
-      <Card className="border-muted">
-        <CardContent className="flex items-start gap-2 py-3 text-xs text-muted-foreground">
-          <Info className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>
-            라르 1개 = 경험치 7억 기준으로 계산합니다. 목걸이 보너스를 설정하면
-            추가 경험치가 반영됩니다.
-          </span>
-        </CardContent>
-      </Card>
+      <SettingsPanel settings={settings} onChange={handleSettingsChange} />
 
       <Tabs defaultValue="required">
         <TabsList className="w-full">
@@ -757,29 +991,29 @@ export function CalculatorPage() {
             <span className="hidden sm:inline">목표 단수는?</span>
             <span className="sm:hidden">단수</span>
           </TabsTrigger>
-          <TabsTrigger value="raise" className="flex-1 gap-1">
+          <TabsTrigger value="reverse" className="flex-1 gap-1">
             <Gem className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">올릴 수 있는 수치는?</span>
             <span className="sm:hidden">수치</span>
           </TabsTrigger>
           <TabsTrigger value="fullexp" className="flex-1 gap-1">
-            <Calculator className="h-3.5 w-3.5" />
+            <Battery className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">풀경험치 라르</span>
             <span className="sm:hidden">풀경</span>
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="required">
-          <RequiredMode />
+          <RequiredMode settings={settings} />
         </TabsContent>
         <TabsContent value="target">
-          <TargetDansuMode />
+          <TargetDansuMode settings={settings} />
         </TabsContent>
-        <TabsContent value="raise">
-          <RaiseMode />
+        <TabsContent value="reverse">
+          <ReverseMode settings={settings} />
         </TabsContent>
         <TabsContent value="fullexp">
-          <FullExpMode />
+          <FullExpMode settings={settings} />
         </TabsContent>
       </Tabs>
     </div>
