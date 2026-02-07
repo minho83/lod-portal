@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom"
-import { Clock, MapPin, Users, Zap, Shield, Swords, Castle } from "lucide-react"
+import { Clock, MapPin, Users, Zap, Shield, Swords, Castle, Calendar } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
-import { timeAgo } from "@/lib/utils"
+import { cn, timeAgo, formatScheduledDate } from "@/lib/utils"
 import { SlotDisplay } from "./SlotDisplay"
 import { RECRUIT_TYPE_CONFIG } from "@/lib/constants"
 import type { PartyRecruit, RecruitStatus } from "@/types"
@@ -73,19 +72,26 @@ export function RecruitCard({ recruit }: RecruitCardProps) {
           {/* 슬롯 */}
           <SlotDisplay jobSlots={recruit.job_slots} compact />
 
-          {/* 하단: 인원/작성자/시간 */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          {/* 하단: 인원/작성자/예정시간 */}
+          <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1">
                 <Users className="h-3.5 w-3.5" />
                 {recruit.member_count}/{recruit.max_members}
               </span>
-              <span>{authorName}</span>
+              <span className="truncate">{authorName}</span>
             </div>
-            <span className="flex items-center gap-1">
-              <Clock className="h-3.5 w-3.5" />
-              {timeAgo(recruit.created_at)}
-            </span>
+            {recruit.scheduled_at ? (
+              <span className="flex shrink-0 items-center gap-1 font-medium text-primary">
+                <Calendar className="h-3.5 w-3.5" />
+                {formatScheduledDate(recruit.scheduled_at)}
+              </span>
+            ) : (
+              <span className="flex shrink-0 items-center gap-1">
+                <Clock className="h-3.5 w-3.5" />
+                {timeAgo(recruit.created_at)}
+              </span>
+            )}
           </div>
         </CardContent>
       </Card>

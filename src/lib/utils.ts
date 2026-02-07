@@ -33,3 +33,43 @@ export function formatPriceDelta(price: number, marketPrice: number): { text: st
   if (ratio > 0) return { text: `시세+${Math.round(ratio)}%`, color: "text-red-400" }
   return { text: `시세${Math.round(ratio)}%`, color: "text-green-400" }
 }
+
+/**
+ * 예정 시간을 상대적으로 표시 (오늘, 내일, 모레 등)
+ */
+export function formatScheduledDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return ""
+
+  const scheduled = new Date(dateStr)
+  const now = new Date()
+
+  // 오늘, 내일, 모레 계산을 위해 날짜만 비교
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const scheduledStart = new Date(scheduled.getFullYear(), scheduled.getMonth(), scheduled.getDate())
+
+  const dayDiff = Math.floor((scheduledStart.getTime() - todayStart.getTime()) / (1000 * 60 * 60 * 24))
+
+  const timeStr = scheduled.toLocaleTimeString("ko-KR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  })
+
+  if (dayDiff === 0) {
+    return `오늘 ${timeStr}`
+  } else if (dayDiff === 1) {
+    return `내일 ${timeStr}`
+  } else if (dayDiff === 2) {
+    return `모레 ${timeStr}`
+  } else if (dayDiff > 2 && dayDiff <= 7) {
+    return `${dayDiff}일 후 ${timeStr}`
+  } else {
+    return scheduled.toLocaleString("ko-KR", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+  }
+}
