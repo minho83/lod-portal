@@ -302,162 +302,135 @@ function SettingsPanel({
       </button>
 
       {isOpen && (
-        <CardContent className="space-y-4 border-t pt-4">
-          {/* 라르 할인율 */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-purple-400">
-              라르 할인율
-            </label>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="icon-xs"
-                onClick={() =>
-                  update("discountRate", Math.max(0, settings.discountRate - 10))
-                }
-                disabled={settings.discountRate <= 0}
-              >
-                <Minus className="h-3 w-3" />
-              </Button>
-              <div className="relative flex-1">
-                <Input
-                  type="number"
-                  value={settings.discountRate}
-                  onChange={(e) =>
-                    update(
-                      "discountRate",
-                      Math.max(0, Math.min(99, parseInt(e.target.value) || 0)),
-                    )
+        <CardContent className="border-t pt-3 pb-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+            {/* 라르 할인율 */}
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-purple-400">할인율</label>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="outline"
+                  size="icon-xs"
+                  onClick={() =>
+                    update("discountRate", Math.max(0, settings.discountRate - 10))
                   }
-                  className="text-center pr-8"
-                  min={0}
-                  max={99}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-purple-400">
-                  %
-                </span>
+                  disabled={settings.discountRate <= 0}
+                >
+                  <Minus className="h-3 w-3" />
+                </Button>
+                <div className="relative flex-1">
+                  <Input
+                    type="number"
+                    value={settings.discountRate}
+                    onChange={(e) =>
+                      update(
+                        "discountRate",
+                        Math.max(0, Math.min(99, parseInt(e.target.value) || 0)),
+                      )
+                    }
+                    className="text-center pr-6 h-8 text-sm"
+                    min={0}
+                    max={99}
+                  />
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-purple-400">%</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon-xs"
+                  onClick={() =>
+                    update("discountRate", Math.min(99, settings.discountRate + 10))
+                  }
+                  disabled={settings.discountRate >= 99}
+                >
+                  <Plus className="h-3 w-3" />
+                </Button>
               </div>
-              <Button
-                variant="outline"
-                size="icon-xs"
-                onClick={() =>
-                  update("discountRate", Math.min(99, settings.discountRate + 10))
-                }
-                disabled={settings.discountRate >= 99}
-              >
-                <Plus className="h-3 w-3" />
-              </Button>
             </div>
-            <p className="text-xs text-muted-foreground text-center">
-              10% 단위 조절 (0~99%)
-            </p>
-          </div>
 
-          {/* 어둠돈 환율 */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-blue-400">
-              어둠돈 1억 = 현금
-            </label>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="icon-xs"
-                onClick={() =>
-                  update(
-                    "exchangeRate",
-                    Math.max(100, settings.exchangeRate - 100),
-                  )
-                }
-                disabled={settings.exchangeRate <= 100}
-              >
-                <Minus className="h-3 w-3" />
-              </Button>
-              <div className="relative flex-1">
-                <Input
-                  type="number"
-                  value={settings.exchangeRate}
-                  onChange={(e) =>
-                    update(
-                      "exchangeRate",
-                      Math.max(100, parseInt(e.target.value) || 6000),
-                    )
+            {/* 어둠돈 환율 */}
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-blue-400">1억 = 현금</label>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="outline"
+                  size="icon-xs"
+                  onClick={() =>
+                    update("exchangeRate", Math.max(100, settings.exchangeRate - 100))
                   }
-                  className="text-center pr-8"
-                  min={100}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-blue-400">
-                  원
-                </span>
+                  disabled={settings.exchangeRate <= 100}
+                >
+                  <Minus className="h-3 w-3" />
+                </Button>
+                <div className="relative flex-1">
+                  <Input
+                    type="number"
+                    value={settings.exchangeRate}
+                    onChange={(e) =>
+                      update(
+                        "exchangeRate",
+                        Math.max(100, parseInt(e.target.value) || 6000),
+                      )
+                    }
+                    className="text-center pr-6 h-8 text-sm"
+                    min={100}
+                  />
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-blue-400">원</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon-xs"
+                  onClick={() =>
+                    update("exchangeRate", settings.exchangeRate + 100)
+                  }
+                >
+                  <Plus className="h-3 w-3" />
+                </Button>
               </div>
-              <Button
-                variant="outline"
-                size="icon-xs"
-                onClick={() =>
-                  update("exchangeRate", settings.exchangeRate + 100)
-                }
-              >
-                <Plus className="h-3 w-3" />
-              </Button>
             </div>
-            <p className="text-xs text-muted-foreground text-center">
-              100원 단위 조절
-            </p>
-          </div>
 
-          {/* 무료 라르 */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-green-400">
-              무료 라르 (목표 기간 계산)
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              <div className="space-y-1">
-                <span className="text-xs text-muted-foreground">매일</span>
-                <Input
-                  type="number"
-                  value={settings.dailyFreeRar || ""}
-                  onChange={(e) =>
-                    update(
-                      "dailyFreeRar",
-                      Math.max(0, parseInt(e.target.value) || 0),
-                    )
-                  }
-                  className="text-center"
-                  min={0}
-                  placeholder="0"
-                />
-              </div>
-              <div className="space-y-1">
-                <span className="text-xs text-muted-foreground">주간</span>
-                <Input
-                  type="number"
-                  value={settings.weeklyFreeRar || ""}
-                  onChange={(e) =>
-                    update(
-                      "weeklyFreeRar",
-                      Math.max(0, parseInt(e.target.value) || 0),
-                    )
-                  }
-                  className="text-center"
-                  min={0}
-                  placeholder="0"
-                />
-              </div>
-              <div className="space-y-1">
-                <span className="text-xs text-muted-foreground">목표(일)</span>
-                <Input
-                  type="number"
-                  value={settings.targetDays || ""}
-                  onChange={(e) =>
-                    update(
-                      "targetDays",
-                      Math.max(0, parseInt(e.target.value) || 0),
-                    )
-                  }
-                  className="text-center"
-                  min={0}
-                  placeholder="30"
-                />
-              </div>
+            {/* 무료 라르 - 매일 */}
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-green-400">무료(일)</label>
+              <Input
+                type="number"
+                value={settings.dailyFreeRar || ""}
+                onChange={(e) =>
+                  update("dailyFreeRar", Math.max(0, parseInt(e.target.value) || 0))
+                }
+                className="text-center h-8 text-sm"
+                min={0}
+                placeholder="0"
+              />
+            </div>
+
+            {/* 무료 라르 - 주간 */}
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-green-400">무료(주)</label>
+              <Input
+                type="number"
+                value={settings.weeklyFreeRar || ""}
+                onChange={(e) =>
+                  update("weeklyFreeRar", Math.max(0, parseInt(e.target.value) || 0))
+                }
+                className="text-center h-8 text-sm"
+                min={0}
+                placeholder="0"
+              />
+            </div>
+
+            {/* 목표 기간 */}
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-green-400">목표(일)</label>
+              <Input
+                type="number"
+                value={settings.targetDays || ""}
+                onChange={(e) =>
+                  update("targetDays", Math.max(0, parseInt(e.target.value) || 0))
+                }
+                className="text-center h-8 text-sm"
+                min={0}
+                placeholder="30"
+              />
             </div>
           </div>
         </CardContent>
