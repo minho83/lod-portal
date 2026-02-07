@@ -58,7 +58,8 @@ const LOCATION_ICONS: Record<string, LucideIcon> = {
   광: Gem,
 }
 
-function getLocationIcon(location: string): LucideIcon {
+function getLocationIcon(location: string | null): LucideIcon {
+  if (!location) return MapPin
   for (const [key, icon] of Object.entries(LOCATION_ICONS)) {
     if (location.includes(key)) return icon
   }
@@ -283,10 +284,12 @@ function PartyCard({ party }: { party: Party }) {
           <div className="flex items-center gap-2">
             <LocationIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
             <div>
-              <CardTitle className="text-sm">{party.party_name}</CardTitle>
-              <span className="text-xs text-muted-foreground">
-                {party.location}
-              </span>
+              <CardTitle className="text-sm">{party.party_name || party.organizer}</CardTitle>
+              {party.location && (
+                <span className="text-xs text-muted-foreground">
+                  {party.location}
+                </span>
+              )}
             </div>
           </div>
           {hasVacancy ? (

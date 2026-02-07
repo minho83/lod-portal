@@ -10,8 +10,8 @@ export interface PartyVacancies {
 }
 
 export interface Party {
-  location: string
-  party_name: string
+  location: string | null
+  party_name: string | null
   organizer: string
   sender_name: string
   time_slot: string
