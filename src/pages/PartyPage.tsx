@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import {
   Card,
   CardContent,
@@ -8,8 +8,9 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ClassBadge, JOB_CONFIG } from "@/components/game/ClassBadge"
+import { JOB_CONFIG } from "@/components/game/ClassBadge"
 import { cn } from "@/lib/utils"
 import { usePartyData } from "@/hooks/usePartyData"
 import type { JobClass, Party } from "@/types"
@@ -17,7 +18,6 @@ import {
   ChevronLeft,
   ChevronRight,
   RefreshCw,
-  Users,
   AlertCircle,
   Inbox,
   Castle,
@@ -30,6 +30,11 @@ import {
   MapPin,
   Clock,
   User,
+  Copy,
+  Check,
+  ClipboardCopy,
+  Search,
+  X,
   type LucideIcon,
 } from "lucide-react"
 
@@ -38,15 +43,6 @@ import {
 // ---------------------------------------------------------------------------
 
 const JOB_CLASSES: JobClass[] = ["warrior", "rogue", "mage", "cleric", "taoist"]
-
-const JOB_FILTER_OPTIONS: { value: JobClass | "all"; label: string }[] = [
-  { value: "all", label: "전체" },
-  { value: "warrior", label: "전사" },
-  { value: "rogue", label: "도적" },
-  { value: "mage", label: "법사" },
-  { value: "cleric", label: "직자" },
-  { value: "taoist", label: "도가" },
-]
 
 const LOCATION_ICONS: Record<string, LucideIcon> = {
   성: Castle,
@@ -57,6 +53,24 @@ const LOCATION_ICONS: Record<string, LucideIcon> = {
   탑: TowerControl,
   광: Gem,
 }
+
+const BLANK_TEMPLATE = [
+  "★장소 파티명★",
+  "#데빌 조건입력",
+  "#도적 조건입력",
+  "#도가 조건입력",
+  "#법사 조건입력",
+  "#직자 조건입력",
+  "",
+  "날짜(요일) #00:00~00:00 (장소)",
+  "전사 : [][]",
+  "도적 : [][]",
+  "도가 : [][]",
+  "법사 : [][]",
+  "직자 : [][][]",
+  "",
+  "@아이디",
+].join("\n")
 
 function getLocationIcon(location: string | null): LucideIcon {
   if (!location) return MapPin
@@ -85,6 +99,68 @@ function timeAgo(dateStr: string): string {
   if (diffHour < 24) return `${diffHour}시간 전`
   const diffDay = Math.floor(diffHour / 24)
   return `${diffDay}일 전`
+}
+
+// ---------------------------------------------------------------------------
+// Copy helper
+// ---------------------------------------------------------------------------
+
+async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text)
+    return true
+  } catch {
+    const ta = document.createElement("textarea")
+    ta.value = text
+    ta.style.cssText = "position:fixed;opacity:0"
+    document.body.appendChild(ta)
+    ta.select()
+    document.execCommand("copy")
+    document.body.removeChild(ta)
+    return true
+  }
+}
+
+function generatePartyTemplate(party: Party, currentDate: Date): string {
+  const loc = party.location || ""
+  const time = party.time_slot || ""
+
+  const month = currentDate.getMonth() + 1
+  const day = currentDate.getDate()
+  const dayNames = ["일", "월", "화", "수", "목", "금", "토"]
+  const dateStr = `${month}/${day}(${dayNames[currentDate.getDay()]})`
+
+  const lines: string[] = []
+
+  const titleParts = [loc, party.party_name].filter(Boolean).join(" ")
+  if (titleParts) lines.push(`★${titleParts}★`)
+
+  const reqs = party.requirements || {}
+  if (Object.keys(reqs).length > 0) {
+    for (const [job, req] of Object.entries(reqs)) {
+      lines.push(`#${job} ${req}`)
+    }
+  }
+
+  if (lines.length > 0) lines.push("")
+  const timePart = time ? ` #${time}` : ""
+  const locPart = loc ? ` (${loc})` : ""
+  lines.push(`${dateStr}${timePart}${locPart}`)
+
+  for (const job of JOB_CLASSES) {
+    const slots = party[`${job}_slots`] as string[]
+    if (!slots || slots.length === 0) continue
+    const jobKr = JOB_CONFIG[job].kr
+    const slotStr = slots.map((s) => (s === "" ? "[]" : `[${s}]`)).join("")
+    lines.push(`${jobKr} : ${slotStr}`)
+  }
+
+  const organizer =
+    party.organizer || (party.sender_name ? party.sender_name.split("/")[0] : "")
+  lines.push("")
+  lines.push(`@${organizer || "아이디"}`)
+
+  return lines.join("\n")
 }
 
 // ---------------------------------------------------------------------------
@@ -122,85 +198,39 @@ function DateNav({
   )
 }
 
-function FilterChips<T extends string>({
-  options,
-  value,
-  onChange,
+function CopyButton({
+  text,
+  label,
+  copiedLabel,
+  variant = "outline",
+  size = "xs",
+  className,
+  icon: Icon = Copy,
 }: {
-  options: { value: T; label: string }[]
-  value: T
-  onChange: (v: T) => void
+  text: string
+  label: string
+  copiedLabel?: string
+  variant?: "outline" | "secondary" | "default"
+  size?: "xs" | "sm"
+  className?: string
+  icon?: LucideIcon
 }) {
+  const [copied, setCopied] = useState(false)
+  const handleCopy = async () => {
+    await copyToClipboard(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
   return (
-    <div className="flex flex-wrap gap-1.5">
-      {options.map((opt) => (
-        <Button
-          key={opt.value}
-          variant={value === opt.value ? "default" : "outline"}
-          size="xs"
-          onClick={() => onChange(opt.value)}
-        >
-          {opt.label}
-        </Button>
-      ))}
-    </div>
-  )
-}
-
-function StatsBar({ parties }: { parties: Party[] }) {
-  const stats = useMemo(() => {
-    const vacantParties = parties.filter((p) => !p.is_complete)
-    const totalVacancies = vacantParties.reduce(
-      (sum, p) => sum + p.vacancies.total,
-      0,
-    )
-    const perClass = JOB_CLASSES.reduce(
-      (acc, job) => {
-        acc[job] = vacantParties.reduce(
-          (sum, p) => sum + p.vacancies[job],
-          0,
-        )
-        return acc
-      },
-      {} as Record<JobClass, number>,
-    )
-
-    return {
-      total: parties.length,
-      vacant: vacantParties.length,
-      totalVacancies,
-      perClass,
-    }
-  }, [parties])
-
-  return (
-    <Card>
-      <CardContent className="p-4">
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-1.5">
-            <Users className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">전체</span>
-            <span className="text-sm font-semibold">{stats.total}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-sm text-warning">빈자리</span>
-            <span className="text-sm font-semibold">{stats.vacant}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-sm text-muted-foreground">총 공석</span>
-            <span className="text-sm font-semibold">{stats.totalVacancies}</span>
-          </div>
-          <div className="hidden h-4 w-px bg-border sm:block" />
-          <div className="flex flex-wrap items-center gap-2">
-            {JOB_CLASSES.map((job) =>
-              stats.perClass[job] > 0 ? (
-                <ClassBadge key={job} job={job} count={stats.perClass[job]} />
-              ) : null,
-            )}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <Button
+      variant={copied ? "default" : variant}
+      size={size}
+      onClick={handleCopy}
+      className={cn(copied && "bg-success text-success-foreground hover:bg-success", className)}
+    >
+      {copied ? <Check className="h-3 w-3" /> : <Icon className="h-3 w-3" />}
+      {copied ? (copiedLabel ?? "복사됨!") : label}
+    </Button>
   )
 }
 
@@ -208,15 +238,18 @@ function SlotRow({
   job,
   slots,
   vacancyCount,
+  searchName,
 }: {
   job: JobClass
   slots: string[]
   vacancyCount: number
+  searchName: string
 }) {
   if (slots.length === 0 && vacancyCount === 0) return null
 
   const config = JOB_CONFIG[job]
   const totalSlots = slots.length + vacancyCount
+  const search = searchName.toLowerCase()
 
   return (
     <div className="flex items-start gap-2">
@@ -229,18 +262,28 @@ function SlotRow({
         {config.kr}
       </span>
       <div className="flex flex-wrap gap-1">
-        {slots.map((name, i) => (
-          <Badge key={`${job}-filled-${i}`} variant="secondary" className="text-xs">
-            {name}
-          </Badge>
-        ))}
+        {slots.map((name, i) => {
+          const isMySlot = search && name.toLowerCase().includes(search)
+          return (
+            <Badge
+              key={`${job}-filled-${i}`}
+              variant="secondary"
+              className={cn(
+                "text-xs",
+                isMySlot && "border-primary bg-primary/20 font-bold text-primary",
+              )}
+            >
+              {name}
+            </Badge>
+          )
+        })}
         {Array.from({ length: vacancyCount }).map((_, i) => (
           <Badge
             key={`${job}-empty-${i}`}
             variant="outline"
             className={cn("border-dashed text-xs", config.textClass)}
           >
-            공석
+            모집중
           </Badge>
         ))}
         <span className="ml-1 self-center text-xs text-muted-foreground">
@@ -273,18 +316,54 @@ function RequirementsSection({
   )
 }
 
-function PartyCard({ party }: { party: Party }) {
+function PartyCard({
+  party,
+  searchName,
+  currentDate,
+}: {
+  party: Party
+  searchName: string
+  currentDate: Date
+}) {
   const LocationIcon = getLocationIcon(party.location)
   const hasVacancy = !party.is_complete
+  const search = searchName.toLowerCase()
+
+  const isMyParty = useMemo(() => {
+    if (!search) return false
+    return JOB_CLASSES.some((job) => {
+      const slots = party[`${job}_slots`] as string[]
+      return slots?.some((s) => s && s.toLowerCase().includes(search))
+    })
+  }, [party, search])
+
+  const templateText = useMemo(
+    () => generatePartyTemplate(party, currentDate),
+    [party, currentDate],
+  )
 
   return (
-    <Card className={cn(party.is_complete && "opacity-50")}>
+    <Card
+      className={cn(
+        party.is_complete && "opacity-50",
+        isMyParty && "border-primary shadow-[0_0_0_1px_var(--color-primary)]",
+      )}
+    >
       <CardHeader className="p-4 pb-0">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
             <LocationIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
             <div>
-              <CardTitle className="text-sm">{party.party_name || party.organizer}</CardTitle>
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm">
+                  {party.party_name || party.organizer}
+                </CardTitle>
+                {isMyParty && (
+                  <Badge variant="outline" className="text-primary text-[10px] px-1.5 py-0">
+                    참여중
+                  </Badge>
+                )}
+              </div>
               {party.location && (
                 <span className="text-xs text-muted-foreground">
                   {party.location}
@@ -321,7 +400,16 @@ function PartyCard({ party }: { party: Party }) {
           <div className="flex flex-wrap gap-1.5">
             {JOB_CLASSES.map((job) =>
               party.vacancies[job] > 0 ? (
-                <ClassBadge key={job} job={job} count={party.vacancies[job]} />
+                <Badge
+                  key={job}
+                  className={cn(
+                    "text-xs",
+                    JOB_CONFIG[job].bgClass,
+                    JOB_CONFIG[job].textClass,
+                  )}
+                >
+                  {JOB_CONFIG[job].kr} {party.vacancies[job]}자리
+                </Badge>
               ) : null,
             )}
           </div>
@@ -335,12 +423,27 @@ function PartyCard({ party }: { party: Party }) {
               job={job}
               slots={party[`${job}_slots` as keyof Party] as string[]}
               vacancyCount={party.vacancies[job]}
+              searchName={searchName}
             />
           ))}
         </div>
 
         {/* Requirements */}
         <RequirementsSection requirements={party.requirements} />
+
+        {/* Copy button */}
+        <div className="flex items-center gap-2 border-t border-border pt-3">
+          <CopyButton
+            text={templateText}
+            label="구인글 복사"
+            icon={ClipboardCopy}
+            variant="outline"
+            size="xs"
+          />
+          <span className="text-[11px] text-muted-foreground opacity-60">
+            카카오톡에 붙여넣기
+          </span>
+        </div>
       </CardContent>
     </Card>
   )
@@ -349,22 +452,35 @@ function PartyCard({ party }: { party: Party }) {
 function TimeSlotGroup({
   timeSlot,
   parties,
+  searchName,
+  currentDate,
 }: {
   timeSlot: string
   parties: Party[]
+  searchName: string
+  currentDate: Date
 }) {
+  const vacantCount = parties.filter((p) => (p.vacancies?.total || 0) > 0).length
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Clock className="h-4 w-4 text-muted-foreground" />
-        <h3 className="text-sm font-semibold">{timeSlot}</h3>
-        <Badge variant="secondary" className="text-xs">
-          {parties.length}
+      <div className="flex items-center gap-3 border-b border-border pb-2">
+        <Badge className="bg-gradient-to-r from-primary to-purple-500 text-sm font-bold text-white">
+          {timeSlot}
         </Badge>
+        <span className="text-sm text-muted-foreground">
+          {parties.length}개 파티
+          {vacantCount > 0 && ` · ${vacantCount}개 빈자리`}
+        </span>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {parties.map((party, idx) => (
-          <PartyCard key={`${party.party_name}-${party.organizer}-${idx}`} party={party} />
+          <PartyCard
+            key={`${party.party_name}-${party.organizer}-${idx}`}
+            party={party}
+            searchName={searchName}
+            currentDate={currentDate}
+          />
         ))}
       </div>
     </div>
@@ -401,15 +517,17 @@ function LoadingSkeleton() {
   )
 }
 
-function EmptyState() {
+function EmptyState({ searchName }: { searchName: string }) {
+  const message = searchName
+    ? `"${searchName}" 님이 참여중인 파티가 없습니다.`
+    : "조건에 맞는 파티가 없습니다."
+
   return (
     <Card>
       <CardContent className="flex flex-col items-center justify-center py-16">
         <Inbox className="mb-4 h-12 w-12 text-muted-foreground/30" />
-        <h3 className="text-lg font-semibold">빈자리 없음</h3>
-        <p className="text-sm text-muted-foreground">
-          조건에 맞는 파티가 없습니다.
-        </p>
+        <h3 className="text-lg font-semibold">파티 없음</h3>
+        <p className="text-sm text-muted-foreground">{message}</p>
       </CardContent>
     </Card>
   )
@@ -455,31 +573,64 @@ export function PartyPage() {
     setIncludeComplete,
     changeDate,
     retry,
+    currentDate,
   } = usePartyData()
 
-  const [jobFilter, setJobFilter] = useState<JobClass | "all">("all")
-  const [timeSlotFilter, setTimeSlotFilter] = useState("all")
+  const [jobFilter, setJobFilter] = useState<JobClass | "">("")
+  const [timeSlotFilter, setTimeSlotFilter] = useState("")
+  const [searchName, setSearchName] = useState(
+    () => localStorage.getItem("myCharName") || "",
+  )
+  const [activeSearch, setActiveSearch] = useState(
+    () => localStorage.getItem("myCharName") || "",
+  )
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
-  // Derive time slot options from data
-  const timeSlotOptions = useMemo(() => {
-    const slots = Array.from(new Set(allParties.map((p) => p.time_slot)))
-      .sort()
-      .map((slot) => ({ value: slot, label: slot }))
-    return [{ value: "all", label: "전체" }, ...slots]
+  // Job filter options with counts
+  const jobFilterOptions = useMemo(() => {
+    const totalVacant = allParties.filter((p) => (p.vacancies?.total || 0) > 0).length
+    const options: { value: string; label: string }[] = [
+      { value: "", label: `전체 (${totalVacant})` },
+    ]
+    for (const job of JOB_CLASSES) {
+      const count = allParties.reduce((sum, p) => sum + (p.vacancies?.[job] || 0), 0)
+      const countStr = count > 0 ? ` (${count})` : ""
+      options.push({ value: job, label: `${JOB_CONFIG[job].kr}${countStr}` })
+    }
+    return options
   }, [allParties])
 
-  // Reset time slot filter when parties change
+  // Time slot options with counts
+  const timeSlotOptions = useMemo(() => {
+    const slots = Array.from(new Set(allParties.map((p) => p.time_slot))).sort()
+    const options: { value: string; label: string }[] = [
+      { value: "", label: "전체 시간" },
+    ]
+    for (const t of slots) {
+      const timeParties = allParties.filter((p) => p.time_slot === t)
+      const vacantCount = timeParties.reduce((sum, p) => sum + (p.vacancies?.total || 0), 0)
+      const countStr = vacantCount > 0 ? ` (${vacantCount})` : ""
+      options.push({ value: t, label: `${t}${countStr}` })
+    }
+    return options
+  }, [allParties])
+
+  // Filter
   const filteredParties = useMemo(() => {
     return allParties.filter((party) => {
-      if (jobFilter !== "all" && party.vacancies[jobFilter] <= 0) {
-        return false
-      }
-      if (timeSlotFilter !== "all" && party.time_slot !== timeSlotFilter) {
-        return false
+      if (jobFilter && party.vacancies[jobFilter as JobClass] <= 0) return false
+      if (timeSlotFilter && party.time_slot !== timeSlotFilter) return false
+      if (activeSearch) {
+        const name = activeSearch.toLowerCase()
+        const found = JOB_CLASSES.some((job) => {
+          const slots = party[`${job}_slots`] as string[]
+          return slots?.some((s) => s && s.toLowerCase().includes(name))
+        })
+        if (!found) return false
       }
       return true
     })
-  }, [allParties, jobFilter, timeSlotFilter])
+  }, [allParties, jobFilter, timeSlotFilter, activeSearch])
 
   // Group by time slot
   const groupedByTimeSlot = useMemo(() => {
@@ -492,13 +643,35 @@ export function PartyPage() {
     return Object.entries(groups).sort(([a], [b]) => a.localeCompare(b))
   }, [filteredParties])
 
+  const handleSearch = useCallback(() => {
+    const name = searchName.trim()
+    if (!name) return
+    setActiveSearch(name)
+    localStorage.setItem("myCharName", name)
+  }, [searchName])
+
+  const handleClearSearch = useCallback(() => {
+    setSearchName("")
+    setActiveSearch("")
+    localStorage.removeItem("myCharName")
+    searchInputRef.current?.focus()
+  }, [])
+
+  // Enter key on search input
+  const handleSearchKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") handleSearch()
+    },
+    [handleSearch],
+  )
+
   return (
     <div className="space-y-6">
       {/* Controls bar */}
       <Card>
-        <CardContent className="space-y-4 p-4">
-          {/* Top row: date nav + refresh countdown + complete toggle */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
+        <CardContent className="space-y-3 p-4">
+          {/* Top row: date nav + refresh + complete toggle */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <DateNav
               dateDisplay={dateDisplay}
               isToday={isToday}
@@ -517,43 +690,74 @@ export function PartyPage() {
                     setIncludeComplete(checked === true)
                   }
                 />
-                <span className="text-sm">완비 포함</span>
+                <span className="text-sm">완비</span>
               </label>
             </div>
           </div>
 
-          {/* Job filter */}
-          <div className="space-y-1.5">
-            <span className="text-xs font-medium text-muted-foreground">
-              직업 필터
-            </span>
-            <FilterChips
-              options={JOB_FILTER_OPTIONS}
+          {/* Filter row: dropdowns + search + template */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[11px] font-semibold text-muted-foreground">직업</span>
+            <select
+              className="h-8 rounded-lg border border-border bg-background px-2 text-sm outline-none transition-colors hover:border-primary focus:border-primary"
               value={jobFilter}
-              onChange={setJobFilter}
+              onChange={(e) => setJobFilter(e.target.value as JobClass | "")}
+            >
+              {jobFilterOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+
+            <span className="text-[11px] font-semibold text-muted-foreground">시간</span>
+            <select
+              className="h-8 rounded-lg border border-border bg-background px-2 text-sm outline-none transition-colors hover:border-primary focus:border-primary"
+              value={timeSlotFilter}
+              onChange={(e) => setTimeSlotFilter(e.target.value)}
+            >
+              {timeSlotOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+
+            <div className="flex-1" />
+
+            {/* My party search */}
+            <div className="flex items-center gap-1">
+              <Input
+                ref={searchInputRef}
+                className="h-8 w-24 text-xs sm:w-28"
+                placeholder="캐릭터명"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+              />
+              <Button size="xs" onClick={handleSearch}>
+                <Search className="h-3 w-3" />
+                내파티
+              </Button>
+              {activeSearch && (
+                <Button size="icon-xs" variant="ghost" onClick={handleClearSearch}>
+                  <X className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+
+            {/* Blank template copy */}
+            <CopyButton
+              text={BLANK_TEMPLATE}
+              label="기본양식"
+              icon={Copy}
+              variant="default"
+              size="xs"
+              className="bg-gradient-to-r from-primary to-purple-500 text-white hover:opacity-90"
             />
           </div>
-
-          {/* Time slot filter */}
-          {timeSlotOptions.length > 1 && (
-            <div className="space-y-1.5">
-              <span className="text-xs font-medium text-muted-foreground">
-                시간대 필터
-              </span>
-              <FilterChips
-                options={timeSlotOptions}
-                value={timeSlotFilter}
-                onChange={setTimeSlotFilter}
-              />
-            </div>
-          )}
         </CardContent>
       </Card>
-
-      {/* Stats bar */}
-      {!loading && !error && filteredParties.length > 0 && (
-        <StatsBar parties={filteredParties} />
-      )}
 
       {/* Content area */}
       {loading ? (
@@ -561,7 +765,7 @@ export function PartyPage() {
       ) : error ? (
         <ErrorState message={error} onRetry={retry} />
       ) : filteredParties.length === 0 ? (
-        <EmptyState />
+        <EmptyState searchName={activeSearch} />
       ) : (
         <div className="space-y-6">
           {groupedByTimeSlot.map(([timeSlot, parties]) => (
@@ -569,6 +773,8 @@ export function PartyPage() {
               key={timeSlot}
               timeSlot={timeSlot}
               parties={parties}
+              searchName={activeSearch}
+              currentDate={currentDate}
             />
           ))}
         </div>
