@@ -73,3 +73,60 @@ export interface DansuEntry {
   dansu: number
   exp: number
 }
+
+export interface UserProfile {
+  id: string
+  discord_id: string
+  discord_username: string
+  discord_avatar: string | null
+  game_nickname: string | null
+  game_class: JobClass | null
+  created_at: string
+  updated_at: string
+}
+
+// 거래소
+export type TradeType = "buy" | "sell"
+export type TradeStatus = "active" | "reserved" | "sold" | "expired" | "cancelled"
+
+export const TRADE_CATEGORIES = ["무기", "방어구", "장신구", "소비", "재료", "기타"] as const
+export type TradeCategory = (typeof TRADE_CATEGORIES)[number]
+
+export interface TradeItem {
+  item_name: string
+  item_category: TradeCategory
+  price: number
+  quantity: number
+}
+
+export interface Trade {
+  id: string
+  seller_id: string
+  trade_type: TradeType
+  item_name: string
+  item_category: TradeCategory
+  item_description: string | null
+  price: number
+  price_unit: string
+  quantity: number
+  is_negotiable: boolean
+  status: TradeStatus
+  buyer_id: string | null
+  items: TradeItem[] | null
+  created_at: string
+  updated_at: string
+  expires_at: string
+  // joined
+  seller?: UserProfile
+}
+
+export interface MarketPrice {
+  item_name: string
+  item_category: string
+  median_price: number
+  avg_price: number
+  min_price: number
+  max_price: number
+  trade_count: number
+  window_days: number
+}
