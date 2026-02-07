@@ -8,12 +8,12 @@ import { cn } from "@/lib/utils"
 import {
   Search,
   Loader2,
-  AlertCircle,
   Inbox,
   Sword,
   Sparkles,
   BookOpen,
 } from "lucide-react"
+import { ErrorState } from "@/components/game/ErrorState"
 import { searchDatabase } from "@/lib/api"
 import type { SearchResult } from "@/types"
 
@@ -90,26 +90,6 @@ function NoResults({ query }: { query: string }) {
         <p className="mt-1 text-xs text-muted-foreground/70">
           다른 검색어를 시도해보세요
         </p>
-      </CardContent>
-    </Card>
-  )
-}
-
-function ErrorState({
-  message,
-  onRetry,
-}: {
-  message: string
-  onRetry: () => void
-}) {
-  return (
-    <Card className="border-destructive/30">
-      <CardContent className="flex flex-col items-center justify-center py-16">
-        <AlertCircle className="mb-4 h-12 w-12 text-destructive/50" />
-        <p className="text-sm font-medium text-destructive">{message}</p>
-        <Button variant="outline" size="sm" className="mt-4" onClick={onRetry}>
-          다시 시도
-        </Button>
       </CardContent>
     </Card>
   )
@@ -223,26 +203,31 @@ export function SearchPage() {
   const [error, setError] = useState<string | null>(null)
   const [hasSearched, setHasSearched] = useState(false)
 
+  const performSearch = useCallback(
+    async (searchQuery: string, searchCategory: CategoryKey) => {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const data = await searchDatabase(searchQuery, searchCategory)
+        setResults(data.results)
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "검색 중 오류가 발생했습니다"
+        setError(message)
+        setResults([])
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [],
+  )
+
   const handleSearch = useCallback(async () => {
     const trimmed = query.trim()
     if (!trimmed) return
-
-    setIsLoading(true)
-    setError(null)
     setHasSearched(true)
-
-    try {
-      const data = await searchDatabase(trimmed, category)
-      setResults(data.results)
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "검색 중 오류가 발생했습니다"
-      setError(message)
-      setResults([])
-    } finally {
-      setIsLoading(false)
-    }
-  }, [query, category])
+    performSearch(trimmed, category)
+  }, [query, category, performSearch])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -257,25 +242,10 @@ export function SearchPage() {
     (newCategory: CategoryKey) => {
       setCategory(newCategory)
       if (hasSearched && query.trim()) {
-        // Re-search with new category after state update
-        setTimeout(async () => {
-          setIsLoading(true)
-          setError(null)
-          try {
-            const data = await searchDatabase(query.trim(), newCategory)
-            setResults(data.results)
-          } catch (err) {
-            const message =
-              err instanceof Error ? err.message : "검색 중 오류가 발생했습니다"
-            setError(message)
-            setResults([])
-          } finally {
-            setIsLoading(false)
-          }
-        }, 0)
+        performSearch(query.trim(), newCategory)
       }
     },
-    [hasSearched, query],
+    [hasSearched, query, performSearch],
   )
 
   return (

@@ -18,6 +18,13 @@
 5. API 호출은 `src/lib/api.ts`에 집중
 6. 타입은 `src/types/index.ts`에 정의
 
+## Supabase 연동
+- DB 작업(테이블 생성, 마이그레이션, SQL 실행)은 반드시 **Supabase MCP 서버**를 통해 실행
+- MCP 설정: `.mcp.json` (프로젝트 루트)
+- Project ref: `wjismpfswlqpkrjatlqe`
+- MCP 서버 연결 안 되어 있으면 사용자에게 연결 확인 요청할 것
+- 스키마 변경 후 `NOTIFY pgrst, 'reload schema';` 실행 필수
+
 ## 게임 클래스 색상
 - 전사: `text-warrior` / `bg-warrior-bg`
 - 도적: `text-rogue` / `bg-rogue-bg`

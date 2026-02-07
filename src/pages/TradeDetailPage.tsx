@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/contexts/AuthContext"
 import { fetchTradeById, updateTradeStatus, fetchMarketPrices } from "@/lib/trades"
+import { TradeBadge } from "@/components/game/TradeBadge"
 import { formatPrice, formatPriceDelta, timeAgo } from "@/lib/utils"
 import type { Trade, TradeStatus, MarketPrice } from "@/types"
 
@@ -115,12 +116,7 @@ export function TradeDetailPage() {
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center gap-2">
-            <Badge
-              variant={isBuy ? "outline" : "default"}
-              className={isBuy ? "border-violet-500/50 text-violet-400" : "bg-emerald-600 text-white"}
-            >
-              {isBuy ? "삽니다" : "팝니다"}
-            </Badge>
+            <TradeBadge tradeType={trade.trade_type} />
             {isBundle ? (
               <Badge variant="secondary">
                 <Layers className="mr-1 h-3 w-3" />

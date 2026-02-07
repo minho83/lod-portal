@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { LogIn, Save } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -27,11 +27,13 @@ export function ProfilePage() {
   const [initialized, setInitialized] = useState(false)
 
   // profile이 로드되면 폼 초기화
-  if (profile && !initialized) {
-    setNickname(profile.game_nickname ?? "")
-    setGameClass(profile.game_class ?? "")
-    setInitialized(true)
-  }
+  useEffect(() => {
+    if (profile && !initialized) {
+      setNickname(profile.game_nickname ?? "")
+      setGameClass(profile.game_class ?? "")
+      setInitialized(true)
+    }
+  }, [profile, initialized])
 
   if (loading) {
     return (

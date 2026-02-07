@@ -9,6 +9,9 @@ import { ProfilePage } from "@/pages/ProfilePage"
 import { MarketPage } from "@/pages/MarketPage"
 import { NewTradePage } from "@/pages/NewTradePage"
 import { TradeDetailPage } from "@/pages/TradeDetailPage"
+import { RecruitListPage } from "@/pages/RecruitListPage"
+import { NewRecruitPage } from "@/pages/NewRecruitPage"
+import { RecruitDetailPage } from "@/pages/RecruitDetailPage"
 
 export default function App() {
   return (
@@ -21,6 +24,9 @@ export default function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/wiki" element={<WikiPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/recruit" element={<RecruitListPage />} />
+            <Route path="/recruit/new" element={<NewRecruitPage />} />
+            <Route path="/recruit/:id" element={<RecruitDetailPage />} />
             <Route path="/market" element={<MarketPage />} />
             <Route path="/market/new" element={<NewTradePage />} />
             <Route path="/market/:id" element={<TradeDetailPage />} />

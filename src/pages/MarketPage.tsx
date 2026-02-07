@@ -1,10 +1,9 @@
 import { useEffect, useState, useCallback } from "react"
 import { Link } from "react-router-dom"
-import { Search, Plus, Package, Handshake, Tag, ShoppingCart, Store, BarChart3, Layers } from "lucide-react"
+import { Search, Plus, Package, ShoppingCart, Store } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -16,7 +15,10 @@ import {
 } from "@/components/ui/select"
 import { useAuth } from "@/contexts/AuthContext"
 import { fetchTrades, fetchMarketPriceMap, extractItemNames, PAGE_SIZE, type TradeFilters } from "@/lib/trades"
-import { formatPrice, formatPriceDelta, timeAgo } from "@/lib/utils"
+import { EmptyState } from "@/components/game/EmptyState"
+import { Pagination } from "@/components/game/Pagination"
+import { PriceSummaryPanel } from "@/components/game/trade/PriceSummaryPanel"
+import { TradeCard } from "@/components/game/trade/TradeCard"
 import type { Trade, TradeCategory, TradeType, MarketPrice } from "@/types"
 import { TRADE_CATEGORIES } from "@/types"
 
@@ -164,12 +166,7 @@ export function MarketPage() {
           ))}
         </div>
       ) : trades.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
-            <Package className="h-10 w-10" />
-            <p>등록된 매물이 없습니다</p>
-          </CardContent>
-        </Card>
+        <EmptyState icon={Package} title="등록된 매물이 없습니다" />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {trades.map((trade) => (
@@ -179,194 +176,8 @@ export function MarketPage() {
       )}
 
       {/* 페이지네이션 */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page <= 1}
-            onClick={() => setPage(page - 1)}
-          >
-            이전
-          </Button>
-          <span className="text-sm text-muted-foreground">
-            {page} / {totalPages}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page >= totalPages}
-            onClick={() => setPage(page + 1)}
-          >
-            다음
-          </Button>
-        </div>
-      )}
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   )
 }
 
-/* ─── 시세 요약 패널 ─── */
-
-function PriceSummaryPanel({ prices }: { prices: MarketPrice[] }) {
-  return (
-    <Card className="border-primary/20 bg-primary/5">
-      <CardContent className="space-y-3 p-4">
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <BarChart3 className="h-4 w-4 text-primary" />
-          시세 정보
-        </div>
-        <div className="space-y-2">
-          {prices.map((p) => (
-            <div key={p.item_name} className="rounded-md bg-card/50 p-3">
-              <div className="mb-1.5 flex items-center justify-between">
-                <span className="text-sm font-semibold">{p.item_name}</span>
-                <span className="text-xs text-muted-foreground">
-                  {p.trade_count}건 / {p.window_days}일
-                </span>
-              </div>
-              <div className="grid grid-cols-4 gap-2 text-center text-xs">
-                <div>
-                  <p className="text-muted-foreground">중위가</p>
-                  <p className="font-semibold text-primary">{formatPrice(p.median_price)}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">평균가</p>
-                  <p className="font-medium">{formatPrice(p.avg_price)}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">최저가</p>
-                  <p className="font-medium text-green-400">{formatPrice(p.min_price)}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">최고가</p>
-                  <p className="font-medium text-red-400">{formatPrice(p.max_price)}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-/* ─── 거래 카드 ─── */
-
-function TradeCard({ trade, priceMap }: { trade: Trade; priceMap: Map<string, MarketPrice> }) {
-  const sellerName =
-    trade.seller?.game_nickname ?? trade.seller?.discord_username ?? "알 수 없음"
-  const isBundle = trade.items && trade.items.length > 0
-
-  // 단일 아이템 시세
-  const singlePrice = !isBundle ? priceMap.get(trade.item_name) : undefined
-  const singleDelta = singlePrice ? formatPriceDelta(trade.price, singlePrice.median_price) : null
-
-  return (
-    <Link to={`/market/${trade.id}`}>
-      <Card className="transition-colors hover:border-primary/50">
-        <CardContent className="space-y-3 p-4">
-          {/* 상단: 거래유형 + 카테고리/묶음 + 협상 */}
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge
-              variant={trade.trade_type === "buy" ? "outline" : "default"}
-              className={trade.trade_type === "buy" ? "border-violet-500/50 text-violet-400" : "bg-emerald-600 text-white"}
-            >
-              {trade.trade_type === "buy" ? "삽니다" : "팝니다"}
-            </Badge>
-            {isBundle ? (
-              <Badge variant="secondary">
-                <Layers className="mr-1 h-3 w-3" />
-                묶음 {trade.items!.length}건
-              </Badge>
-            ) : (
-              <Badge variant="secondary">{trade.item_category}</Badge>
-            )}
-            {trade.is_negotiable && (
-              <Badge variant="outline" className="text-xs">
-                <Handshake className="mr-1 h-3 w-3" />
-                협상가능
-              </Badge>
-            )}
-            {!isBundle && trade.quantity > 1 && (
-              <Badge variant="outline" className="text-xs">
-                x{trade.quantity}
-              </Badge>
-            )}
-          </div>
-
-          {isBundle ? (
-            <>
-              {/* 묶음: 아이템 목록 */}
-              <h3 className="text-base font-semibold">{trade.item_name}</h3>
-              <div className="space-y-1 rounded-md bg-muted/30 p-2">
-                {trade.items!.slice(0, 3).map((item, i) => {
-                  const mp = priceMap.get(item.item_name)
-                  const delta = mp ? formatPriceDelta(item.price, mp.median_price) : null
-                  return (
-                    <div key={i} className="flex items-center justify-between text-xs">
-                      <span className="truncate">
-                        <span className="text-muted-foreground">{item.item_category}</span>
-                        {" "}
-                        {item.item_name}
-                        {item.quantity > 1 && <span className="text-muted-foreground"> x{item.quantity}</span>}
-                      </span>
-                      <span className="ml-2 flex shrink-0 items-center gap-1">
-                        <span className="font-medium text-primary">{formatPrice(item.price)}</span>
-                        {delta?.text && <span className={delta.color}>{delta.text}</span>}
-                      </span>
-                    </div>
-                  )
-                })}
-                {trade.items!.length > 3 && (
-                  <p className="text-xs text-muted-foreground">외 {trade.items!.length - 3}건...</p>
-                )}
-              </div>
-              {/* 총 가격 */}
-              <div className="flex items-baseline gap-1.5">
-                <Tag className="h-4 w-4 text-primary" />
-                <span className="text-xs text-muted-foreground">총</span>
-                <span className="text-lg font-bold text-primary">
-                  {formatPrice(trade.price)}
-                </span>
-                <span className="text-xs text-muted-foreground">{trade.price_unit}</span>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* 단일: 아이템명 */}
-              <h3 className="text-base font-semibold">{trade.item_name}</h3>
-
-              {/* 가격 + 시세 */}
-              <div className="flex items-baseline gap-1.5">
-                <Tag className="h-4 w-4 text-primary" />
-                <span className="text-lg font-bold text-primary">
-                  {formatPrice(trade.price)}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {trade.price_unit}
-                </span>
-                {singleDelta?.text && (
-                  <span className={`text-xs ${singleDelta.color}`}>{singleDelta.text}</span>
-                )}
-              </div>
-
-              {/* 시세 참조 */}
-              {singlePrice && (
-                <div className="text-xs text-muted-foreground">
-                  시세 {formatPrice(singlePrice.median_price)} ({singlePrice.trade_count}건, {singlePrice.window_days}일)
-                </div>
-              )}
-            </>
-          )}
-
-          {/* 하단: 판매자 + 시간 */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>{sellerName}</span>
-            <span>{timeAgo(trade.created_at)}</span>
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
-  )
-}

@@ -541,6 +541,27 @@ export function getMaxExpForDansu(dansu: number): number {
   return entry ? entry.maxExp : 0
 }
 
+// ── Binary Search Helper ──
+
+/** 이진탐색 상한값 */
+export const STAT_UPPER_BOUND = 10_000_000
+
+/** startValue부터 이진탐색하여 calcFn(value) >= targetExp인 최소 value 반환 */
+export function findMinStatForExp(
+  startValue: number,
+  calcFn: (value: number) => number,
+  targetExp: number,
+): number {
+  let lo = startValue
+  let hi = STAT_UPPER_BOUND
+  while (lo < hi) {
+    const mid = Math.floor((lo + hi) / 2)
+    if (calcFn(mid) < targetExp) lo = mid + 1
+    else hi = mid
+  }
+  return lo
+}
+
 // ── Formatting Helpers ──
 
 export function formatCash(num: number): string {

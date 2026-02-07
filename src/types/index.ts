@@ -130,3 +130,45 @@ export interface MarketPrice {
   trade_count: number
   window_days: number
 }
+
+// 파티 모집
+export type RecruitJoinMode = "approval" | "first_come"
+export type RecruitStatus = "open" | "full" | "closed" | "cancelled"
+export type MemberRole = "leader" | "member"
+export type MemberStatus = "accepted" | "pending" | "rejected" | "left" | "kicked"
+
+export type JobSlots = Record<JobClass, number>
+
+export interface PartyRecruit {
+  id: string
+  author_id: string
+  title: string
+  description: string | null
+  location: string | null
+  scheduled_at: string | null
+  join_mode: RecruitJoinMode
+  status: RecruitStatus
+  job_slots: JobSlots
+  max_members: number
+  member_count: number
+  created_at: string
+  updated_at: string
+  expires_at: string
+  // joined
+  author?: UserProfile
+  members?: PartyMember[]
+}
+
+export interface PartyMember {
+  id: string
+  recruit_id: string
+  user_id: string
+  role: MemberRole
+  job_class: JobClass
+  status: MemberStatus
+  character_name: string
+  created_at: string
+  updated_at: string
+  // joined
+  user?: UserProfile
+}

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { Swords, Calculator, Search, BookOpen, ShoppingBag, LogIn, LogOut, User } from "lucide-react"
+import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 const navItems = [
   { to: "/", label: "파티 빈자리", icon: Swords },
+  { to: "/recruit", label: "파티 모집", icon: Users },
   { to: "/market", label: "거래소", icon: ShoppingBag },
   { to: "/calculator", label: "라르 계산기", icon: Calculator },
   { to: "/search", label: "DB 검색", icon: Search },
