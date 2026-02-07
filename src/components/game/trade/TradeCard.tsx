@@ -17,8 +17,8 @@ export function TradeCard({ trade, priceMap }: { trade: Trade; priceMap: Map<str
 
   return (
     <Link to={`/market/${trade.id}`}>
-      <Card className="transition-colors hover:border-primary/50 h-full">
-        <CardContent className="space-y-1.5 p-2">
+      <Card className="transition-colors hover:border-primary/50 h-full py-0 gap-0">
+        <CardContent className="space-y-1.5 p-2 px-2">
           {/* 상단: 거래유형 + 카테고리/묶음 + 협상 */}
           <div className="flex flex-wrap items-center gap-1">
             <TradeBadge tradeType={trade.trade_type} />
