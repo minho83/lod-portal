@@ -15,8 +15,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 
 const navItems = [
-  { to: "/", label: "파티 빈자리", icon: Swords },
-  { to: "/recruit", label: "파티 모집", icon: Users },
+  { to: "/", label: "파티 빈자리", sub: "나겔톡방", icon: Swords },
+  { to: "/recruit", label: "파티모집", sub: "LOD Portal", icon: Users },
   { to: "/market", label: "거래소", icon: ShoppingBag },
   { to: "/calculator", label: "라르 계산기", icon: Calculator },
   { to: "/search", label: "DB 검색", icon: Search },
@@ -46,7 +46,7 @@ export function Header() {
 
         {/* 네비게이션 */}
         <nav className="flex items-center gap-1">
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {navItems.map(({ to, label, sub, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
@@ -61,7 +61,12 @@ export function Header() {
               }
             >
               <Icon className="h-4 w-4" />
-              <span className="hidden md:inline">{label}</span>
+              <span className="hidden md:inline">
+                {label}
+                {sub && (
+                  <span className="ml-1 text-[10px] font-normal opacity-60">({sub})</span>
+                )}
+              </span>
             </NavLink>
           ))}
         </nav>

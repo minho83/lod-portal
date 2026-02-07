@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/select"
 import { useAuth } from "@/contexts/AuthContext"
 import { createRecruit } from "@/lib/recruits"
-import { JOB_OPTIONS } from "@/lib/constants"
-import type { JobClass, JobSlots, RecruitJoinMode } from "@/types"
+import { JOB_OPTIONS, RECRUIT_TYPE_CONFIG, RECRUIT_TYPES } from "@/lib/constants"
+import type { JobClass, JobSlots, RecruitJoinMode, RecruitType } from "@/types"
 
 function getDefaultHour(): number {
   const now = new Date()
@@ -27,6 +27,7 @@ export function NewRecruitPage() {
   const { user, profile } = useAuth()
   const navigate = useNavigate()
 
+  const [recruitType, setRecruitType] = useState<RecruitType>("party")
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [location, setLocation] = useState("")
@@ -114,6 +115,7 @@ export function NewRecruitPage() {
           scheduled_at: scheduled.toISOString(),
           join_mode: joinMode,
           job_slots: slots,
+          recruit_type: recruitType,
         },
         leaderJoins
           ? { name: leaderName.trim(), jobClass: leaderClass }
@@ -142,9 +144,30 @@ export function NewRecruitPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>파티 모집글 등록</CardTitle>
+          <CardTitle>모집글 등록</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* 모집 유형 */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">모집 유형</label>
+            <div className="grid grid-cols-3 gap-2">
+              {RECRUIT_TYPES.map((type) => {
+                const cfg = RECRUIT_TYPE_CONFIG[type]
+                return (
+                  <Button
+                    key={type}
+                    type="button"
+                    variant={recruitType === type ? "default" : "outline"}
+                    onClick={() => setRecruitType(type)}
+                    className="w-full text-xs"
+                  >
+                    {cfg.label}
+                  </Button>
+                )
+              })}
+            </div>
+          </div>
+
           {/* 제목 */}
           <div className="space-y-2">
             <label htmlFor="title" className="text-sm font-medium">

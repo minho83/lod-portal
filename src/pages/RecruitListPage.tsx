@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback } from "react"
 import { Link } from "react-router-dom"
-import { Search, Plus, Users } from "lucide-react"
+import { Search, Plus, Users, Swords, Castle } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Select,
   SelectContent,
@@ -18,7 +19,7 @@ import { RecruitCard } from "@/components/game/RecruitCard"
 import { EmptyState } from "@/components/game/EmptyState"
 import { Pagination } from "@/components/game/Pagination"
 import { JOB_OPTIONS } from "@/lib/constants"
-import type { PartyRecruit, RecruitJoinMode, RecruitStatus, JobClass } from "@/types"
+import type { PartyRecruit, RecruitType, RecruitJoinMode, RecruitStatus, JobClass } from "@/types"
 
 export function RecruitListPage() {
   const { user } = useAuth()
@@ -28,6 +29,7 @@ export function RecruitListPage() {
   const [loading, setLoading] = useState(true)
 
   // 필터
+  const [recruitType, setRecruitType] = useState<RecruitType | "">("")
   const [keyword, setKeyword] = useState("")
   const [searchInput, setSearchInput] = useState("")
   const [status, setStatus] = useState<RecruitStatus | "">("")
@@ -38,6 +40,7 @@ export function RecruitListPage() {
     setLoading(true)
     try {
       const filters: RecruitFilters = {}
+      if (recruitType) filters.recruitType = recruitType
       if (keyword) filters.keyword = keyword
       if (status) filters.status = status
       if (joinMode) filters.joinMode = joinMode
@@ -50,7 +53,7 @@ export function RecruitListPage() {
       setTotalCount(0)
     }
     setLoading(false)
-  }, [keyword, status, joinMode, jobClass, page])
+  }, [recruitType, keyword, status, joinMode, jobClass, page])
 
   useEffect(() => {
     loadRecruits()
@@ -77,6 +80,31 @@ export function RecruitListPage() {
           </Button>
         )}
       </div>
+
+      {/* 모집 유형 탭 */}
+      <Tabs
+        value={recruitType || "all"}
+        onValueChange={(v) => {
+          setRecruitType(v === "all" ? "" : (v as RecruitType))
+          setPage(1)
+        }}
+      >
+        <TabsList className="w-full">
+          <TabsTrigger value="all" className="flex-1">전체</TabsTrigger>
+          <TabsTrigger value="party" className="flex-1">
+            <Users className="mr-1.5 h-3.5 w-3.5" />
+            파티 모집
+          </TabsTrigger>
+          <TabsTrigger value="guild_war" className="flex-1">
+            <Swords className="mr-1.5 h-3.5 w-3.5" />
+            길드대전
+          </TabsTrigger>
+          <TabsTrigger value="chaos_tower" className="flex-1">
+            <Castle className="mr-1.5 h-3.5 w-3.5" />
+            혼돈의탑
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
 
       {/* 필터 바 */}
       <Card>

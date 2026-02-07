@@ -132,6 +132,7 @@ export interface MarketPrice {
 }
 
 // 파티 모집
+export type RecruitType = "party" | "guild_war" | "chaos_tower"
 export type RecruitJoinMode = "approval" | "first_come"
 export type RecruitStatus = "open" | "full" | "closed" | "cancelled"
 export type MemberRole = "leader" | "member"
@@ -142,6 +143,7 @@ export type JobSlots = Record<JobClass, number>
 export interface PartyRecruit {
   id: string
   author_id: string
+  recruit_type: RecruitType
   title: string
   description: string | null
   location: string | null

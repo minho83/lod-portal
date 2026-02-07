@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom"
-import { Clock, MapPin, Users, Zap, Shield } from "lucide-react"
+import { Clock, MapPin, Users, Zap, Shield, Swords, Castle } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { timeAgo } from "@/lib/utils"
 import { SlotDisplay } from "./SlotDisplay"
+import { RECRUIT_TYPE_CONFIG } from "@/lib/constants"
 import type { PartyRecruit, RecruitStatus } from "@/types"
+
+const TYPE_ICONS = { party: Users, guild_war: Swords, chaos_tower: Castle } as const
 
 const STATUS_CONFIG: Record<RecruitStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   open: { label: "모집중", variant: "default" },
@@ -30,9 +33,19 @@ export function RecruitCard({ recruit }: RecruitCardProps) {
         recruit.status === "open" && "border-primary/20",
       )}>
         <CardContent className="space-y-3 p-4">
-          {/* 상단: 상태 + 참여방식 */}
+          {/* 상단: 상태 + 유형 + 참여방식 */}
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
+            {recruit.recruit_type && recruit.recruit_type !== "party" && (() => {
+              const TypeIcon = TYPE_ICONS[recruit.recruit_type]
+              const typeInfo = RECRUIT_TYPE_CONFIG[recruit.recruit_type]
+              return (
+                <Badge variant="secondary" className="text-xs">
+                  <TypeIcon className="mr-1 h-3 w-3" />
+                  {typeInfo.label}
+                </Badge>
+              )
+            })()}
             <Badge variant="outline" className="text-xs">
               {recruit.join_mode === "first_come" ? (
                 <>

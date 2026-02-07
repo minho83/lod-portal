@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase"
 import type {
   PartyRecruit,
   PartyMember,
+  RecruitType,
   RecruitJoinMode,
   RecruitStatus,
   MemberStatus,
@@ -11,6 +12,7 @@ import type {
 
 export interface RecruitFilters {
   keyword?: string
+  recruitType?: RecruitType
   status?: RecruitStatus
   joinMode?: RecruitJoinMode
   jobClass?: JobClass
@@ -34,6 +36,10 @@ export async function fetchRecruits(
     .from("party_recruits")
     .select(RECRUIT_SELECT, { count: "exact" })
     .order("created_at", { ascending: false })
+
+  if (filters.recruitType) {
+    query = query.eq("recruit_type", filters.recruitType)
+  }
 
   if (filters.status) {
     query = query.eq("status", filters.status)
@@ -91,6 +97,7 @@ export interface CreateRecruitInput {
   scheduled_at?: string
   join_mode: RecruitJoinMode
   job_slots: JobSlots
+  recruit_type?: RecruitType
 }
 
 export async function createRecruit(
@@ -116,6 +123,7 @@ export async function createRecruit(
       join_mode: input.join_mode,
       job_slots: input.job_slots,
       max_members: maxMembers,
+      recruit_type: input.recruit_type || "party",
     })
     .select(RECRUIT_SELECT)
     .single()
