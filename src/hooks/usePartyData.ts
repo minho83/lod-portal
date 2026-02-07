@@ -67,8 +67,7 @@ export function usePartyData() {
   const loadParties = useCallback(
     async (isRetry = false) => {
       if (!isRetry) {
-        // 기존 데이터가 없을 때만 로딩 스켈레톤 표시 (깜빡임 방지)
-        setLoading((prev) => prev || allParties.length === 0)
+        setLoading(allParties.length === 0)
         setError(null)
         retryCountRef.current = 0
       }

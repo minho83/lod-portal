@@ -759,9 +759,9 @@ export function PartyPage() {
       </Card>
 
       {/* Content area */}
-      {loading ? (
+      {loading && allParties.length === 0 ? (
         <LoadingSkeleton />
-      ) : error ? (
+      ) : error && allParties.length === 0 ? (
         <ErrorState message={error} onRetry={retry} />
       ) : filteredParties.length === 0 ? (
         <EmptyState searchName={activeSearch} />
