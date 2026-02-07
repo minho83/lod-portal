@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react"
 import type { Session, User } from "@supabase/supabase-js"
-import { supabase } from "@/lib/supabase"
+import { supabase, supabaseEnabled } from "@/lib/supabase"
 import type { UserProfile } from "@/types"
 
 interface AuthContextType {
@@ -19,9 +19,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(supabaseEnabled)
 
   const fetchProfile = useCallback(async (userId: string) => {
+    if (!supabaseEnabled) return
     const { data } = await supabase
       .from("profiles")
       .select("*")
@@ -32,6 +33,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
+    if (!supabaseEnabled) return
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
@@ -58,6 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [fetchProfile])
 
   const signInWithDiscord = useCallback(async () => {
+    if (!supabaseEnabled) return
     await supabase.auth.signInWithOAuth({
       provider: "discord",
       options: {
@@ -67,13 +71,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const signOut = useCallback(async () => {
+    if (!supabaseEnabled) return
     await supabase.auth.signOut()
     setProfile(null)
   }, [])
 
   const updateProfile = useCallback(
     async (data: Partial<Pick<UserProfile, "game_nickname" | "game_class">>) => {
-      if (!user) return
+      if (!supabaseEnabled || !user) return
 
       const { data: updated } = await supabase
         .from("profiles")
