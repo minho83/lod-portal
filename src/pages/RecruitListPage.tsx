@@ -21,8 +21,6 @@ import { Pagination } from "@/components/game/Pagination"
 import { JOB_OPTIONS } from "@/lib/constants"
 import type { PartyRecruit, RecruitType, RecruitJoinMode, RecruitStatus, JobClass } from "@/types"
 
-type DateFilter = "all" | "today" | "tomorrow" | "day_after" | "week"
-
 export function RecruitListPage() {
   const { user } = useAuth()
   const [recruits, setRecruits] = useState<PartyRecruit[]>([])
