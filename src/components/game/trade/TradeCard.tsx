@@ -18,9 +18,9 @@ export function TradeCard({ trade, priceMap }: { trade: Trade; priceMap: Map<str
   return (
     <Link to={`/market/${trade.id}`}>
       <Card className="transition-colors hover:border-primary/50 h-full">
-        <CardContent className="space-y-2 p-3">
+        <CardContent className="space-y-1.5 p-2">
           {/* 상단: 거래유형 + 카테고리/묶음 + 협상 */}
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-1">
             <TradeBadge tradeType={trade.trade_type} />
             {isBundle ? (
               <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
@@ -46,7 +46,7 @@ export function TradeCard({ trade, priceMap }: { trade: Trade; priceMap: Map<str
           {isBundle ? (
             <>
               <h3 className="text-sm font-semibold leading-tight truncate">{trade.item_name}</h3>
-              <div className="space-y-0.5 rounded bg-muted/30 p-1.5">
+              <div className="space-y-0.5 rounded bg-muted/30 p-1">
                 {trade.items!.slice(0, 2).map((item, i) => {
                   const mp = priceMap.get(item.item_name)
                   const delta = mp ? formatPriceDelta(item.price, mp.median_price) : null
@@ -93,7 +93,7 @@ export function TradeCard({ trade, priceMap }: { trade: Trade; priceMap: Map<str
           )}
 
           {/* 하단: 판매자 + 시간 */}
-          <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1 border-t border-border/50">
+          <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-0.5 border-t border-border/50">
             <span className="truncate">{sellerName}</span>
             <span className="shrink-0">{timeAgo(trade.created_at)}</span>
           </div>

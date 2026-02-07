@@ -193,7 +193,7 @@ export function MarketPage() {
       {/* 매물 목록 */}
       {loading ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <Skeleton key={i} className="h-32 rounded-lg" />
             ))}
@@ -208,7 +208,7 @@ export function MarketPage() {
       ) : trades.length === 0 ? (
         <EmptyState icon={Package} title="등록된 매물이 없습니다" />
       ) : viewMode === "grid" ? (
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
           {trades.map((trade) => (
             <TradeCard key={trade.id} trade={trade} priceMap={priceMap} />
           ))}
