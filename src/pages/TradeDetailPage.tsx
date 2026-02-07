@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { ArrowLeft, Tag, Handshake, Clock, User, AlertCircle, Layers } from "lucide-react"
+import { ArrowLeft, Tag, Handshake, Clock, User, AlertCircle, Layers, ShieldAlert } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/contexts/AuthContext"
 import { fetchTradeById, updateTradeStatus, fetchMarketPrices } from "@/lib/trades"
 import { TradeBadge } from "@/components/game/TradeBadge"
+import { ReportDialog } from "@/components/market/ReportDialog"
 import { formatPrice, formatPriceDelta, timeAgo } from "@/lib/utils"
 import type { Trade, TradeStatus, MarketPrice } from "@/types"
 
@@ -35,6 +36,7 @@ export function TradeDetailPage() {
   const [priceMap, setPriceMap] = useState<Map<string, MarketPrice>>(new Map())
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
+  const [reportDialogOpen, setReportDialogOpen] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -287,8 +289,32 @@ export function TradeDetailPage() {
               </Button>
             </div>
           )}
+
+          {/* 신고 버튼 (본인 글이 아닐 때만) */}
+          {!isOwner && user && (
+            <div className="border-t border-border pt-4">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive"
+                onClick={() => setReportDialogOpen(true)}
+              >
+                <ShieldAlert className="mr-2 h-4 w-4" />
+                사기 신고하기
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
+
+      {/* 신고 다이얼로그 */}
+      {trade && (
+        <ReportDialog
+          open={reportDialogOpen}
+          onOpenChange={setReportDialogOpen}
+          trade={trade}
+        />
+      )}
     </div>
   )
 }

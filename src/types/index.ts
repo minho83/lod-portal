@@ -185,3 +185,35 @@ export interface BlacklistEntry {
   // joined
   blocked_user?: UserProfile
 }
+
+// 사기 신고
+export type ReportType = "no_payment" | "no_item"
+export type ReportStatus = "pending" | "reviewing" | "confirmed" | "dismissed" | "resolved"
+
+export const REPORT_TYPE_LABELS: Record<ReportType, string> = {
+  no_payment: "돈을 안줬다",
+  no_item: "아이템을 안줬다",
+}
+
+export interface ScamReport {
+  id: string
+  reporter_id: string
+  reported_user_id: string | null
+  suspect_name: string
+  suspect_discord_id: string | null
+  report_type: ReportType
+  title: string
+  description: string
+  evidence_urls: string[] | null
+  related_trade_id: string | null
+  status: ReportStatus
+  admin_note: string | null
+  resolved_by: string | null
+  resolved_at: string | null
+  created_at: string
+  updated_at: string
+  // joined
+  reporter?: UserProfile
+  reported_user?: UserProfile
+  related_trade?: Trade
+}
