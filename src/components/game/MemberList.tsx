@@ -1,4 +1,4 @@
-import { Check, X, UserMinus } from "lucide-react"
+import { Check, X, UserMinus, Ban } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
@@ -19,6 +19,7 @@ interface MemberListProps {
   onAccept?: (memberId: string) => void
   onReject?: (memberId: string) => void
   onKick?: (memberId: string) => void
+  onBlacklist?: (userId: string) => void
   disabled?: boolean
 }
 
@@ -28,6 +29,7 @@ export function MemberList({
   onAccept,
   onReject,
   onKick,
+  onBlacklist,
   disabled = false,
 }: MemberListProps) {
   const accepted = members.filter((m) => m.status === "accepted")
@@ -48,6 +50,7 @@ export function MemberList({
               member={m}
               showKick={isLeader && m.role !== "leader"}
               onKick={onKick}
+              onBlacklist={isLeader && m.role !== "leader" ? onBlacklist : undefined}
               disabled={disabled}
             />
           ))}
@@ -67,6 +70,7 @@ export function MemberList({
               showActions={isLeader}
               onAccept={onAccept}
               onReject={onReject}
+              onBlacklist={isLeader ? onBlacklist : undefined}
               disabled={disabled}
             />
           ))}
@@ -95,6 +99,7 @@ function MemberRow({
   onAccept,
   onReject,
   onKick,
+  onBlacklist,
   disabled = false,
 }: {
   member: PartyMember
@@ -103,6 +108,7 @@ function MemberRow({
   onAccept?: (id: string) => void
   onReject?: (id: string) => void
   onKick?: (id: string) => void
+  onBlacklist?: (userId: string) => void
   disabled?: boolean
 }) {
   const config = JOB_CONFIG[member.job_class]
@@ -161,8 +167,22 @@ function MemberRow({
           className="text-red-400 hover:text-red-300"
           onClick={() => onKick?.(member.id)}
           disabled={disabled}
+          title="추방"
         >
           <UserMinus className="h-3.5 w-3.5" />
+        </Button>
+      )}
+
+      {onBlacklist && (
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          className="text-orange-400 hover:text-orange-300"
+          onClick={() => onBlacklist(member.user_id)}
+          disabled={disabled}
+          title="블랙리스트 추가"
+        >
+          <Ban className="h-3.5 w-3.5" />
         </Button>
       )}
     </div>

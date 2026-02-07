@@ -172,3 +172,14 @@ export interface PartyMember {
   // joined
   user?: UserProfile
 }
+
+// 블랙리스트
+export interface BlacklistEntry {
+  id: string
+  user_id: string
+  blocked_user_id: string
+  reason: string | null
+  created_at: string
+  // joined
+  blocked_user?: UserProfile
+}

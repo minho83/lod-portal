@@ -204,6 +204,9 @@ export async function applyToRecruit(
     if (error.code === "23505") {
       throw new Error("이미 신청한 파티입니다.")
     }
+    if (error.code === "P0001" || error.message?.includes("블랙리스트")) {
+      throw new Error("파티장의 블랙리스트에 등록되어 신청할 수 없습니다.")
+    }
     throw error
   }
 

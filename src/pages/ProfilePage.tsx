@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { LogIn, Save } from "lucide-react"
+import { useEffect, useState, useCallback } from "react"
+import { LogIn, Save, Trash2, Ban } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,7 +14,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/contexts/AuthContext"
 import { JOB_CONFIG } from "@/components/game/ClassBadge"
-import type { JobClass } from "@/types"
+import { fetchBlacklist, removeFromBlacklist } from "@/lib/blacklist"
+import type { JobClass, BlacklistEntry } from "@/types"
 
 const JOB_OPTIONS = Object.entries(JOB_CONFIG) as [JobClass, (typeof JOB_CONFIG)[JobClass]][]
 
@@ -26,14 +27,30 @@ export function ProfilePage() {
   const [saving, setSaving] = useState(false)
   const [initialized, setInitialized] = useState(false)
 
+  // 블랙리스트
+  const [blacklist, setBlacklist] = useState<BlacklistEntry[]>([])
+  const [blacklistLoading, setBlacklistLoading] = useState(false)
+
+  const loadBlacklist = useCallback(async () => {
+    setBlacklistLoading(true)
+    try {
+      const data = await fetchBlacklist()
+      setBlacklist(data)
+    } catch {
+      // ignore
+    }
+    setBlacklistLoading(false)
+  }, [])
+
   // profile이 로드되면 폼 초기화
   useEffect(() => {
     if (profile && !initialized) {
       setNickname(profile.game_nickname ?? "")
       setGameClass(profile.game_class ?? "")
       setInitialized(true)
+      loadBlacklist()
     }
-  }, [profile, initialized])
+  }, [profile, initialized, loadBlacklist])
 
   if (loading) {
     return (
@@ -140,6 +157,60 @@ export function ProfilePage() {
             <Save className="mr-2 h-4 w-4" />
             {saving ? "저장 중..." : "저장"}
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* 블랙리스트 관리 */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Ban className="h-4 w-4 text-orange-400" />
+            블랙리스트
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {blacklistLoading ? (
+            <Skeleton className="h-12 w-full" />
+          ) : blacklist.length === 0 ? (
+            <p className="py-4 text-center text-sm text-muted-foreground">
+              등록된 블랙리스트가 없습니다
+            </p>
+          ) : (
+            blacklist.map((entry) => (
+              <div
+                key={entry.id}
+                className="flex items-center gap-3 rounded-md bg-muted/30 p-2.5"
+              >
+                <div className="flex-1">
+                  <p className="text-sm font-medium">
+                    {entry.blocked_user?.game_nickname ??
+                      entry.blocked_user?.discord_username ??
+                      "알 수 없는 유저"}
+                  </p>
+                  {entry.reason && (
+                    <p className="text-xs text-muted-foreground">
+                      {entry.reason}
+                    </p>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(entry.created_at).toLocaleDateString("ko-KR")}
+                  </p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  className="text-red-400 hover:text-red-300"
+                  onClick={async () => {
+                    if (!confirm("블랙리스트에서 해제하시겠습니까?")) return
+                    await removeFromBlacklist(entry.id)
+                    loadBlacklist()
+                  }}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            ))
+          )}
         </CardContent>
       </Card>
     </div>

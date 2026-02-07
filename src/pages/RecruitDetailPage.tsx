@@ -37,11 +37,13 @@ import {
   handleApplication,
   leaveRecruit,
 } from "@/lib/recruits"
+import { checkBlacklisted, addToBlacklist } from "@/lib/blacklist"
 import { timeAgo } from "@/lib/utils"
 import { SlotDisplay } from "@/components/game/SlotDisplay"
 import { MemberList } from "@/components/game/MemberList"
 import { STATUS_CONFIG } from "@/components/game/RecruitCard"
 import { JOB_OPTIONS } from "@/lib/constants"
+import { Ban } from "lucide-react"
 import type { PartyRecruit, JobClass, JobSlots, RecruitStatus } from "@/types"
 
 export function RecruitDetailPage() {
@@ -68,6 +70,9 @@ export function RecruitDetailPage() {
   })
   const [editError, setEditError] = useState("")
 
+  // 블랙리스트 상태
+  const [isBlocked, setIsBlocked] = useState(false)
+
   // 신청 폼
   const [applyClass, setApplyClass] = useState<JobClass>("warrior")
   const [applyName, setApplyName] = useState(profile?.game_nickname ?? "")
@@ -78,8 +83,13 @@ export function RecruitDetailPage() {
     if (!id) return
     const data = await fetchRecruitById(id)
     setRecruit(data)
+    // 블랙리스트 체크
+    if (data && user && user.id !== data.author_id) {
+      const blocked = await checkBlacklisted(data.author_id, user.id)
+      setIsBlocked(blocked)
+    }
     setLoading(false)
-  }, [id])
+  }, [id, user])
 
   useEffect(() => {
     loadRecruit()
@@ -198,6 +208,18 @@ export function RecruitDetailPage() {
     setUpdating(false)
   }
 
+  const handleBlacklist = async (userId: string) => {
+    if (!confirm("이 유저를 블랙리스트에 추가하시겠습니까?\n추가 후 이 유저는 내 파티에 신청할 수 없습니다.")) return
+    setUpdating(true)
+    try {
+      await addToBlacklist(userId)
+      await loadRecruit()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "블랙리스트 추가 실패")
+    }
+    setUpdating(false)
+  }
+
   if (loading) {
     return (
       <div className="mx-auto max-w-lg space-y-4 p-4">
@@ -236,6 +258,7 @@ export function RecruitDetailPage() {
     user &&
     !isAuthor &&
     !myMembership &&
+    !isBlocked &&
     recruit.status === "open"
 
   const canEdit = isAuthor && ["open", "full"].includes(recruit.status)
@@ -535,6 +558,7 @@ export function RecruitDetailPage() {
             onAccept={(id) => handleMemberAction(id, "accepted")}
             onReject={(id) => handleMemberAction(id, "rejected")}
             onKick={(id) => handleMemberAction(id, "kicked")}
+            onBlacklist={handleBlacklist}
             disabled={updating}
           />
         </CardContent>
@@ -562,6 +586,16 @@ export function RecruitDetailPage() {
             >
               {myMembership.status === "pending" ? "신청 취소" : "탈퇴"}
             </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* 블랙리스트 차단 안내 */}
+      {isBlocked && !isAuthor && (
+        <Card>
+          <CardContent className="flex items-center gap-3 p-4 text-muted-foreground">
+            <Ban className="h-5 w-5 text-orange-400 shrink-0" />
+            <p className="text-sm">파티장의 블랙리스트에 등록되어 신청할 수 없습니다.</p>
           </CardContent>
         </Card>
       )}
