@@ -237,19 +237,17 @@ function CopyButton({
 function SlotRow({
   job,
   slots,
-  vacancyCount,
   searchName,
 }: {
   job: JobClass
   slots: string[]
-  vacancyCount: number
   searchName: string
 }) {
-  if (slots.length === 0 && vacancyCount === 0) return null
+  if (!slots || slots.length === 0) return null
 
   const config = JOB_CONFIG[job]
-  const totalSlots = slots.length + vacancyCount
   const search = searchName.toLowerCase()
+  const filledCount = slots.filter((s) => s !== "").length
 
   return (
     <div className="flex items-start gap-2">
@@ -263,6 +261,17 @@ function SlotRow({
       </span>
       <div className="flex flex-wrap gap-1">
         {slots.map((name, i) => {
+          if (name === "") {
+            return (
+              <Badge
+                key={`${job}-empty-${i}`}
+                variant="outline"
+                className={cn("border-dashed text-xs", config.textClass)}
+              >
+                모집중
+              </Badge>
+            )
+          }
           const isMySlot = search && name.toLowerCase().includes(search)
           return (
             <Badge
@@ -277,17 +286,8 @@ function SlotRow({
             </Badge>
           )
         })}
-        {Array.from({ length: vacancyCount }).map((_, i) => (
-          <Badge
-            key={`${job}-empty-${i}`}
-            variant="outline"
-            className={cn("border-dashed text-xs", config.textClass)}
-          >
-            모집중
-          </Badge>
-        ))}
         <span className="ml-1 self-center text-xs text-muted-foreground">
-          {slots.length}/{totalSlots}
+          {filledCount}/{slots.length}
         </span>
       </div>
     </div>
@@ -422,7 +422,6 @@ function PartyCard({
               key={job}
               job={job}
               slots={party[`${job}_slots` as keyof Party] as string[]}
-              vacancyCount={party.vacancies[job]}
               searchName={searchName}
             />
           ))}
