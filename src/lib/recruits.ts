@@ -17,6 +17,7 @@ export interface RecruitFilters {
   joinMode?: RecruitJoinMode
   jobClass?: JobClass
   location?: string
+  scheduledDate?: string // YYYY-MM-DD 형식
 }
 
 export interface RecruitListResult {
@@ -61,6 +62,13 @@ export async function fetchRecruits(
 
   if (filters.jobClass) {
     query = query.gt(`job_slots->>${filters.jobClass}`, 0)
+  }
+
+  if (filters.scheduledDate) {
+    // 선택한 날짜의 00:00:00 ~ 23:59:59 범위로 필터링
+    const startOfDay = `${filters.scheduledDate}T00:00:00.000Z`
+    const endOfDay = `${filters.scheduledDate}T23:59:59.999Z`
+    query = query.gte("scheduled_at", startOfDay).lte("scheduled_at", endOfDay)
   }
 
   const offset = (page - 1) * PAGE_SIZE
