@@ -1,0 +1,39 @@
+name: Daily Maintenance
+
+on:
+  schedule:
+    - cron: '0 15 * * *'   # 매일 자정 KST (UTC 15:00)
+    - cron: '0 * * * *'    # 매시간 (만료 처리)
+  workflow_dispatch:
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      # 시세 집계 (자정에만)
+      - name: Aggregate daily prices
+        if: github.event.schedule == '0 15 * * *' || github.event_name == 'workflow_dispatch'
+        run: |
+          curl -s -X POST \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/rpc/aggregate_daily_prices" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/json"
+
+      # 거래 만료 처리 (매시간)
+      - name: Expire old trades
+        run: |
+          curl -s -X POST \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/rpc/expire_old_trades" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/json"
+
+      # 모집글 만료 처리 (매시간)
+      - name: Close expired recruits
+        run: |
+          curl -s -X POST \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/rpc/close_expired_recruits" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/json"
