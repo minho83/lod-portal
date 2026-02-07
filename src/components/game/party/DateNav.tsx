@@ -24,7 +24,6 @@ export function DateNav({
         variant="outline"
         size="icon-sm"
         onClick={onNext}
-        disabled={isToday}
       >
         <ChevronRight className="h-4 w-4" />
       </Button>
