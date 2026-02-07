@@ -37,6 +37,19 @@ function formatDateDisplay(date: Date): string {
   return `${m}/${d} (${dayName})${isSameDay ? " 오늘" : ""}`
 }
 
+/** 같은 organizer + time_slot 파티를 병합 (최신 updated_at 우선) */
+function deduplicateParties(parties: Party[]): Party[] {
+  const map = new Map<string, Party>()
+  for (const party of parties) {
+    const key = `${(party.organizer || "").toLowerCase()}|${party.time_slot}`
+    const existing = map.get(key)
+    if (!existing || party.updated_at > existing.updated_at) {
+      map.set(key, party)
+    }
+  }
+  return [...map.values()]
+}
+
 export function usePartyData() {
   const [allParties, setAllParties] = useState<Party[]>([])
   const [currentDate, setCurrentDate] = useState<Date>(() => getKoreaDate())
@@ -64,7 +77,7 @@ export function usePartyData() {
       try {
         const data = await fetchParties(dateStr, includeComplete)
         if (!isMountedRef.current) return
-        setAllParties(data.parties)
+        setAllParties(deduplicateParties(data.parties))
         setLoading(false)
         setError(null)
         retryCountRef.current = 0
