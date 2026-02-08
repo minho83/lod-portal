@@ -176,7 +176,7 @@ export async function getRecentTrades(limit = 20) {
     .from("trades")
     .select(`
       *,
-      seller:user_profiles!trades_seller_id_fkey(*)
+      seller:profiles!trades_seller_id_fkey(*)
     `)
     .order("created_at", { ascending: false })
     .limit(limit)
@@ -193,7 +193,7 @@ export async function getRecentRecruits(limit = 20) {
     .from("party_recruits")
     .select(`
       *,
-      author:user_profiles!party_recruits_author_id_fkey(*)
+      author:profiles!party_recruits_author_profile_fkey(*)
     `)
     .order("created_at", { ascending: false })
     .limit(limit)
