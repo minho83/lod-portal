@@ -135,6 +135,17 @@ export interface MarketPrice {
   window_days: number
 }
 
+export interface TradeMessage {
+  id: string
+  trade_id: string
+  sender_id: string
+  message: string
+  read: boolean
+  created_at: string
+  // joined
+  sender?: UserProfile
+}
+
 // 파티 모집
 export type RecruitType = "party" | "guild_war" | "chaos_tower"
 export type RecruitJoinMode = "approval" | "first_come"
@@ -258,6 +269,8 @@ export type NotificationType =
   | "party_accepted"      // 파티 승인
   | "party_rejected"      // 파티 거절
   | "party_kicked"        // 파티 추방
+  | "trade_inquiry"       // 거래 문의
+  | "trade_request"       // 거래 요청
   | "trade_reservation"   // 거래소 예약
   | "trade_comment"       // 거래소 댓글
   | "scam_report_result"  // 사기 신고 결과

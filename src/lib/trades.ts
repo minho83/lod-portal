@@ -116,6 +116,22 @@ export async function updateTradeStatus(
   if (error) throw error
 }
 
+/**
+ * 거래 요청 (buyer_id 설정 + status reserved)
+ */
+export async function requestTrade(id: string, buyerId: string): Promise<void> {
+  const { error } = await supabase
+    .from("trades")
+    .update({
+      buyer_id: buyerId,
+      status: "reserved",
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+
+  if (error) throw error
+}
+
 export async function fetchMarketPrices(
   itemNames?: string[],
   windowDays = 7,

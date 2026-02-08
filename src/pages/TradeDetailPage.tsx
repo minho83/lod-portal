@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/contexts/AuthContext"
-import { fetchTradeById, updateTradeStatus, fetchMarketPrices } from "@/lib/trades"
+import { fetchTradeById, updateTradeStatus, fetchMarketPrices, requestTrade } from "@/lib/trades"
+import { createNotification } from "@/lib/notifications"
 import { TradeBadge } from "@/components/game/TradeBadge"
 import { ReportDialog } from "@/components/market/ReportDialog"
+import { MessageDialog } from "@/components/market/MessageDialog"
 import { formatPrice, formatPriceDelta, timeAgo } from "@/lib/utils"
 import { linkifySafe } from "@/lib/linkify"
 import type { Trade, TradeStatus, MarketPrice } from "@/types"
@@ -39,6 +41,7 @@ export function TradeDetailPage() {
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
   const [reportDialogOpen, setReportDialogOpen] = useState(false)
+  const [messageDialogOpen, setMessageDialogOpen] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -72,6 +75,40 @@ export function TradeDetailPage() {
       // ignore
     }
     setUpdating(false)
+  }
+
+  const handleTradeInquiry = () => {
+    if (!trade || !user) return
+    setMessageDialogOpen(true)
+  }
+
+  const handleTradeRequest = async () => {
+    if (!trade || !user) return
+
+    setUpdating(true)
+    try {
+      // buyer_id 설정 + status reserved
+      await requestTrade(trade.id, user.id)
+
+      // 판매자에게 알림 전송
+      await createNotification({
+        user_id: trade.seller_id,
+        type: "trade_request",
+        title: "🤝 거래 요청",
+        message: `${user.user_metadata?.game_nickname || user.user_metadata?.discord_username || "누군가"}님이 "${trade.item_name}" 거래를 요청했습니다`,
+        link: `/market/${trade.id}`,
+      })
+
+      // 상태 업데이트
+      setTrade({ ...trade, buyer_id: user.id, status: "reserved" })
+
+      toast.success("거래 요청이 전송되었습니다!")
+    } catch (error) {
+      toast.error("거래 요청에 실패했습니다")
+      console.error(error)
+    } finally {
+      setUpdating(false)
+    }
   }
 
   if (loading) {
@@ -308,21 +345,25 @@ export function TradeDetailPage() {
           {/* 구매자 액션 (본인 글이 아닐 때) */}
           {!isOwner && user && (trade.status === "active" || trade.status === "reserved") && (
             <div className="space-y-2 border-t border-border pt-4">
-              <Button
-                size="sm"
-                className="w-full"
-                onClick={() => {
-                  if (trade.seller?.discord_username) {
-                    navigator.clipboard.writeText(trade.seller.discord_username)
-                    toast.success(`Discord ID가 복사되었습니다!\n${trade.seller.discord_username}`)
-                  } else {
-                    toast.info("판매자의 Discord 정보가 없습니다")
-                  }
-                }}
-              >
-                <MessageCircle className="mr-2 h-4 w-4" />
-                거래 문의하기
-              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={updating}
+                  onClick={handleTradeInquiry}
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  거래 문의
+                </Button>
+                <Button
+                  size="sm"
+                  disabled={updating || trade.status === "reserved"}
+                  onClick={handleTradeRequest}
+                >
+                  <Handshake className="mr-2 h-4 w-4" />
+                  거래 요청
+                </Button>
+              </div>
               {trade.status === "reserved" && (
                 <p className="text-center text-xs text-muted-foreground">
                   ⏳ 현재 예약중인 물품입니다
@@ -353,6 +394,15 @@ export function TradeDetailPage() {
         <ReportDialog
           open={reportDialogOpen}
           onOpenChange={setReportDialogOpen}
+          trade={trade}
+        />
+      )}
+
+      {/* 1:1 대화 다이얼로그 */}
+      {trade && (
+        <MessageDialog
+          open={messageDialogOpen}
+          onOpenChange={setMessageDialogOpen}
           trade={trade}
         />
       )}

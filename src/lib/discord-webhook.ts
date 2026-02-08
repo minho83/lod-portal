@@ -13,6 +13,8 @@ const NOTIFICATION_TYPE_COLORS: Record<NotificationType, number> = {
   party_accepted: 0x2ecc71, // 초록색
   party_rejected: 0xe74c3c, // 빨간색
   party_kicked: 0xe67e22, // 주황색
+  trade_inquiry: 0x2196f3, // 밝은 파란색
+  trade_request: 0x27ae60, // 진한 초록색
   trade_reservation: 0x9b59b6, // 보라색
   trade_comment: 0x1abc9c, // 청록색
   scam_report_result: 0xf1c40f, // 노란색
@@ -23,6 +25,8 @@ const NOTIFICATION_TYPE_ICONS: Record<NotificationType, string> = {
   party_accepted: "✅",
   party_rejected: "❌",
   party_kicked: "🚫",
+  trade_inquiry: "💬",
+  trade_request: "🤝",
   trade_reservation: "💰",
   trade_comment: "💬",
   scam_report_result: "⚠️",
