@@ -36,9 +36,11 @@ export function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         {/* 로고 */}
         <NavLink to="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
-            L
-          </div>
+          <img
+            src="/lod-portal/lod-icon.png"
+            alt="LOD"
+            className="h-9 w-9 rounded-lg"
+          />
           <h1 className="hidden text-lg font-bold sm:block">
             LOD <span className="text-primary">도우미</span>
           </h1>
