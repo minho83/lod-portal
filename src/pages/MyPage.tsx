@@ -11,11 +11,14 @@ import {
   MapPin,
   Calendar,
   DollarSign,
+  Trash2,
+  List,
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAuth } from "@/contexts/AuthContext"
 import {
@@ -24,6 +27,12 @@ import {
   fetchMySellingItems,
   fetchMyBuyingItems,
   fetchMyTradingItems,
+  deletePartyApplication,
+  deletePartyApplications,
+  deletePartyRecruit,
+  deletePartyRecruits,
+  deleteTrade,
+  deleteTrades,
 } from "@/lib/my-activity"
 import { EmptyState } from "@/components/game/EmptyState"
 import { ErrorState } from "@/components/game/ErrorState"
@@ -50,8 +59,16 @@ function LoadingSkeleton({ count = 3 }: { count?: number }) {
 
 function PartyApplicationCard({
   application,
+  selectable,
+  selected,
+  onSelect,
+  onDelete,
 }: {
   application: PartyMember & { recruit: PartyRecruit }
+  selectable?: boolean
+  selected?: boolean
+  onSelect?: (id: string, checked: boolean) => void
+  onDelete?: (id: string) => void
 }) {
   const statusColors = {
     pending: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
@@ -72,7 +89,16 @@ function PartyApplicationCard({
   return (
     <Card>
       <CardContent className="py-4">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          {selectable && (
+            <Checkbox
+              checked={selected}
+              onCheckedChange={(checked) =>
+                onSelect?.(application.id, checked as boolean)
+              }
+              className="mt-0.5"
+            />
+          )}
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
               <Link
@@ -107,13 +133,35 @@ function PartyApplicationCard({
               </div>
             </div>
           </div>
+          {onDelete && (
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              onClick={() => onDelete(application.id)}
+              className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
   )
 }
 
-function MyRecruitCard({ recruit }: { recruit: PartyRecruit }) {
+function MyRecruitCard({
+  recruit,
+  selectable,
+  selected,
+  onSelect,
+  onDelete,
+}: {
+  recruit: PartyRecruit
+  selectable?: boolean
+  selected?: boolean
+  onSelect?: (id: string, checked: boolean) => void
+  onDelete?: (id: string) => void
+}) {
   const statusColors = {
     open: "bg-primary/10 text-primary border-primary/20",
     full: "bg-green-500/10 text-green-500 border-green-500/20",
@@ -131,7 +179,16 @@ function MyRecruitCard({ recruit }: { recruit: PartyRecruit }) {
   return (
     <Card>
       <CardContent className="py-4">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          {selectable && (
+            <Checkbox
+              checked={selected}
+              onCheckedChange={(checked) =>
+                onSelect?.(recruit.id, checked as boolean)
+              }
+              className="mt-0.5"
+            />
+          )}
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
               <Link
@@ -173,13 +230,35 @@ function MyRecruitCard({ recruit }: { recruit: PartyRecruit }) {
           <Button asChild size="sm" variant="outline">
             <Link to={`/recruit/${recruit.id}`}>관리</Link>
           </Button>
+          {onDelete && (
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              onClick={() => onDelete(recruit.id)}
+              className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
   )
 }
 
-function TradeItemCard({ trade }: { trade: Trade }) {
+function TradeItemCard({
+  trade,
+  selectable,
+  selected,
+  onSelect,
+  onDelete,
+}: {
+  trade: Trade
+  selectable?: boolean
+  selected?: boolean
+  onSelect?: (id: string, checked: boolean) => void
+  onDelete?: (id: string) => void
+}) {
   const statusColors = {
     active: "bg-primary/10 text-primary border-primary/20",
     reserved: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
@@ -199,7 +278,16 @@ function TradeItemCard({ trade }: { trade: Trade }) {
   return (
     <Card>
       <CardContent className="py-4">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          {selectable && (
+            <Checkbox
+              checked={selected}
+              onCheckedChange={(checked) =>
+                onSelect?.(trade.id, checked as boolean)
+              }
+              className="mt-0.5"
+            />
+          )}
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
               <Link
@@ -233,6 +321,16 @@ function TradeItemCard({ trade }: { trade: Trade }) {
           <Button asChild size="sm" variant="outline">
             <Link to={`/trade/${trade.id}`}>상세</Link>
           </Button>
+          {onDelete && (
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              onClick={() => onDelete(trade.id)}
+              className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -252,12 +350,30 @@ export function MyPage() {
   const [loadingParty, setLoadingParty] = useState(false)
   const [errorParty, setErrorParty] = useState<string | null>(null)
 
+  // 파티 필터 & 선택 상태
+  const [partyFilter, setPartyFilter] = useState({
+    applications: true,
+    recruits: true,
+  })
+  const [selectedApplications, setSelectedApplications] = useState<Set<string>>(
+    new Set()
+  )
+  const [selectedRecruits, setSelectedRecruits] = useState<Set<string>>(new Set())
+
   // 거래 관련 상태
   const [sellingItems, setSellingItems] = useState<Trade[]>([])
   const [buyingItems, setBuyingItems] = useState<Trade[]>([])
   const [tradingItems, setTradingItems] = useState<Trade[]>([])
   const [loadingTrade, setLoadingTrade] = useState(false)
   const [errorTrade, setErrorTrade] = useState<string | null>(null)
+
+  // 거래 필터 & 선택 상태
+  const [tradeFilter, setTradeFilter] = useState({
+    selling: true,
+    buying: true,
+    trading: true,
+  })
+  const [selectedTrades, setSelectedTrades] = useState<Set<string>>(new Set())
 
   // 파티 데이터 로드
   const loadPartyData = async () => {
@@ -304,6 +420,135 @@ export function MyPage() {
     }
   }, [user])
 
+  // 파티 신청 선택 핸들러
+  const handleSelectApplication = (id: string, checked: boolean) => {
+    const newSet = new Set(selectedApplications)
+    if (checked) {
+      newSet.add(id)
+    } else {
+      newSet.delete(id)
+    }
+    setSelectedApplications(newSet)
+  }
+
+  // 파티 모집 선택 핸들러
+  const handleSelectRecruit = (id: string, checked: boolean) => {
+    const newSet = new Set(selectedRecruits)
+    if (checked) {
+      newSet.add(id)
+    } else {
+      newSet.delete(id)
+    }
+    setSelectedRecruits(newSet)
+  }
+
+  // 거래 선택 핸들러
+  const handleSelectTrade = (id: string, checked: boolean) => {
+    const newSet = new Set(selectedTrades)
+    if (checked) {
+      newSet.add(id)
+    } else {
+      newSet.delete(id)
+    }
+    setSelectedTrades(newSet)
+  }
+
+  // 파티 신청 개별 삭제
+  const handleDeleteApplication = async (id: string) => {
+    if (!confirm("파티 신청을 취소하시겠습니까?")) return
+    try {
+      await deletePartyApplication(id)
+      await loadPartyData()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "삭제에 실패했습니다")
+    }
+  }
+
+  // 파티 신청 전체 삭제
+  const handleDeleteSelectedApplications = async () => {
+    if (selectedApplications.size === 0) {
+      alert("삭제할 항목을 선택해주세요")
+      return
+    }
+    if (!confirm(`선택한 ${selectedApplications.size}개의 파티 신청을 취소하시겠습니까?`))
+      return
+    try {
+      await deletePartyApplications(Array.from(selectedApplications))
+      setSelectedApplications(new Set())
+      await loadPartyData()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "삭제에 실패했습니다")
+    }
+  }
+
+  // 파티 모집 개별 삭제
+  const handleDeleteRecruit = async (id: string) => {
+    if (!confirm("파티 모집을 취소하시겠습니까?")) return
+    try {
+      await deletePartyRecruit(id)
+      await loadPartyData()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "삭제에 실패했습니다")
+    }
+  }
+
+  // 파티 모집 전체 삭제
+  const handleDeleteSelectedRecruits = async () => {
+    if (selectedRecruits.size === 0) {
+      alert("삭제할 항목을 선택해주세요")
+      return
+    }
+    if (!confirm(`선택한 ${selectedRecruits.size}개의 파티 모집을 취소하시겠습니까?`))
+      return
+    try {
+      await deletePartyRecruits(Array.from(selectedRecruits))
+      setSelectedRecruits(new Set())
+      await loadPartyData()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "삭제에 실패했습니다")
+    }
+  }
+
+  // 거래 개별 삭제
+  const handleDeleteTrade = async (id: string) => {
+    if (!confirm("거래를 취소하시겠습니까?")) return
+    try {
+      await deleteTrade(id)
+      await loadTradeData()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "삭제에 실패했습니다")
+    }
+  }
+
+  // 거래 전체 삭제
+  const handleDeleteSelectedTrades = async () => {
+    if (selectedTrades.size === 0) {
+      alert("삭제할 항목을 선택해주세요")
+      return
+    }
+    if (!confirm(`선택한 ${selectedTrades.size}개의 거래를 취소하시겠습니까?`)) return
+    try {
+      await deleteTrades(Array.from(selectedTrades))
+      setSelectedTrades(new Set())
+      await loadTradeData()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "삭제에 실패했습니다")
+    }
+  }
+
+  // 필터링된 파티 목록
+  const filteredPartyItems = [
+    ...(partyFilter.applications ? applications : []),
+    ...(partyFilter.recruits ? myRecruits : []),
+  ]
+
+  // 필터링된 거래 목록
+  const filteredTradeItems = [
+    ...(tradeFilter.selling ? sellingItems : []),
+    ...(tradeFilter.buying ? buyingItems : []),
+    ...(tradeFilter.trading ? tradingItems : []),
+  ]
+
   // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
   if (!user) {
     return <Navigate to="/profile" replace />
@@ -332,12 +577,105 @@ export function MyPage() {
 
         {/* 파티 현황 탭 */}
         <TabsContent value="party" className="space-y-4">
-          <Tabs defaultValue="applications" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="applications">내가 신청한 파티</TabsTrigger>
-              <TabsTrigger value="recruits">내가 파티장인 파티</TabsTrigger>
+          <Tabs defaultValue="overview" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="overview" className="flex items-center gap-1.5">
+                <List className="h-3.5 w-3.5" />
+                <span>종합</span>
+              </TabsTrigger>
+              <TabsTrigger value="applications">신청한 파티</TabsTrigger>
+              <TabsTrigger value="recruits">내가 파티장</TabsTrigger>
             </TabsList>
 
+            {/* 종합 탭 */}
+            <TabsContent value="overview">
+              {loadingParty ? (
+                <LoadingSkeleton />
+              ) : errorParty ? (
+                <ErrorState message={errorParty} onRetry={loadPartyData} />
+              ) : (
+                <>
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <label className="flex items-center gap-2 text-sm">
+                        <Checkbox
+                          checked={partyFilter.applications}
+                          onCheckedChange={(checked) =>
+                            setPartyFilter((prev) => ({
+                              ...prev,
+                              applications: checked as boolean,
+                            }))
+                          }
+                        />
+                        신청한 파티
+                      </label>
+                      <label className="flex items-center gap-2 text-sm">
+                        <Checkbox
+                          checked={partyFilter.recruits}
+                          onCheckedChange={(checked) =>
+                            setPartyFilter((prev) => ({
+                              ...prev,
+                              recruits: checked as boolean,
+                            }))
+                          }
+                        />
+                        내가 파티장인 파티
+                      </label>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => {
+                        handleDeleteSelectedApplications()
+                        handleDeleteSelectedRecruits()
+                      }}
+                      disabled={
+                        selectedApplications.size === 0 && selectedRecruits.size === 0
+                      }
+                    >
+                      <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+                      선택 삭제 (
+                      {selectedApplications.size + selectedRecruits.size})
+                    </Button>
+                  </div>
+
+                  {filteredPartyItems.length === 0 ? (
+                    <EmptyState
+                      icon={Users}
+                      title="표시할 파티가 없습니다"
+                      description="필터를 조정하거나 파티를 추가해보세요"
+                    />
+                  ) : (
+                    <div className="space-y-3">
+                      {partyFilter.applications &&
+                        applications.map((app) => (
+                          <PartyApplicationCard
+                            key={app.id}
+                            application={app}
+                            selectable
+                            selected={selectedApplications.has(app.id)}
+                            onSelect={handleSelectApplication}
+                            onDelete={handleDeleteApplication}
+                          />
+                        ))}
+                      {partyFilter.recruits &&
+                        myRecruits.map((recruit) => (
+                          <MyRecruitCard
+                            key={recruit.id}
+                            recruit={recruit}
+                            selectable
+                            selected={selectedRecruits.has(recruit.id)}
+                            onSelect={handleSelectRecruit}
+                            onDelete={handleDeleteRecruit}
+                          />
+                        ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </TabsContent>
+
+            {/* 신청한 파티 탭 */}
             <TabsContent value="applications">
               {loadingParty ? (
                 <LoadingSkeleton />
@@ -352,12 +690,17 @@ export function MyPage() {
               ) : (
                 <div className="space-y-3">
                   {applications.map((app) => (
-                    <PartyApplicationCard key={app.id} application={app} />
+                    <PartyApplicationCard
+                      key={app.id}
+                      application={app}
+                      onDelete={handleDeleteApplication}
+                    />
                   ))}
                 </div>
               )}
             </TabsContent>
 
+            {/* 내가 파티장 탭 */}
             <TabsContent value="recruits">
               {loadingParty ? (
                 <LoadingSkeleton />
@@ -372,7 +715,11 @@ export function MyPage() {
               ) : (
                 <div className="space-y-3">
                   {myRecruits.map((recruit) => (
-                    <MyRecruitCard key={recruit.id} recruit={recruit} />
+                    <MyRecruitCard
+                      key={recruit.id}
+                      recruit={recruit}
+                      onDelete={handleDeleteRecruit}
+                    />
                   ))}
                 </div>
               )}
@@ -382,8 +729,13 @@ export function MyPage() {
 
         {/* 거래 탭 */}
         <TabsContent value="trade" className="space-y-4">
-          <Tabs defaultValue="selling" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-3">
+          <Tabs defaultValue="overview" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="overview" className="flex items-center gap-1.5">
+                <List className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">종합</span>
+                <span className="sm:hidden">전체</span>
+              </TabsTrigger>
               <TabsTrigger value="selling" className="flex items-center gap-1.5">
                 <ArrowUpCircle className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">파는 물품</span>
@@ -401,6 +753,112 @@ export function MyPage() {
               </TabsTrigger>
             </TabsList>
 
+            {/* 종합 탭 */}
+            <TabsContent value="overview">
+              {loadingTrade ? (
+                <LoadingSkeleton />
+              ) : errorTrade ? (
+                <ErrorState message={errorTrade} onRetry={loadTradeData} />
+              ) : (
+                <>
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <label className="flex items-center gap-2 text-sm">
+                        <Checkbox
+                          checked={tradeFilter.selling}
+                          onCheckedChange={(checked) =>
+                            setTradeFilter((prev) => ({
+                              ...prev,
+                              selling: checked as boolean,
+                            }))
+                          }
+                        />
+                        파는 물품
+                      </label>
+                      <label className="flex items-center gap-2 text-sm">
+                        <Checkbox
+                          checked={tradeFilter.buying}
+                          onCheckedChange={(checked) =>
+                            setTradeFilter((prev) => ({
+                              ...prev,
+                              buying: checked as boolean,
+                            }))
+                          }
+                        />
+                        사는 물품
+                      </label>
+                      <label className="flex items-center gap-2 text-sm">
+                        <Checkbox
+                          checked={tradeFilter.trading}
+                          onCheckedChange={(checked) =>
+                            setTradeFilter((prev) => ({
+                              ...prev,
+                              trading: checked as boolean,
+                            }))
+                          }
+                        />
+                        거래중
+                      </label>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={handleDeleteSelectedTrades}
+                      disabled={selectedTrades.size === 0}
+                    >
+                      <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+                      선택 삭제 ({selectedTrades.size})
+                    </Button>
+                  </div>
+
+                  {filteredTradeItems.length === 0 ? (
+                    <EmptyState
+                      icon={ShoppingBag}
+                      title="표시할 거래가 없습니다"
+                      description="필터를 조정하거나 거래를 추가해보세요"
+                    />
+                  ) : (
+                    <div className="space-y-3">
+                      {tradeFilter.selling &&
+                        sellingItems.map((trade) => (
+                          <TradeItemCard
+                            key={trade.id}
+                            trade={trade}
+                            selectable
+                            selected={selectedTrades.has(trade.id)}
+                            onSelect={handleSelectTrade}
+                            onDelete={handleDeleteTrade}
+                          />
+                        ))}
+                      {tradeFilter.buying &&
+                        buyingItems.map((trade) => (
+                          <TradeItemCard
+                            key={trade.id}
+                            trade={trade}
+                            selectable
+                            selected={selectedTrades.has(trade.id)}
+                            onSelect={handleSelectTrade}
+                            onDelete={handleDeleteTrade}
+                          />
+                        ))}
+                      {tradeFilter.trading &&
+                        tradingItems.map((trade) => (
+                          <TradeItemCard
+                            key={trade.id}
+                            trade={trade}
+                            selectable
+                            selected={selectedTrades.has(trade.id)}
+                            onSelect={handleSelectTrade}
+                            onDelete={handleDeleteTrade}
+                          />
+                        ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </TabsContent>
+
+            {/* 파는 물품 탭 */}
             <TabsContent value="selling">
               {loadingTrade ? (
                 <LoadingSkeleton />
@@ -415,12 +873,17 @@ export function MyPage() {
               ) : (
                 <div className="space-y-3">
                   {sellingItems.map((trade) => (
-                    <TradeItemCard key={trade.id} trade={trade} />
+                    <TradeItemCard
+                      key={trade.id}
+                      trade={trade}
+                      onDelete={handleDeleteTrade}
+                    />
                   ))}
                 </div>
               )}
             </TabsContent>
 
+            {/* 사는 물품 탭 */}
             <TabsContent value="buying">
               {loadingTrade ? (
                 <LoadingSkeleton />
@@ -435,12 +898,17 @@ export function MyPage() {
               ) : (
                 <div className="space-y-3">
                   {buyingItems.map((trade) => (
-                    <TradeItemCard key={trade.id} trade={trade} />
+                    <TradeItemCard
+                      key={trade.id}
+                      trade={trade}
+                      onDelete={handleDeleteTrade}
+                    />
                   ))}
                 </div>
               )}
             </TabsContent>
 
+            {/* 거래중 탭 */}
             <TabsContent value="trading">
               {loadingTrade ? (
                 <LoadingSkeleton />
@@ -455,7 +923,11 @@ export function MyPage() {
               ) : (
                 <div className="space-y-3">
                   {tradingItems.map((trade) => (
-                    <TradeItemCard key={trade.id} trade={trade} />
+                    <TradeItemCard
+                      key={trade.id}
+                      trade={trade}
+                      onDelete={handleDeleteTrade}
+                    />
                   ))}
                 </div>
               )}

@@ -95,3 +95,79 @@ export async function fetchMyTradingItems(userId: string) {
   if (error) throw error
   return data as Trade[]
 }
+
+// ============================================
+// 삭제 관련 함수
+// ============================================
+
+/**
+ * 파티 신청 삭제 (탈퇴)
+ */
+export async function deletePartyApplication(applicationId: string) {
+  const { error } = await supabase
+    .from("party_members")
+    .update({ status: "left" })
+    .eq("id", applicationId)
+
+  if (error) throw error
+}
+
+/**
+ * 파티 신청 여러 개 삭제
+ */
+export async function deletePartyApplications(applicationIds: string[]) {
+  const { error } = await supabase
+    .from("party_members")
+    .update({ status: "left" })
+    .in("id", applicationIds)
+
+  if (error) throw error
+}
+
+/**
+ * 파티 모집 삭제 (취소)
+ */
+export async function deletePartyRecruit(recruitId: string) {
+  const { error } = await supabase
+    .from("party_recruits")
+    .update({ status: "cancelled" })
+    .eq("id", recruitId)
+
+  if (error) throw error
+}
+
+/**
+ * 파티 모집 여러 개 삭제
+ */
+export async function deletePartyRecruits(recruitIds: string[]) {
+  const { error } = await supabase
+    .from("party_recruits")
+    .update({ status: "cancelled" })
+    .in("id", recruitIds)
+
+  if (error) throw error
+}
+
+/**
+ * 거래 삭제 (취소)
+ */
+export async function deleteTrade(tradeId: string) {
+  const { error } = await supabase
+    .from("trades")
+    .update({ status: "cancelled" })
+    .eq("id", tradeId)
+
+  if (error) throw error
+}
+
+/**
+ * 거래 여러 개 삭제
+ */
+export async function deleteTrades(tradeIds: string[]) {
+  const { error } = await supabase
+    .from("trades")
+    .update({ status: "cancelled" })
+    .in("id", tradeIds)
+
+  if (error) throw error
+}
