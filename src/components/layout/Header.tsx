@@ -45,8 +45,8 @@ export function Header() {
             alt="LOD"
             className="h-9 w-9 rounded-lg transition-all md:h-10 md:w-10"
           />
-          <h1 className="max-w-0 overflow-hidden pr-0 text-xl font-bold leading-none tracking-tight opacity-0 transition-all duration-300 xl:max-w-xs xl:pr-3 xl:opacity-100 xl:text-2xl">
-            <span className="text-foreground">LOD-PORTAL</span>
+          <h1 className="flex h-9 max-w-0 items-center overflow-hidden pr-0 text-sm font-bold leading-none tracking-tight opacity-0 transition-all duration-300 md:h-10 xl:max-w-xs xl:pr-2 xl:opacity-100 xl:text-base">
+            <span className="text-foreground">LOD</span>
           </h1>
         </NavLink>
 
