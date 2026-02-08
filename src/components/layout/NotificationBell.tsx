@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Bell, Check, Trash2, X } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -18,14 +18,22 @@ import {
   markAllAsRead,
   deleteNotification,
 } from "@/lib/notifications"
+import { showBrowserNotification } from "@/lib/browser-notifications"
+import {
+  sendDiscordNotification,
+  getDiscordWebhookSettings,
+  getBrowserNotificationSettings,
+} from "@/lib/discord-webhook"
 import { timeAgo } from "@/lib/utils"
 import type { Notification } from "@/types"
 
 export function NotificationBell() {
+  const navigate = useNavigate()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState(false)
+  const previousNotificationsRef = useRef<Notification[]>([])
 
   const loadNotifications = async () => {
     try {
@@ -33,6 +41,41 @@ export function NotificationBell() {
         getNotifications(20),
         getUnreadCount(),
       ])
+
+      // 새로운 알람 감지 및 브라우저/디스코드 알람 전송
+      if (previousNotificationsRef.current.length > 0) {
+        const previousIds = new Set(previousNotificationsRef.current.map((n) => n.id))
+        const newNotifications = notifs.filter((n) => !previousIds.has(n.id))
+
+        for (const newNotif of newNotifications) {
+          // 브라우저 알람
+          const browserSettings = getBrowserNotificationSettings()
+          if (browserSettings.enabled) {
+            showBrowserNotification(newNotif.title, {
+              body: newNotif.message,
+              onClick: () => {
+                if (newNotif.link) {
+                  navigate(newNotif.link)
+                }
+              },
+            })
+          }
+
+          // 디스코드 알람
+          const discordSettings = getDiscordWebhookSettings()
+          if (discordSettings.enabled && discordSettings.webhookUrl) {
+            sendDiscordNotification(
+              discordSettings.webhookUrl,
+              newNotif.type,
+              newNotif.title,
+              newNotif.message,
+              newNotif.link || undefined
+            )
+          }
+        }
+      }
+
+      previousNotificationsRef.current = notifs
       setNotifications(notifs)
       setUnreadCount(count)
     } catch (err) {

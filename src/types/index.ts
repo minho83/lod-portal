@@ -186,6 +186,19 @@ export interface BlacklistEntry {
   blocked_user?: UserProfile
 }
 
+// 관리자 블랙리스트
+export interface AdminBlacklist {
+  id: string
+  target_user_id: string | null
+  target_character_name: string
+  reason: string
+  banned_by: string
+  created_at: string
+  // joined
+  target_user?: UserProfile
+  admin?: UserProfile
+}
+
 // 사기 신고
 export type ReportType = "no_payment" | "no_item"
 export type ReportStatus = "pending" | "reviewing" | "confirmed" | "dismissed" | "resolved"

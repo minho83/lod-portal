@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react"
 import { useSearchParams } from "react-router-dom"
-import { LogIn, Save, Trash2, Ban, ShieldAlert, Clock, CheckCircle2, XCircle, AlertCircle } from "lucide-react"
+import { LogIn, Save, Trash2, Ban, ShieldAlert, Clock, CheckCircle2, XCircle, AlertCircle, Bell } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -19,6 +19,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { JOB_CONFIG } from "@/components/game/ClassBadge"
 import { fetchBlacklist, removeFromBlacklist } from "@/lib/blacklist"
 import { getMyReports } from "@/lib/scam-reports"
+import { NotificationSettings } from "@/components/settings/NotificationSettings"
 import { REPORT_TYPE_LABELS } from "@/types"
 import type { JobClass, BlacklistEntry, ScamReport } from "@/types"
 
@@ -126,8 +127,9 @@ export function ProfilePage() {
       <h2 className="text-xl font-bold">프로필</h2>
 
       <Tabs value={activeTab} onValueChange={(v) => setSearchParams({ tab: v })}>
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="profile">내 정보</TabsTrigger>
+          <TabsTrigger value="notifications">알람 설정</TabsTrigger>
           <TabsTrigger value="blacklist">블랙리스트</TabsTrigger>
           <TabsTrigger value="reports">내 신고</TabsTrigger>
         </TabsList>
@@ -200,6 +202,11 @@ export function ProfilePage() {
               </Button>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* ═══ 알람 설정 탭 ═══ */}
+        <TabsContent value="notifications">
+          <NotificationSettings />
         </TabsContent>
 
         {/* ═══ 블랙리스트 탭 ═══ */}

@@ -12,6 +12,8 @@ import { TradeDetailPage } from "@/pages/TradeDetailPage"
 import { RecruitListPage } from "@/pages/RecruitListPage"
 import { NewRecruitPage } from "@/pages/NewRecruitPage"
 import { RecruitDetailPage } from "@/pages/RecruitDetailPage"
+import DevNotificationsPage from "@/pages/DevNotificationsPage"
+import AdminPage from "@/pages/AdminPage"
 
 export default function App() {
   return (
@@ -30,6 +32,10 @@ export default function App() {
             <Route path="/market" element={<MarketPage />} />
             <Route path="/market/new" element={<NewTradePage />} />
             <Route path="/market/:id" element={<TradeDetailPage />} />
+            {/* 관리자 전용 */}
+            <Route path="/admin" element={<AdminPage />} />
+            {/* 개발자 전용 */}
+            <Route path="/dev/notifications" element={<DevNotificationsPage />} />
           </Route>
         </Routes>
       </AuthProvider>

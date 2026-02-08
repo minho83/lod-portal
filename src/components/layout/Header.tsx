@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User } from "lucide-react"
+import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -144,6 +144,23 @@ function UserMenu({
             프로필
           </NavLink>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NavLink to="/admin" className="cursor-pointer">
+            <Shield className="mr-2 h-4 w-4" />
+            관리자
+          </NavLink>
+        </DropdownMenuItem>
+        {import.meta.env.DEV && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <NavLink to="/dev/notifications" className="cursor-pointer">
+                <TestTube className="mr-2 h-4 w-4" />
+                <span className="text-orange-500">알림 테스트</span>
+              </NavLink>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={onSignOut} className="cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
