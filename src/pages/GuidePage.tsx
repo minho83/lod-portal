@@ -18,46 +18,70 @@ export default function GuidePage() {
       </div>
 
       <Tabs defaultValue="intro" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
-          <TabsTrigger value="intro" className="gap-1.5">
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 bg-muted/50 p-2 gap-2 h-auto">
+          <TabsTrigger
+            value="intro"
+            className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent transition-all"
+          >
             <Zap className="w-4 h-4" />
-            <span className="hidden sm:inline">시작하기</span>
-            <span className="sm:hidden">시작</span>
+            <span className="hidden sm:inline font-medium">시작하기</span>
+            <span className="sm:hidden font-medium">시작</span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="gap-1.5">
+          <TabsTrigger
+            value="notifications"
+            className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent transition-all"
+          >
             <Bell className="w-4 h-4" />
-            <span className="hidden sm:inline">알림 설정</span>
-            <span className="sm:hidden">알림</span>
+            <span className="hidden sm:inline font-medium">알림 설정</span>
+            <span className="sm:hidden font-medium">알림</span>
           </TabsTrigger>
-          <TabsTrigger value="party" className="gap-1.5">
+          <TabsTrigger
+            value="party"
+            className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent transition-all"
+          >
             <Users className="w-4 h-4" />
-            <span className="hidden sm:inline">파티 모집</span>
-            <span className="sm:hidden">파티</span>
+            <span className="hidden sm:inline font-medium">파티 모집</span>
+            <span className="sm:hidden font-medium">파티</span>
           </TabsTrigger>
-          <TabsTrigger value="market" className="gap-1.5">
+          <TabsTrigger
+            value="market"
+            className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent transition-all"
+          >
             <ShoppingBag className="w-4 h-4" />
-            <span className="hidden sm:inline">거래소</span>
-            <span className="sm:hidden">거래</span>
+            <span className="hidden sm:inline font-medium">거래소</span>
+            <span className="sm:hidden font-medium">거래</span>
           </TabsTrigger>
-          <TabsTrigger value="calculator" className="gap-1.5">
+          <TabsTrigger
+            value="calculator"
+            className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent transition-all"
+          >
             <Calculator className="w-4 h-4" />
-            <span className="hidden sm:inline">라르 계산기</span>
-            <span className="sm:hidden">계산기</span>
+            <span className="hidden sm:inline font-medium">라르 계산기</span>
+            <span className="sm:hidden font-medium">계산기</span>
           </TabsTrigger>
-          <TabsTrigger value="spirit" className="gap-1.5">
+          <TabsTrigger
+            value="spirit"
+            className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent transition-all"
+          >
             <Sparkles className="w-4 h-4" />
-            <span className="hidden sm:inline">정령레벨업</span>
-            <span className="sm:hidden">정령</span>
+            <span className="hidden sm:inline font-medium">정령레벨업</span>
+            <span className="sm:hidden font-medium">정령</span>
           </TabsTrigger>
-          <TabsTrigger value="npcmap" className="gap-1.5">
+          <TabsTrigger
+            value="npcmap"
+            className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent transition-all"
+          >
             <MapPin className="w-4 h-4" />
-            <span className="hidden sm:inline">NPC&맵찾기</span>
-            <span className="sm:hidden">맵</span>
+            <span className="hidden sm:inline font-medium">NPC&맵찾기</span>
+            <span className="sm:hidden font-medium">맵</span>
           </TabsTrigger>
-          <TabsTrigger value="mypage" className="gap-1.5">
+          <TabsTrigger
+            value="mypage"
+            className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent transition-all"
+          >
             <User className="w-4 h-4" />
-            <span className="hidden sm:inline">내 페이지</span>
-            <span className="sm:hidden">내정보</span>
+            <span className="hidden sm:inline font-medium">내 페이지</span>
+            <span className="sm:hidden font-medium">내정보</span>
           </TabsTrigger>
         </TabsList>
 
