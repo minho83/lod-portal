@@ -217,3 +217,27 @@ export interface ScamReport {
   reported_user?: UserProfile
   related_trade?: Trade
 }
+
+// ============================================
+// Notification Types
+// ============================================
+
+export type NotificationType =
+  | "party_application"   // 파티 신청
+  | "party_accepted"      // 파티 승인
+  | "party_rejected"      // 파티 거절
+  | "party_kicked"        // 파티 추방
+  | "trade_reservation"   // 거래소 예약
+  | "trade_comment"       // 거래소 댓글
+  | "scam_report_result"  // 사기 신고 결과
+
+export interface Notification {
+  id: string
+  user_id: string
+  type: NotificationType
+  title: string
+  message: string
+  link: string | null
+  read: boolean
+  created_at: string
+}

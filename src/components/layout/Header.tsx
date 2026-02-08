@@ -13,6 +13,7 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
+import { NotificationBell } from "@/components/layout/NotificationBell"
 
 const navItems = [
   { to: "/", label: "파티 빈자리", sub: "나겔톡방", icon: Swords },
@@ -81,16 +82,19 @@ export function Header() {
         </nav>
 
         {/* 로그인 / 유저 메뉴 */}
-        <div className="flex w-20 items-center justify-end">
+        <div className="flex items-center justify-end gap-2">
           {loading ? (
             <Skeleton className="h-8 w-8 rounded-full" />
           ) : user ? (
-            <UserMenu
-              discordId={user.user_metadata.provider_id}
-              discordAvatar={user.user_metadata.avatar_url}
-              displayName={profile?.game_nickname ?? user.user_metadata.full_name ?? "유저"}
-              onSignOut={signOut}
-            />
+            <>
+              <NotificationBell />
+              <UserMenu
+                discordId={user.user_metadata.provider_id}
+                discordAvatar={user.user_metadata.avatar_url}
+                displayName={profile?.game_nickname ?? user.user_metadata.full_name ?? "유저"}
+                onSignOut={signOut}
+              />
+            </>
           ) : (
             <Button variant="ghost" size="sm" onClick={signInWithDiscord}>
               <LogIn className="mr-1.5 h-4 w-4" />
