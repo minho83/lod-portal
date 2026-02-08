@@ -45,7 +45,7 @@ export function Header() {
             alt="LOD"
             className="h-9 w-9 rounded-lg transition-all md:h-10 md:w-10"
           />
-          <h1 className="max-w-0 overflow-hidden pr-0 text-lg font-black leading-none tracking-tight opacity-0 transition-all duration-300 lg:max-w-xs lg:pr-3 lg:opacity-100 xl:text-2xl" style={{
+          <h1 className="max-w-0 overflow-hidden pr-0 text-lg font-black leading-none tracking-tight opacity-0 transition-all duration-300 xl:max-w-xs xl:pr-3 xl:opacity-100 xl:text-2xl" style={{
             textShadow: '2px 2px 0px rgba(0,0,0,0.3)',
             letterSpacing: '-0.5px',
             fontStyle: 'italic'
@@ -74,7 +74,7 @@ export function Header() {
               }
             >
               <Icon className="h-4 w-4 flex-shrink-0" />
-              <span className="max-w-0 overflow-hidden opacity-0 transition-all duration-300 lg:max-w-xs lg:opacity-100">
+              <span className="max-w-0 overflow-hidden opacity-0 transition-all duration-300 xl:max-w-xs xl:opacity-100">
                 {label}
                 {sub && (
                   <span className="ml-1 text-[10px] font-normal opacity-60">({sub})</span>
