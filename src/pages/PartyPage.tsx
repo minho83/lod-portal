@@ -27,7 +27,6 @@ export function PartyPage() {
   const {
     allParties,
     dateDisplay,
-    isToday,
     loading,
     error,
     countdown,
