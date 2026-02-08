@@ -41,7 +41,7 @@ export function Header() {
             alt="LOD"
             className="h-9 w-9 rounded-lg"
           />
-          <h1 className="hidden text-xl font-black tracking-tight sm:block" style={{
+          <h1 className="hidden pr-2 text-xl font-black tracking-tight sm:block" style={{
             textShadow: '2px 2px 0px rgba(0,0,0,0.3)',
             letterSpacing: '-0.5px',
             fontStyle: 'italic'
