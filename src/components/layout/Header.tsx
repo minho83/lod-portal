@@ -35,19 +35,22 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         {/* 로고 */}
-        <NavLink to="/" className="flex items-center gap-2">
-          {/* 모바일: 아이콘만 */}
+        <NavLink to="/" className="flex items-center gap-2.5">
           <img
             src="/lod-portal/lod-icon.png"
             alt="LOD"
-            className="h-9 w-9 rounded-lg sm:hidden"
+            className="h-9 w-9 rounded-lg"
           />
-          {/* 데스크탑: 전체 로고 */}
-          <img
-            src="/lod-portal/lod-logo.png"
-            alt="어둠의전설 - Legend of Darkness"
-            className="hidden h-12 sm:block"
-          />
+          <h1 className="hidden text-xl font-black tracking-tight sm:block" style={{
+            textShadow: '2px 2px 0px rgba(0,0,0,0.3)',
+            letterSpacing: '-0.5px',
+            fontStyle: 'italic'
+          }}>
+            <span className="bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+              어둠의전설
+            </span>
+            <span className="ml-2 text-sm font-bold text-primary">도우미</span>
+          </h1>
         </NavLink>
 
         {/* 네비게이션 */}
