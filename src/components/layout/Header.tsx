@@ -24,7 +24,6 @@ const navItems = [
   { to: "/npcmap", label: "NPC&맵찾기", icon: Map },
   { to: "/search", label: "DB 검색", icon: Search },
   { to: "/wiki", label: "뉴비 가이드", icon: BookOpen },
-  { to: "/guide", label: "사용법", icon: HelpCircle },
 ]
 
 function getDiscordAvatarUrl(discordId: string, avatar: string | null) {
@@ -51,7 +50,7 @@ export function Header() {
         </NavLink>
 
         {/* 네비게이션 */}
-        <nav className="scrollbar-hide flex flex-1 items-center gap-1 overflow-x-auto pr-2">
+        <nav className="scrollbar-hide flex flex-1 items-center gap-0.5 overflow-x-auto pr-4 lg:gap-1">
           {navItems.map(({ to, label, sub, icon: Icon }) => (
             <NavLink
               key={to}
@@ -59,7 +58,7 @@ export function Header() {
               end={to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition-all duration-300 lg:px-3",
+                  "flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-1.5 py-1.5 text-sm font-medium transition-all duration-300 lg:gap-1.5 lg:px-2 xl:px-3",
                   isActive
                     ? "bg-primary/15 text-foreground font-semibold"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground",
