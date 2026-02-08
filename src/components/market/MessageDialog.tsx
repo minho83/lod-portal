@@ -59,18 +59,44 @@ export function MessageDialog({ open, onOpenChange, trade }: MessageDialogProps)
   }
 
   const handleSend = async () => {
-    if (!input.trim() || sending) return
+    if (!input.trim() || sending || !user) return
 
+    const messageText = input.trim()
     setSending(true)
-    try {
-      const newMessage = await sendTradeMessage(trade.id, input.trim())
-      console.log("메시지 전송 성공:", newMessage)
 
-      // 메시지 목록 새로고침
+    // 낙관적 업데이트: 임시 메시지 즉시 표시
+    const tempMessage: TradeMessage = {
+      id: `temp-${Date.now()}`,
+      trade_id: trade.id,
+      sender_id: user.id,
+      message: messageText,
+      read: false,
+      created_at: new Date().toISOString(),
+      sender: {
+        id: user.id,
+        discord_id: user.user_metadata?.discord_id || "",
+        discord_username: user.user_metadata?.discord_username || "",
+        game_nickname: user.user_metadata?.game_nickname || "",
+        discord_avatar: user.user_metadata?.discord_avatar || null,
+        game_class: null,
+        created_at: "",
+        updated_at: "",
+      },
+    }
+
+    setMessages([...messages, tempMessage])
+    setInput("")
+
+    try {
+      await sendTradeMessage(trade.id, messageText)
+      console.log("메시지 전송 성공")
+
+      // 서버에서 최신 메시지 다시 가져오기
       await loadMessages()
-      setInput("")
-      toast.success("메시지가 전송되었습니다")
     } catch (error) {
+      // 실패하면 임시 메시지 제거
+      setMessages(messages)
+      setInput(messageText)
       toast.error("메시지 전송에 실패했습니다")
       console.error("메시지 전송 오류:", error)
     } finally {

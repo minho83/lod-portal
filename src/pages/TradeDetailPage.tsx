@@ -365,18 +365,29 @@ export function TradeDetailPage() {
                   <MessageCircle className="mr-2 h-4 w-4" />
                   거래 문의
                 </Button>
-                <Button
-                  size="sm"
-                  disabled={updating || trade.status === "reserved"}
-                  onClick={handleTradeRequest}
-                >
-                  <Handshake className="mr-2 h-4 w-4" />
-                  거래 요청
-                </Button>
+                {trade.status === "reserved" && trade.buyer_id === user.id ? (
+                  <Button size="sm" disabled variant="secondary">
+                    🤝 거래중
+                  </Button>
+                ) : (
+                  <Button
+                    size="sm"
+                    disabled={updating || trade.status === "reserved"}
+                    onClick={handleTradeRequest}
+                  >
+                    <Handshake className="mr-2 h-4 w-4" />
+                    거래 요청
+                  </Button>
+                )}
               </div>
-              {trade.status === "reserved" && (
+              {trade.status === "reserved" && trade.buyer_id !== user.id && (
                 <p className="text-center text-xs text-muted-foreground">
-                  ⏳ 현재 예약중인 물품입니다
+                  ⏳ 현재 다른 사용자가 거래중입니다
+                </p>
+              )}
+              {trade.status === "reserved" && trade.buyer_id === user.id && (
+                <p className="text-center text-xs text-primary">
+                  ✅ 거래 요청이 완료되었습니다. 판매자의 답변을 기다려주세요.
                 </p>
               )}
             </div>
