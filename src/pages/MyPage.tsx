@@ -453,6 +453,64 @@ export function MyPage() {
     setSelectedTrades(newSet)
   }
 
+  // 파티 전체 선택/해제
+  const handleSelectAllParty = (checked: boolean) => {
+    if (checked) {
+      setSelectedApplications(
+        new Set(
+          partyFilter.applications ? applications.map((a) => a.id) : []
+        )
+      )
+      setSelectedRecruits(
+        new Set(partyFilter.recruits ? myRecruits.map((r) => r.id) : [])
+      )
+    } else {
+      setSelectedApplications(new Set())
+      setSelectedRecruits(new Set())
+    }
+  }
+
+  // 거래 전체 선택/해제
+  const handleSelectAllTrade = (checked: boolean) => {
+    if (checked) {
+      const allIds = new Set([
+        ...(tradeFilter.selling ? sellingItems.map((t) => t.id) : []),
+        ...(tradeFilter.buying ? buyingItems.map((t) => t.id) : []),
+        ...(tradeFilter.trading ? tradingItems.map((t) => t.id) : []),
+      ])
+      setSelectedTrades(allIds)
+    } else {
+      setSelectedTrades(new Set())
+    }
+  }
+
+  // 파티 전체 선택 상태 계산
+  const partySelectAllState = (() => {
+    const totalVisible =
+      (partyFilter.applications ? applications.length : 0) +
+      (partyFilter.recruits ? myRecruits.length : 0)
+    const totalSelected = selectedApplications.size + selectedRecruits.size
+    if (totalVisible === 0) return { checked: false, indeterminate: false }
+    if (totalSelected === 0) return { checked: false, indeterminate: false }
+    if (totalSelected === totalVisible)
+      return { checked: true, indeterminate: false }
+    return { checked: false, indeterminate: true }
+  })()
+
+  // 거래 전체 선택 상태 계산
+  const tradeSelectAllState = (() => {
+    const totalVisible =
+      (tradeFilter.selling ? sellingItems.length : 0) +
+      (tradeFilter.buying ? buyingItems.length : 0) +
+      (tradeFilter.trading ? tradingItems.length : 0)
+    const totalSelected = selectedTrades.size
+    if (totalVisible === 0) return { checked: false, indeterminate: false }
+    if (totalSelected === 0) return { checked: false, indeterminate: false }
+    if (totalSelected === totalVisible)
+      return { checked: true, indeterminate: false }
+    return { checked: false, indeterminate: true }
+  })()
+
   // 파티 신청 개별 삭제
   const handleDeleteApplication = async (id: string) => {
     if (!confirm("파티 신청을 취소하시겠습니까?")) return
@@ -595,48 +653,63 @@ export function MyPage() {
                 <ErrorState message={errorParty} onRetry={loadPartyData} />
               ) : (
                 <>
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox
-                          checked={partyFilter.applications}
-                          onCheckedChange={(checked) =>
-                            setPartyFilter((prev) => ({
-                              ...prev,
-                              applications: checked as boolean,
-                            }))
-                          }
-                        />
-                        신청한 파티
-                      </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox
-                          checked={partyFilter.recruits}
-                          onCheckedChange={(checked) =>
-                            setPartyFilter((prev) => ({
-                              ...prev,
-                              recruits: checked as boolean,
-                            }))
-                          }
-                        />
-                        내가 파티장인 파티
-                      </label>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <label className="flex items-center gap-2 text-sm">
+                          <Checkbox
+                            checked={partyFilter.applications}
+                            onCheckedChange={(checked) =>
+                              setPartyFilter((prev) => ({
+                                ...prev,
+                                applications: checked as boolean,
+                              }))
+                            }
+                          />
+                          신청한 파티
+                        </label>
+                        <label className="flex items-center gap-2 text-sm">
+                          <Checkbox
+                            checked={partyFilter.recruits}
+                            onCheckedChange={(checked) =>
+                              setPartyFilter((prev) => ({
+                                ...prev,
+                                recruits: checked as boolean,
+                              }))
+                            }
+                          />
+                          내가 파티장인 파티
+                        </label>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => {
+                          handleDeleteSelectedApplications()
+                          handleDeleteSelectedRecruits()
+                        }}
+                        disabled={
+                          selectedApplications.size === 0 && selectedRecruits.size === 0
+                        }
+                      >
+                        <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+                        선택 삭제 (
+                        {selectedApplications.size + selectedRecruits.size})
+                      </Button>
                     </div>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => {
-                        handleDeleteSelectedApplications()
-                        handleDeleteSelectedRecruits()
-                      }}
-                      disabled={
-                        selectedApplications.size === 0 && selectedRecruits.size === 0
-                      }
-                    >
-                      <Trash2 className="h-3.5 w-3.5 mr-1.5" />
-                      선택 삭제 (
-                      {selectedApplications.size + selectedRecruits.size})
-                    </Button>
+
+                    {filteredPartyItems.length > 0 && (
+                      <div className="flex items-center gap-2 text-sm border-b pb-2">
+                        <Checkbox
+                          checked={partySelectAllState.checked}
+                          onCheckedChange={handleSelectAllParty}
+                          {...(partySelectAllState.indeterminate && {
+                            "data-state": "indeterminate" as any,
+                          })}
+                        />
+                        <span className="text-muted-foreground">전체 선택</span>
+                      </div>
+                    )}
                   </div>
 
                   {filteredPartyItems.length === 0 ? (
@@ -761,54 +834,69 @@ export function MyPage() {
                 <ErrorState message={errorTrade} onRetry={loadTradeData} />
               ) : (
                 <>
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox
-                          checked={tradeFilter.selling}
-                          onCheckedChange={(checked) =>
-                            setTradeFilter((prev) => ({
-                              ...prev,
-                              selling: checked as boolean,
-                            }))
-                          }
-                        />
-                        파는 물품
-                      </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox
-                          checked={tradeFilter.buying}
-                          onCheckedChange={(checked) =>
-                            setTradeFilter((prev) => ({
-                              ...prev,
-                              buying: checked as boolean,
-                            }))
-                          }
-                        />
-                        사는 물품
-                      </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox
-                          checked={tradeFilter.trading}
-                          onCheckedChange={(checked) =>
-                            setTradeFilter((prev) => ({
-                              ...prev,
-                              trading: checked as boolean,
-                            }))
-                          }
-                        />
-                        거래중
-                      </label>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <label className="flex items-center gap-2 text-sm">
+                          <Checkbox
+                            checked={tradeFilter.selling}
+                            onCheckedChange={(checked) =>
+                              setTradeFilter((prev) => ({
+                                ...prev,
+                                selling: checked as boolean,
+                              }))
+                            }
+                          />
+                          파는 물품
+                        </label>
+                        <label className="flex items-center gap-2 text-sm">
+                          <Checkbox
+                            checked={tradeFilter.buying}
+                            onCheckedChange={(checked) =>
+                              setTradeFilter((prev) => ({
+                                ...prev,
+                                buying: checked as boolean,
+                              }))
+                            }
+                          />
+                          사는 물품
+                        </label>
+                        <label className="flex items-center gap-2 text-sm">
+                          <Checkbox
+                            checked={tradeFilter.trading}
+                            onCheckedChange={(checked) =>
+                              setTradeFilter((prev) => ({
+                                ...prev,
+                                trading: checked as boolean,
+                              }))
+                            }
+                          />
+                          거래중
+                        </label>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={handleDeleteSelectedTrades}
+                        disabled={selectedTrades.size === 0}
+                      >
+                        <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+                        선택 삭제 ({selectedTrades.size})
+                      </Button>
                     </div>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={handleDeleteSelectedTrades}
-                      disabled={selectedTrades.size === 0}
-                    >
-                      <Trash2 className="h-3.5 w-3.5 mr-1.5" />
-                      선택 삭제 ({selectedTrades.size})
-                    </Button>
+
+                    {filteredTradeItems.length > 0 && (
+                      <div className="flex items-center gap-2 text-sm border-b pb-2">
+                        <Checkbox
+                          checked={tradeSelectAllState.checked}
+                          onCheckedChange={handleSelectAllTrade}
+                          {...(tradeSelectAllState.indeterminate && {
+                            "data-state": "indeterminate" as any,
+                          })}
+                        />
+                        <span className="text-muted-foreground">전체 선택</span>
+                      </div>
+                    )}
                   </div>
 
                   {filteredTradeItems.length === 0 ? (
