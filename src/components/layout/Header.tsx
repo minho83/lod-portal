@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield } from "lucide-react"
+import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield, HelpCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -22,6 +22,7 @@ const navItems = [
   { to: "/calculator", label: "라르 계산기", icon: Calculator },
   { to: "/search", label: "DB 검색", icon: Search },
   { to: "/wiki", label: "뉴비 가이드", icon: BookOpen },
+  { to: "/guide", label: "사용법", icon: HelpCircle },
 ]
 
 function getDiscordAvatarUrl(discordId: string, avatar: string | null) {

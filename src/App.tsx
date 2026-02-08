@@ -14,6 +14,7 @@ import { NewRecruitPage } from "@/pages/NewRecruitPage"
 import { RecruitDetailPage } from "@/pages/RecruitDetailPage"
 import DevNotificationsPage from "@/pages/DevNotificationsPage"
 import AdminPage from "@/pages/AdminPage"
+import GuidePage from "@/pages/GuidePage"
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="/calculator" element={<CalculatorPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/wiki" element={<WikiPage />} />
+            <Route path="/guide" element={<GuidePage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/recruit" element={<RecruitListPage />} />
             <Route path="/recruit/new" element={<NewRecruitPage />} />
