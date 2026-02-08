@@ -76,6 +76,141 @@ function IntroGuide() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          {/* Discord 회원가입 안내 */}
+          <div>
+            <h3 className="font-semibold text-lg mb-3">🎮 Discord 회원가입 (필수)</h3>
+            <div className="space-y-4">
+              <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl">ℹ️</div>
+                  <div className="text-sm">
+                    <div className="font-semibold mb-1">Discord란?</div>
+                    <div className="text-muted-foreground space-y-1">
+                      <div>• 카카오톡과 비슷한 무료 메신저입니다</div>
+                      <div>• 게임 유저들이 주로 사용하는 소통 프로그램입니다</div>
+                      <div>• PC와 휴대폰 모두에서 사용할 수 있습니다</div>
+                      <div>• LOD 포털은 Discord 계정으로 로그인합니다</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="font-medium text-sm">💻 PC에서 Discord 가입하기:</div>
+                <div className="space-y-2 pl-4 border-l-2 border-primary/30">
+                  <Step
+                    number={1}
+                    title="Discord 웹사이트 접속"
+                    description="인터넷 주소창에 discord.com 입력 후 엔터"
+                  />
+                  <Step
+                    number={2}
+                    title="'Discord 열기' 클릭"
+                    description="화면 중앙의 파란색 버튼 클릭"
+                  />
+                  <Step
+                    number={3}
+                    title="이메일로 가입"
+                    description="이메일 주소, 사용자 이름(닉네임), 비밀번호 입력"
+                  />
+                  <Step
+                    number={4}
+                    title="생년월일 입력"
+                    description="본인의 생년월일 입력 (만 13세 이상)"
+                  />
+                  <Step
+                    number={5}
+                    title="이메일 인증"
+                    description="입력한 이메일로 온 인증 메일의 '이메일 인증' 버튼 클릭"
+                  />
+                  <Step
+                    number={6}
+                    title="가입 완료!"
+                    description="Discord 회원가입이 완료되었습니다"
+                  />
+                </div>
+              </div>
+
+              <div className="bg-muted p-4 rounded-lg">
+                <div className="text-sm space-y-2">
+                  <div className="font-medium">📷 이미지 필요:</div>
+                  <div className="text-muted-foreground">
+                    • Discord 메인 페이지 스크린샷
+                    <br />• 회원가입 화면 스크린샷
+                    <br />• 이메일 인증 메일 스크린샷
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3 mt-4">
+                <div className="font-medium text-sm">📱 스마트폰에서 Discord 가입하기:</div>
+                <div className="space-y-2 pl-4 border-l-2 border-primary/30">
+                  <Step
+                    number={1}
+                    title="앱 설치"
+                    description="'Play 스토어' 또는 '앱스토어'에서 'Discord' 검색 후 설치"
+                  />
+                  <Step
+                    number={2}
+                    title="앱 실행"
+                    description="설치한 Discord 앱 실행"
+                  />
+                  <Step
+                    number={3}
+                    title="회원가입 시작"
+                    description="'계정 등록' 버튼 클릭"
+                  />
+                  <Step
+                    number={4}
+                    title="정보 입력"
+                    description="이메일, 사용자 이름, 비밀번호, 생년월일 입력"
+                  />
+                  <Step
+                    number={5}
+                    title="이메일 인증"
+                    description="이메일로 온 인증 메일 확인 후 인증"
+                  />
+                  <Step
+                    number={6}
+                    title="가입 완료!"
+                    description="Discord 회원가입이 완료되었습니다"
+                  />
+                </div>
+              </div>
+
+              <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-lg mt-4">
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl">✅</div>
+                  <div className="text-sm">
+                    <div className="font-semibold mb-1">Discord 가입 완료 후</div>
+                    <div className="text-muted-foreground">
+                      Discord 계정만 있으면 LOD 포털에 바로 로그인할 수 있습니다!
+                      <br />
+                      아래 'LOD 포털 시작하기' 순서대로 진행하세요.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl">⚠️</div>
+                  <div className="text-sm">
+                    <div className="font-semibold mb-1">중요 안내</div>
+                    <div className="text-muted-foreground space-y-1">
+                      <div>• 비밀번호는 반드시 기억해두세요 (분실 시 이메일로 재설정)</div>
+                      <div>• 이메일 주소는 정확하게 입력하세요 (인증 메일 받아야 함)</div>
+                      <div>• 사용자 이름은 나중에 변경 가능합니다</div>
+                      <div>• Discord 앱 설치는 선택사항입니다 (웹에서도 사용 가능)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
           <div>
             <h3 className="font-semibold mb-2">✨ 주요 기능</h3>
             <div className="grid gap-3">
@@ -100,28 +235,107 @@ function IntroGuide() {
           <Separator />
 
           <div>
-            <h3 className="font-semibold mb-3">🚀 시작하기</h3>
+            <h3 className="font-semibold text-lg mb-3">🚀 LOD 포털 시작하기</h3>
             <div className="space-y-4">
-              <Step
-                number={1}
-                title="Discord 로그인"
-                description="우측 상단 '로그인' 버튼을 클릭하여 Discord 계정으로 로그인하세요"
-              />
-              <Step
-                number={2}
-                title="프로필 설정"
-                description="프로필 메뉴에서 게임 닉네임과 직업을 설정하세요 (선택사항)"
-              />
-              <Step
-                number={3}
-                title="알림 설정"
-                description="브라우저 알림 권한을 허용하면 실시간 알림을 받을 수 있습니다"
-              />
-              <Step
-                number={4}
-                title="시작!"
-                description="파티 모집, 거래소 등 원하는 기능을 자유롭게 이용하세요"
-              />
+              <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-lg">
+                <div className="text-sm">
+                  <div className="font-semibold mb-2">1단계: LOD 포털 로그인</div>
+                  <div className="space-y-2 pl-4 border-l-2 border-primary/30">
+                    <Step
+                      number={1}
+                      title="LOD 포털 접속"
+                      description="인터넷 주소창에 LOD 포털 주소 입력"
+                    />
+                    <Step
+                      number={2}
+                      title="로그인 버튼 찾기"
+                      description="화면 우측 상단의 '로그인' 버튼 클릭"
+                    />
+                    <Step
+                      number={3}
+                      title="Discord로 계속하기"
+                      description="'Discord로 로그인' 버튼 클릭 (새 창 열림)"
+                    />
+                    <Step
+                      number={4}
+                      title="Discord 로그인"
+                      description="Discord 이메일과 비밀번호 입력 후 로그인"
+                    />
+                    <Step
+                      number={5}
+                      title="권한 승인"
+                      description="'승인' 버튼을 클릭하여 LOD 포털에 권한 허용"
+                    />
+                    <Step
+                      number={6}
+                      title="로그인 완료!"
+                      description="자동으로 LOD 포털로 돌아오며 로그인됩니다"
+                    />
+                  </div>
+                  <div className="mt-3 p-3 bg-muted rounded">
+                    <div className="text-xs text-muted-foreground">
+                      💡 <strong>권한 승인이란?</strong> LOD 포털이 회원님의 Discord 이름과 프로필 사진을 사용할 수 있도록 허용하는 것입니다.
+                      메시지를 보내거나 개인정보를 수집하지 않으니 안심하세요.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-muted p-4 rounded-lg">
+                <div className="text-sm space-y-2">
+                  <div className="font-medium">📷 이미지 필요:</div>
+                  <div className="text-muted-foreground">
+                    • LOD 포털 메인 화면 (로그인 버튼 표시)
+                    <br />• Discord 로그인 화면
+                    <br />• Discord 권한 승인 화면
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="font-semibold">2단계: 프로필 설정 (선택사항)</div>
+                <div className="text-sm text-muted-foreground pl-4">
+                  로그인 후 우측 상단 프로필 메뉴 → '프로필'에서 게임 닉네임과 직업을 설정할 수 있습니다.
+                  <br />
+                  설정하지 않아도 사용할 수 있지만, 설정하면 다른 유저들이 알아보기 쉽습니다.
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="font-semibold">3단계: 알림 설정 (선택사항)</div>
+                <div className="text-sm text-muted-foreground pl-4">
+                  프로필 → 알림 설정에서 브라우저 알림을 켜면 파티 신청, 거래 예약 등을 실시간으로 알림받을 수 있습니다.
+                  <br />
+                  자세한 방법은 '알림 설정' 탭을 참고하세요.
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="font-semibold">4단계: 자유롭게 사용하기!</div>
+                <div className="text-sm text-muted-foreground pl-4">
+                  • <strong>파티 모집</strong>: 파티원 모집 또는 참가
+                  <br />
+                  • <strong>거래소</strong>: 아이템 사고팔기
+                  <br />
+                  • <strong>라르 계산기</strong>: 경험치 계산
+                  <br />
+                  • <strong>DB 검색</strong>: 아이템/스킬 정보 찾기
+                </div>
+              </div>
+
+              <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl">🎉</div>
+                  <div className="text-sm">
+                    <div className="font-semibold mb-1">축하합니다!</div>
+                    <div className="text-muted-foreground">
+                      LOD 포털 사용 준비가 완료되었습니다.
+                      <br />
+                      파티 모집, 거래소 등 원하는 기능을 자유롭게 이용하세요!
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
