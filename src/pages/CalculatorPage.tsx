@@ -1,11 +1,13 @@
 import { useState, useCallback, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Calculator, Target, TrendingUp, Gem, Battery, InfoIcon } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Calculator, Target, TrendingUp, Gem, Battery, InfoIcon, User } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { DEFAULT_SETTINGS, loadSettings, saveSettings } from "@/components/game/calculator/types"
 import type { CalcSettings } from "@/components/game/calculator/types"
 import { SettingsPanel } from "@/components/game/calculator/SettingsPanel"
+import { StatInputGroup, DansuDisplay } from "@/components/game/calculator/shared"
+import { calculateTotalExp, calculateDansu } from "@/lib/calculator"
 import { RequiredMode } from "@/components/game/calculator/RequiredMode"
 import { TargetDansuMode } from "@/components/game/calculator/TargetDansuMode"
 import { ReverseMode } from "@/components/game/calculator/ReverseMode"
@@ -13,6 +15,8 @@ import { FullExpMode } from "@/components/game/calculator/FullExpMode"
 
 export function CalculatorPage() {
   const [settings, setSettings] = useState<CalcSettings>(DEFAULT_SETTINGS)
+  const [currentHp, setCurrentHp] = useState("0")
+  const [currentMp, setCurrentMp] = useState("0")
 
   // localStorage에서 설정 로드
   useEffect(() => {
@@ -37,10 +41,48 @@ export function CalculatorPage() {
       <Alert>
         <InfoIcon className="h-4 w-4" />
         <AlertDescription className="text-sm">
-          <strong>💡 TIP:</strong> 모든 HP/MP는 <strong className="text-primary">순수 스탯(아이템 제외)</strong>을 입력하세요.
-          값을 입력하면 자동으로 필요한 라르, 비용, 단수 변화가 계산됩니다.
+          <strong>💡 TIP:</strong> 아래에 <strong className="text-primary">현재 순수 스탯(아이템 제외)</strong>을 먼저 입력하세요.
+          입력한 값은 모든 탭에서 공유되며, 값을 입력하면 자동으로 계산됩니다.
         </AlertDescription>
       </Alert>
+
+      <Card className="border-primary/20 bg-primary/10">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <User className="h-4 w-4 text-primary" />
+            현재 순수 스탯 (아이템 제외)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-4">
+              <StatInputGroup
+                label="현재 HP"
+                value={currentHp}
+                onChange={setCurrentHp}
+                colorClass="text-warrior"
+                showQuickButtons
+              />
+            </div>
+            <div className="space-y-4">
+              <StatInputGroup
+                label="현재 MP"
+                value={currentMp}
+                onChange={setCurrentMp}
+                colorClass="text-mage"
+                showQuickButtons
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <DansuDisplay
+              result={calculateDansu(
+                calculateTotalExp(parseInt(currentHp) || 0, parseInt(currentMp) || 0)
+              )}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="border-primary/20 bg-primary/5">
         <CardContent className="py-4">
@@ -93,16 +135,32 @@ export function CalculatorPage() {
         </TabsList>
 
         <TabsContent value="required">
-          <RequiredMode settings={settings} />
+          <RequiredMode
+            settings={settings}
+            currentHp={currentHp}
+            currentMp={currentMp}
+          />
         </TabsContent>
         <TabsContent value="target">
-          <TargetDansuMode settings={settings} />
+          <TargetDansuMode
+            settings={settings}
+            currentHp={currentHp}
+            currentMp={currentMp}
+          />
         </TabsContent>
         <TabsContent value="reverse">
-          <ReverseMode settings={settings} />
+          <ReverseMode
+            settings={settings}
+            currentHp={currentHp}
+            currentMp={currentMp}
+          />
         </TabsContent>
         <TabsContent value="fullexp">
-          <FullExpMode settings={settings} />
+          <FullExpMode
+            settings={settings}
+            currentHp={currentHp}
+            currentMp={currentMp}
+          />
         </TabsContent>
       </Tabs>
     </div>

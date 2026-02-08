@@ -15,15 +15,20 @@ import {
 } from "@/lib/calculator"
 import type { CalcSettings } from "@/components/game/calculator/types"
 import {
-  StatInputGroup,
   ResultCard,
   ResultRow,
   CostSummary,
 } from "@/components/game/calculator/shared"
 
-export function TargetDansuMode({ settings }: { settings: CalcSettings }) {
-  const [currentHp, setCurrentHp] = useState("0")
-  const [currentMp, setCurrentMp] = useState("0")
+export function TargetDansuMode({
+  settings,
+  currentHp,
+  currentMp,
+}: {
+  settings: CalcSettings
+  currentHp: string
+  currentMp: string
+}) {
   const [targetDansu, setTargetDansu] = useState("7")
   const [statChoice, setStatChoice] = useState<"both" | "hp" | "mp">("both")
 
@@ -71,14 +76,9 @@ export function TargetDansuMode({ settings }: { settings: CalcSettings }) {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">현재 스탯 &amp; 목표</CardTitle>
+          <CardTitle className="text-sm">목표 설정</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <StatInputGroup label="HP" value={currentHp} onChange={setCurrentHp} colorClass="text-warrior" />
-            <StatInputGroup label="MP" value={currentMp} onChange={setCurrentMp} colorClass="text-mage" />
-          </div>
-
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">목표 단수</label>
             <select

@@ -11,15 +11,20 @@ import {
 } from "@/lib/calculator"
 import type { CalcSettings } from "@/components/game/calculator/types"
 import {
-  StatInputGroup,
   DansuDisplay,
   ResultCard,
   ResultRow,
 } from "@/components/game/calculator/shared"
 
-export function ReverseMode({ settings }: { settings: CalcSettings }) {
-  const [currentHp, setCurrentHp] = useState("0")
-  const [currentMp, setCurrentMp] = useState("0")
+export function ReverseMode({
+  settings,
+  currentHp,
+  currentMp,
+}: {
+  settings: CalcSettings
+  currentHp: string
+  currentMp: string
+}) {
   const [larCount, setLarCount] = useState("0")
   const [statChoice, setStatChoice] = useState<"hp" | "mp">("hp")
 
@@ -66,14 +71,9 @@ export function ReverseMode({ settings }: { settings: CalcSettings }) {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">현재 스탯 &amp; 보유 라르</CardTitle>
+          <CardTitle className="text-sm">보유 라르 &amp; 올릴 스탯</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <StatInputGroup label="HP" value={currentHp} onChange={setCurrentHp} colorClass="text-warrior" />
-            <StatInputGroup label="MP" value={currentMp} onChange={setCurrentMp} colorClass="text-mage" />
-          </div>
-
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">보유 라르</label>
             <Input

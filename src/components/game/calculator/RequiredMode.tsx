@@ -10,15 +10,20 @@ import {
 import type { CalcSettings } from "@/components/game/calculator/types"
 import {
   StatInputGroup,
-  DansuDisplay,
   ResultCard,
   ResultRow,
   CostSummary,
 } from "@/components/game/calculator/shared"
 
-export function RequiredMode({ settings }: { settings: CalcSettings }) {
-  const [currentHp, setCurrentHp] = useState("0")
-  const [currentMp, setCurrentMp] = useState("0")
+export function RequiredMode({
+  settings,
+  currentHp,
+  currentMp,
+}: {
+  settings: CalcSettings
+  currentHp: string
+  currentMp: string
+}) {
   const [targetHp, setTargetHp] = useState("0")
   const [targetMp, setTargetMp] = useState("0")
 
@@ -44,35 +49,12 @@ export function RequiredMode({ settings }: { settings: CalcSettings }) {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">현재 스탯</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <StatInputGroup
-              label="HP"
-              value={currentHp}
-              onChange={setCurrentHp}
-              colorClass="text-warrior"
-              showQuickButtons
-            />
-            <StatInputGroup
-              label="MP"
-              value={currentMp}
-              onChange={setCurrentMp}
-              colorClass="text-mage"
-              showQuickButtons
-            />
-            <DansuDisplay result={result.currentDansu} />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">목표 스탯</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm">목표 스탯</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2">
             <StatInputGroup
               label="목표 HP"
               value={targetHp}
@@ -87,9 +69,9 @@ export function RequiredMode({ settings }: { settings: CalcSettings }) {
               colorClass="text-mage"
               showQuickButtons
             />
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {hasInput && (
         <ResultCard title="계산 결과">
