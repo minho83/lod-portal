@@ -22,7 +22,7 @@ interface MessageDialogProps {
 }
 
 export function MessageDialog({ open, onOpenChange, trade }: MessageDialogProps) {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const [messages, setMessages] = useState<TradeMessage[]>([])
   const [input, setInput] = useState("")
   const [sending, setSending] = useState(false)
@@ -72,16 +72,16 @@ export function MessageDialog({ open, onOpenChange, trade }: MessageDialogProps)
       message: messageText,
       read: false,
       created_at: new Date().toISOString(),
-      sender: {
-        id: user.id,
-        discord_id: user.user_metadata?.discord_id || "",
-        discord_username: user.user_metadata?.discord_username || "",
-        game_nickname: user.user_metadata?.game_nickname || "",
-        discord_avatar: user.user_metadata?.discord_avatar || null,
-        game_class: null,
-        created_at: "",
-        updated_at: "",
-      },
+      sender: profile ? {
+        id: profile.id,
+        discord_id: profile.discord_id,
+        discord_username: profile.discord_username,
+        game_nickname: profile.game_nickname,
+        discord_avatar: profile.discord_avatar,
+        game_class: profile.game_class,
+        created_at: profile.created_at,
+        updated_at: profile.updated_at,
+      } : undefined,
     }
 
     setMessages([...messages, tempMessage])

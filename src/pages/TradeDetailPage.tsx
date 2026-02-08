@@ -35,7 +35,7 @@ const BUY_STATUS_LABELS: Record<TradeStatus, { label: string; variant: "default"
 export function TradeDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const [trade, setTrade] = useState<Trade | null>(null)
   const [priceMap, setPriceMap] = useState<Map<string, MarketPrice>>(new Map())
   const [loading, setLoading] = useState(true)
@@ -95,7 +95,7 @@ export function TradeDetailPage() {
         user_id: trade.seller_id,
         type: "trade_request",
         title: "🤝 거래 요청",
-        message: `${user.user_metadata?.game_nickname || user.user_metadata?.discord_username || "누군가"}님이 "${trade.item_name}" 거래를 요청했습니다`,
+        message: `${profile?.game_nickname || profile?.discord_username || "누군가"}님이 "${trade.item_name}" 거래를 요청했습니다`,
         link: `/market/${trade.id}`,
       })
 
