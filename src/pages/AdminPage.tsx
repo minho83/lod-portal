@@ -18,15 +18,15 @@ import {
   removeFromBlacklist,
   getScamReportsAdmin,
   updateScamReportStatus,
-  getUsers,
   searchUsers,
   getRecentTrades,
   getRecentRecruits,
   deleteTradeAdmin,
   deleteRecruitAdmin,
   getAdminStats,
+  type AdminStats,
 } from "@/lib/admin"
-import type { AdminBlacklist, ScamReport, UserProfile, Trade, PartyRecruit, AdminStats } from "@/types"
+import type { AdminBlacklist, ScamReport, UserProfile, Trade, PartyRecruit } from "@/types"
 import { REPORT_TYPE_LABELS } from "@/types"
 
 export default function AdminPage() {

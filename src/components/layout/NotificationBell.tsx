@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { Bell, Check, Trash2, X } from "lucide-react"
+import { Bell, Check, Trash2 } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
