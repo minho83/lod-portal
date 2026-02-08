@@ -15,7 +15,7 @@ export async function fetchMyApplications(userId: string) {
       *,
       recruit:party_recruits!party_members_recruit_id_fkey(
         *,
-        author:profiles!party_recruits_author_id_fkey(*)
+        author:profiles!party_recruits_author_profile_fkey(*)
       )
     `)
     .eq("user_id", userId)
@@ -34,7 +34,7 @@ export async function fetchMyRecruits(userId: string) {
     .from("party_recruits")
     .select(`
       *,
-      author:profiles!party_recruits_author_id_fkey(*),
+      author:profiles!party_recruits_author_profile_fkey(*),
       members:party_members(*)
     `)
     .eq("author_id", userId)
