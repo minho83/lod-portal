@@ -1,4 +1,4 @@
-import { BookOpen, Bell, Users, ShoppingBag, Zap } from "lucide-react"
+import { BookOpen, Bell, Users, ShoppingBag, Zap, Calculator, User } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
@@ -18,22 +18,36 @@ export default function GuidePage() {
       </div>
 
       <Tabs defaultValue="intro" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="intro">
-            <Zap className="w-4 h-4 mr-2" />
-            시작하기
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6">
+          <TabsTrigger value="intro" className="gap-1.5">
+            <Zap className="w-4 h-4" />
+            <span className="hidden sm:inline">시작하기</span>
+            <span className="sm:hidden">시작</span>
           </TabsTrigger>
-          <TabsTrigger value="notifications">
-            <Bell className="w-4 h-4 mr-2" />
-            알림 설정
+          <TabsTrigger value="notifications" className="gap-1.5">
+            <Bell className="w-4 h-4" />
+            <span className="hidden sm:inline">알림 설정</span>
+            <span className="sm:hidden">알림</span>
           </TabsTrigger>
-          <TabsTrigger value="party">
-            <Users className="w-4 h-4 mr-2" />
-            파티 모집
+          <TabsTrigger value="party" className="gap-1.5">
+            <Users className="w-4 h-4" />
+            <span className="hidden sm:inline">파티 모집</span>
+            <span className="sm:hidden">파티</span>
           </TabsTrigger>
-          <TabsTrigger value="market">
-            <ShoppingBag className="w-4 h-4 mr-2" />
-            거래소
+          <TabsTrigger value="market" className="gap-1.5">
+            <ShoppingBag className="w-4 h-4" />
+            <span className="hidden sm:inline">거래소</span>
+            <span className="sm:hidden">거래</span>
+          </TabsTrigger>
+          <TabsTrigger value="calculator" className="gap-1.5">
+            <Calculator className="w-4 h-4" />
+            <span className="hidden sm:inline">라르 계산기</span>
+            <span className="sm:hidden">계산기</span>
+          </TabsTrigger>
+          <TabsTrigger value="mypage" className="gap-1.5">
+            <User className="w-4 h-4" />
+            <span className="hidden sm:inline">내 페이지</span>
+            <span className="sm:hidden">내정보</span>
           </TabsTrigger>
         </TabsList>
 
@@ -55,6 +69,16 @@ export default function GuidePage() {
         {/* 거래소 탭 */}
         <TabsContent value="market">
           <MarketGuide />
+        </TabsContent>
+
+        {/* 라르 계산기 탭 */}
+        <TabsContent value="calculator">
+          <CalculatorGuide />
+        </TabsContent>
+
+        {/* 내 페이지 탭 */}
+        <TabsContent value="mypage">
+          <MyPageGuide />
         </TabsContent>
       </Tabs>
     </div>
@@ -968,6 +992,402 @@ function MarketGuide() {
                     <div>• 게임 내에서 동시에 아이템/돈을 교환하세요</div>
                     <div>• 사기를 당했다면 즉시 신고하세요 (프로필 → 사기 신고)</div>
                     <div>• 블랙리스트에 등록된 유저는 거래하지 마세요</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+// ============================================
+// 라르 계산기 가이드
+// ============================================
+
+function CalculatorGuide() {
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>라르 계산기 사용법</CardTitle>
+          <CardDescription>
+            라르(스탯 강화 아이템) 투자를 효율적으로 계산하는 방법을 안내합니다
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {/* 기본 사용법 */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">📝 기본 사용법</h3>
+            <div className="space-y-2 pl-4 border-l-2 border-primary/30">
+              <Step
+                number={1}
+                title="라르 계산기 페이지 접속"
+                description="헤더 메뉴에서 '라르 계산기' 클릭"
+              />
+              <Step
+                number={2}
+                title="현재 순수 스탯 입력"
+                description="페이지 상단에 현재 순수 HP/MP 입력 (아이템 제외한 값)"
+              />
+              <Step
+                number={3}
+                title="계산 모드 선택"
+                description="4가지 탭 중 원하는 계산 모드 선택"
+              />
+              <Step
+                number={4}
+                title="목표값 입력"
+                description="각 탭에서 필요한 정보 입력 (목표 HP/MP, 단수, 라르 개수 등)"
+              />
+              <Step
+                number={5}
+                title="결과 확인"
+                description="자동으로 계산된 결과 확인"
+              />
+            </div>
+
+            <div className="mt-4 bg-blue-500/10 border border-blue-500/20 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">💡</div>
+                <div className="text-sm">
+                  <div className="font-semibold mb-1">중요: 순수 스탯이란?</div>
+                  <div className="text-muted-foreground">
+                    순수 스탯은 <strong>아이템을 모두 벗었을 때의 HP/MP</strong>를 말합니다.
+                    <br />
+                    무기, 방어구, 장신구 등 모든 장비 효과를 제외한 기본 스탯만 입력하세요.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 4가지 계산 모드 */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">🎯 4가지 계산 모드</h3>
+            <div className="space-y-3">
+              <ManageCard
+                title="1. 필요 라르는?"
+                description="현재 순수 HP/MP → 목표 순수 HP/MP까지 필요한 라르 개수와 골드 비용을 계산합니다."
+              />
+              <div className="pl-6 text-xs text-muted-foreground">
+                예시: 현재 HP 1000, MP 500 → 목표 HP 1500, MP 800까지 몇 개의 라르가 필요한가?
+              </div>
+
+              <ManageCard
+                title="2. 목표 단수는?"
+                description="목표 단수에 도달하기 위해 필요한 라르 개수를 계산합니다. HP만, MP만, 또는 HP+MP를 함께 올릴 수 있습니다."
+              />
+              <div className="pl-6 text-xs text-muted-foreground">
+                예시: 현재 5단인데 7단까지 올리려면 라르가 몇 개 필요한가?
+              </div>
+
+              <ManageCard
+                title="3. 올릴 수 있는 수치는?"
+                description="보유한 라르로 HP 또는 MP를 얼마나 올릴 수 있는지 계산합니다. 에테르 강화 목걸이 추가 데미지도 포함됩니다."
+              />
+              <div className="pl-6 text-xs text-muted-foreground">
+                예시: 라르 100개로 HP를 얼마나 올릴 수 있나?
+              </div>
+
+              <ManageCard
+                title="4. 풀경험치 라르"
+                description="현재 HP/MP 기준으로 EXP 100%를 채웠을 때 획득 가능한 라르 개수를 자동으로 계산합니다."
+              />
+              <div className="pl-6 text-xs text-muted-foreground">
+                예시: 현재 스탯으로 경험치를 풀로 채우면 라르를 몇 개 받을 수 있나?
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 설정 조정 */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">⚙️ 설정 조정</h3>
+            <div className="space-y-3">
+              <div className="text-sm text-muted-foreground">
+                계산 결과를 더 정확하게 하기 위해 설정을 조정할 수 있습니다.
+              </div>
+              <div className="space-y-2">
+                <ManageCard
+                  title="할인율 설정"
+                  description="이벤트 기간 중 라르 할인율을 적용할 수 있습니다. 기본값은 0% (할인 없음)입니다."
+                />
+                <ManageCard
+                  title="라르 가격 설정"
+                  description="서버별 라르 시세에 맞춰 골드 가격을 조정할 수 있습니다. 기본값은 50,000 골드입니다."
+                />
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 팁 */}
+          <div className="space-y-4">
+            <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">✨</div>
+                <div className="text-sm">
+                  <div className="font-semibold mb-1">유용한 팁</div>
+                  <div className="text-muted-foreground space-y-1">
+                    <div>• 현재 순수 스탯은 한 번만 입력하면 모든 탭에서 공유됩니다</div>
+                    <div>• 빠른 입력 버튼(+10, +100, +1000)을 활용하세요</div>
+                    <div>• 설정은 브라우저에 자동 저장되어 다음 방문 시에도 유지됩니다</div>
+                    <div>• 각 탭의 기능 안내를 펼쳐서 자세한 설명을 확인하세요</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">⚠️</div>
+                <div className="text-sm">
+                  <div className="font-semibold mb-1">주의사항</div>
+                  <div className="text-muted-foreground space-y-1">
+                    <div>• 반드시 순수 스탯을 입력하세요 (아이템 효과 제외)</div>
+                    <div>• 라르 가격은 서버 시세에 따라 변동될 수 있습니다</div>
+                    <div>• 계산 결과는 참고용이며 실제와 다를 수 있습니다</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+// ============================================
+// 내 페이지 가이드
+// ============================================
+
+function MyPageGuide() {
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>내 페이지 사용법</CardTitle>
+          <CardDescription>
+            나의 파티 신청, 모집, 거래 내역을 한눈에 관리하는 방법을 안내합니다
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {/* 기본 사용법 */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">📋 기본 사용법</h3>
+            <div className="space-y-2 pl-4 border-l-2 border-primary/30">
+              <Step
+                number={1}
+                title="내 페이지 접속"
+                description="로그인 후 우측 상단 프로필 메뉴 → '내 페이지' 클릭"
+              />
+              <Step
+                number={2}
+                title="탭 선택"
+                description="'내 파티 현황' 또는 '내 거래' 탭 선택"
+              />
+              <Step
+                number={3}
+                title="종합 탭 활용"
+                description="종합 탭에서 전체 내역을 한눈에 확인"
+              />
+              <Step
+                number={4}
+                title="필터링"
+                description="체크박스로 원하는 카테고리만 표시"
+              />
+              <Step
+                number={5}
+                title="관리"
+                description="개별 삭제 또는 선택 삭제로 항목 관리"
+              />
+            </div>
+
+            <div className="mt-4 bg-blue-500/10 border border-blue-500/20 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">ℹ️</div>
+                <div className="text-sm">
+                  <div className="font-semibold mb-1">내 페이지란?</div>
+                  <div className="text-muted-foreground">
+                    내가 신청한 파티, 개설한 파티, 등록한 거래 등 모든 활동을
+                    <br />
+                    한 곳에서 확인하고 관리할 수 있는 대시보드입니다.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 내 파티 현황 */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">👥 내 파티 현황</h3>
+            <div className="space-y-3">
+              <div className="text-sm text-muted-foreground mb-3">
+                파티 관련 모든 활동을 3개의 탭으로 확인할 수 있습니다.
+              </div>
+
+              <ManageCard
+                title="종합 탭"
+                description="신청한 파티와 내가 파티장인 파티를 한눈에 볼 수 있습니다. 체크박스로 원하는 카테고리만 필터링하세요."
+              />
+
+              <div className="pl-6 space-y-2">
+                <div className="flex items-start gap-2 text-xs">
+                  <div className="text-primary mt-0.5">•</div>
+                  <div className="text-muted-foreground">
+                    <strong>전체 선택</strong>: 필터링된 모든 항목을 한번에 선택/해제
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 text-xs">
+                  <div className="text-primary mt-0.5">•</div>
+                  <div className="text-muted-foreground">
+                    <strong>선택 삭제</strong>: 체크박스로 여러 개 선택 후 일괄 삭제
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 text-xs">
+                  <div className="text-primary mt-0.5">•</div>
+                  <div className="text-muted-foreground">
+                    <strong>개별 삭제</strong>: 각 카드의 휴지통 아이콘으로 즉시 삭제
+                  </div>
+                </div>
+              </div>
+
+              <ManageCard
+                title="신청한 파티 탭"
+                description="내가 참가 신청한 파티 목록입니다. 승인 상태(대기중/승인됨/거절됨)를 확인하고 신청을 취소할 수 있습니다."
+              />
+
+              <ManageCard
+                title="내가 파티장인 파티 탭"
+                description="내가 개설한 파티 모집글 목록입니다. 현재 모집 현황을 확인하고 '관리' 버튼으로 상세 페이지로 이동하여 관리할 수 있습니다."
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 내 거래 */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">💰 내 거래</h3>
+            <div className="space-y-3">
+              <div className="text-sm text-muted-foreground mb-3">
+                거래소에 등록한 모든 거래를 4개의 탭으로 확인할 수 있습니다.
+              </div>
+
+              <ManageCard
+                title="종합 탭"
+                description="파는 물품, 사는 물품, 거래중인 물품을 한눈에 볼 수 있습니다. 체크박스로 원하는 카테고리만 필터링하세요."
+              />
+
+              <div className="pl-6 space-y-2">
+                <div className="flex items-start gap-2 text-xs">
+                  <div className="text-primary mt-0.5">•</div>
+                  <div className="text-muted-foreground">
+                    <strong>전체 선택</strong>: 필터링된 모든 거래를 한번에 선택/해제
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 text-xs">
+                  <div className="text-primary mt-0.5">•</div>
+                  <div className="text-muted-foreground">
+                    <strong>선택 삭제</strong>: 여러 거래를 선택하여 일괄 취소
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 text-xs">
+                  <div className="text-primary mt-0.5">•</div>
+                  <div className="text-muted-foreground">
+                    <strong>개별 삭제</strong>: 각 거래의 휴지통 아이콘으로 즉시 취소
+                  </div>
+                </div>
+              </div>
+
+              <ManageCard
+                title="파는 물품 탭"
+                description="내가 판매 등록한 아이템 목록입니다. 거래 상태(판매중/예약중/거래완료)를 확인할 수 있습니다."
+              />
+
+              <ManageCard
+                title="사는 물품 탭"
+                description="내가 구매 요청한 아이템 목록입니다. 판매자의 연락을 기다리거나 거래를 관리할 수 있습니다."
+              />
+
+              <ManageCard
+                title="거래중 탭"
+                description="예약중이거나 거래 완료된 아이템 목록입니다. 거래 진행 상황을 한눈에 확인할 수 있습니다."
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 편의 기능 */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">⚡ 편의 기능</h3>
+            <div className="space-y-3">
+              <ManageCard
+                title="체크박스 필터링"
+                description="종합 탭에서 원하는 카테고리만 체크하여 필터링할 수 있습니다. 여러 개를 동시에 선택 가능합니다."
+              />
+
+              <ManageCard
+                title="전체 선택"
+                description="필터링된 모든 항목을 한번에 선택하거나 해제할 수 있습니다. 일부만 선택되어 있으면 대시(-)로 표시됩니다."
+              />
+
+              <ManageCard
+                title="선택 삭제"
+                description="체크박스로 여러 항목을 선택한 후 '선택 삭제' 버튼을 클릭하면 한번에 삭제할 수 있습니다. 선택된 개수가 버튼에 표시됩니다."
+              />
+
+              <ManageCard
+                title="개별 삭제"
+                description="각 항목 카드의 우측에 있는 휴지통 아이콘을 클릭하면 해당 항목만 즉시 삭제할 수 있습니다."
+              />
+
+              <ManageCard
+                title="상세 페이지 이동"
+                description="파티는 '관리' 버튼, 거래는 '상세' 버튼을 클릭하여 상세 페이지로 이동할 수 있습니다."
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 팁 */}
+          <div className="space-y-4">
+            <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">✨</div>
+                <div className="text-sm">
+                  <div className="font-semibold mb-1">유용한 팁</div>
+                  <div className="text-muted-foreground space-y-1">
+                    <div>• 종합 탭에서 전체 활동을 한눈에 확인하세요</div>
+                    <div>• 체크박스 필터로 원하는 카테고리만 빠르게 찾으세요</div>
+                    <div>• 더 이상 필요 없는 항목은 선택 삭제로 깔끔하게 정리하세요</div>
+                    <div>• 파티 승인 상태나 거래 상태를 주기적으로 확인하세요</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">⚠️</div>
+                <div className="text-sm">
+                  <div className="font-semibold mb-1">주의사항</div>
+                  <div className="text-muted-foreground space-y-1">
+                    <div>• 삭제한 항목은 복구할 수 없으니 신중하게 선택하세요</div>
+                    <div>• 파티 신청을 삭제하면 탈퇴 처리되며 재신청해야 합니다</div>
+                    <div>• 거래를 삭제하면 취소 처리되며 다시 등록해야 합니다</div>
                   </div>
                 </div>
               </div>
