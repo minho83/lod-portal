@@ -13,7 +13,7 @@ import { getLocationIcon, generatePartyTemplate } from "@/lib/party-utils"
 import { cn, timeAgo } from "@/lib/utils"
 import { JOB_CLASSES, getPartySlots } from "@/lib/constants"
 import type { Party } from "@/types"
-import { Clock, User, ClipboardCopy } from "lucide-react"
+import { Clock, ClipboardCopy } from "lucide-react"
 
 export function PartyCard({
   party,
@@ -50,24 +50,35 @@ export function PartyCard({
     >
       <CardHeader className="p-2 pb-0">
         <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <LocationIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
-            <div>
-              <div className="flex items-center gap-2">
-                <CardTitle className="text-base">
-                  {party.party_name || party.organizer}
-                </CardTitle>
-                {isMyParty && (
-                  <Badge variant="outline" className="text-primary text-sm px-1.5 py-0">
-                    참여중
-                  </Badge>
-                )}
-              </div>
-              {party.location && (
-                <span className="text-sm text-muted-foreground">
-                  {party.location}
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-base truncate">
+                {party.party_name
+                  ? party.party_name
+                  : `@${party.organizer}`}
+              </CardTitle>
+              {isMyParty && (
+                <Badge variant="outline" className="text-primary text-xs px-1.5 py-0 shrink-0">
+                  참여중
+                </Badge>
+              )}
+            </div>
+            <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+              {party.party_name && (
+                <span className="font-semibold text-foreground">
+                  @{party.organizer}
                 </span>
               )}
+              {party.location && (
+                <>
+                  {party.party_name && <span className="opacity-40">·</span>}
+                  <LocationIcon className="h-3 w-3 shrink-0" />
+                  <span>{party.location}</span>
+                </>
+              )}
+              <span className="opacity-40">·</span>
+              <Clock className="h-3 w-3 shrink-0" />
+              <span>{timeAgo(party.updated_at)}</span>
             </div>
           </div>
           {hasVacancy ? (
@@ -82,17 +93,6 @@ export function PartyCard({
         </div>
       </CardHeader>
       <CardContent className="space-y-1.5 p-2 pt-1.5">
-        {/* Organizer & time */}
-        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <User className="h-3.5 w-3.5" />
-            {party.organizer}
-          </span>
-          <span className="flex items-center gap-1">
-            <Clock className="h-3.5 w-3.5" />
-            {timeAgo(party.updated_at)}
-          </span>
-        </div>
 
         {/* Vacancy class badges */}
         {hasVacancy && (
