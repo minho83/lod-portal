@@ -250,4 +250,19 @@ export async function leaveRecruit(memberId: string): Promise<void> {
   if (error) throw error
 }
 
+/**
+ * 마지막 파티모집 등록 시간 조회 (도배 방지)
+ */
+export async function getLastRecruitTime(): Promise<Date | null> {
+  const { data, error } = await supabase
+    .from("party_recruits")
+    .select("created_at")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single()
+
+  if (error || !data) return null
+  return new Date(data.created_at)
+}
+
 export { PAGE_SIZE }

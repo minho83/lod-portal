@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { ArrowLeft, Send, Plus, X, Layers } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAuth } from "@/contexts/AuthContext"
-import { createTrade } from "@/lib/trades"
+import { createTrade, getLastTradeTime } from "@/lib/trades"
 import { formatPrice } from "@/lib/utils"
 import type { TradeCategory, TradeItem, TradeType } from "@/types"
 import { TRADE_CATEGORIES } from "@/types"
@@ -54,7 +54,13 @@ export function NewTradePage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
 
+  // 도배 방지 쿨타임 (3분 = 180초)
+  const COOLDOWN_SECONDS = 180
+  const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
+  const [loadingCooldown, setLoadingCooldown] = useState(true)
+
   const isBuy = tradeType === "buy"
+  const canSubmit = remainingSeconds === null || remainingSeconds <= 0
 
   // 묶음 아이템 관리
   const addBundleItem = () => {
@@ -76,6 +82,57 @@ export function NewTradePage() {
     return sum + (Number(item.price) || 0) * (Number(item.quantity) || 1)
   }, 0)
 
+  // 도배 방지: 마지막 등록 시간 확인 및 쿨타임 계산
+  useEffect(() => {
+    if (!user) {
+      setLoadingCooldown(false)
+      return
+    }
+
+    const checkCooldown = async () => {
+      try {
+        const lastTime = await getLastTradeTime()
+        if (!lastTime) {
+          setRemainingSeconds(null) // 등록 가능
+          setLoadingCooldown(false)
+          return
+        }
+
+        const elapsed = Math.floor((Date.now() - lastTime.getTime()) / 1000)
+        const remaining = COOLDOWN_SECONDS - elapsed
+
+        if (remaining > 0) {
+          setRemainingSeconds(remaining)
+        } else {
+          setRemainingSeconds(null) // 등록 가능
+        }
+        setLoadingCooldown(false)
+      } catch (error) {
+        console.error("Failed to check cooldown:", error)
+        setRemainingSeconds(null) // 에러 시 등록 가능하게 처리
+        setLoadingCooldown(false)
+      }
+    }
+
+    checkCooldown()
+  }, [user])
+
+  // 1초마다 남은 시간 업데이트
+  useEffect(() => {
+    if (remainingSeconds === null || remainingSeconds <= 0) return
+
+    const timer = setInterval(() => {
+      setRemainingSeconds((prev) => {
+        if (prev === null || prev <= 1) {
+          return null // 쿨타임 종료
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [remainingSeconds])
+
   if (!user) {
     return (
       <div className="mx-auto max-w-lg p-4">
@@ -90,6 +147,13 @@ export function NewTradePage() {
 
   const handleSubmit = async () => {
     setError("")
+
+    // 쿨타임 체크
+    if (!canSubmit) {
+      const minutes = Math.floor(remainingSeconds! / 60)
+      const seconds = remainingSeconds! % 60
+      return setError(`도배 방지: ${minutes}분 ${seconds}초 후 등록 가능합니다`)
+    }
 
     if (isBundle) {
       // 묶음 글 검증
@@ -383,6 +447,23 @@ export function NewTradePage() {
             </label>
           </div>
 
+          {/* 도배 방지 쿨타임 상태 */}
+          {loadingCooldown ? (
+            <div className="rounded-lg border border-border bg-muted/50 p-3 text-center text-sm text-muted-foreground">
+              쿨타임 확인 중...
+            </div>
+          ) : canSubmit ? (
+            <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3 text-center">
+              <p className="text-sm font-medium text-green-500">✅ 등록 가능</p>
+            </div>
+          ) : (
+            <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-center">
+              <p className="text-sm font-medium text-red-500">
+                ⏳ 도배 방지: {Math.floor(remainingSeconds! / 60)}분 {remainingSeconds! % 60}초 후 등록 가능
+              </p>
+            </div>
+          )}
+
           {/* 에러 */}
           {error && (
             <p className="text-sm text-destructive">{error}</p>
@@ -391,7 +472,7 @@ export function NewTradePage() {
           {/* 등록 버튼 */}
           <Button
             onClick={handleSubmit}
-            disabled={submitting}
+            disabled={submitting || !canSubmit}
             className="w-full"
           >
             <Send className="mr-2 h-4 w-4" />

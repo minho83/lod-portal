@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select"
 import { toast } from "sonner"
 import { useAuth } from "@/contexts/AuthContext"
-import { createRecruit } from "@/lib/recruits"
+import { createRecruit, getLastRecruitTime } from "@/lib/recruits"
 import { getMyTemplates, createTemplate, deleteTemplate } from "@/lib/templates"
 import { JOB_OPTIONS, RECRUIT_TYPE_CONFIG, RECRUIT_TYPES } from "@/lib/constants"
 import type { JobClass, JobSlots, RecruitJoinMode, RecruitType, PartyTemplate } from "@/types"
@@ -68,7 +68,13 @@ export function NewRecruitPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
 
+  // 도배 방지 쿨타임 (5분 = 300초)
+  const COOLDOWN_SECONDS = 300
+  const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
+  const [loadingCooldown, setLoadingCooldown] = useState(true)
+
   const totalSlots = Object.values(slots).reduce((a, b) => a + b, 0)
+  const canSubmit = remainingSeconds === null || remainingSeconds <= 0
 
   // 템플릿 목록 로드
   useEffect(() => {
@@ -76,6 +82,57 @@ export function NewRecruitPage() {
       getMyTemplates().then(setTemplates).catch(console.error)
     }
   }, [user])
+
+  // 도배 방지: 마지막 등록 시간 확인 및 쿨타임 계산
+  useEffect(() => {
+    if (!user) {
+      setLoadingCooldown(false)
+      return
+    }
+
+    const checkCooldown = async () => {
+      try {
+        const lastTime = await getLastRecruitTime()
+        if (!lastTime) {
+          setRemainingSeconds(null) // 등록 가능
+          setLoadingCooldown(false)
+          return
+        }
+
+        const elapsed = Math.floor((Date.now() - lastTime.getTime()) / 1000)
+        const remaining = COOLDOWN_SECONDS - elapsed
+
+        if (remaining > 0) {
+          setRemainingSeconds(remaining)
+        } else {
+          setRemainingSeconds(null) // 등록 가능
+        }
+        setLoadingCooldown(false)
+      } catch (error) {
+        console.error("Failed to check cooldown:", error)
+        setRemainingSeconds(null) // 에러 시 등록 가능하게 처리
+        setLoadingCooldown(false)
+      }
+    }
+
+    checkCooldown()
+  }, [user])
+
+  // 1초마다 남은 시간 업데이트
+  useEffect(() => {
+    if (remainingSeconds === null || remainingSeconds <= 0) return
+
+    const timer = setInterval(() => {
+      setRemainingSeconds((prev) => {
+        if (prev === null || prev <= 1) {
+          return null // 쿨타임 종료
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [remainingSeconds])
 
   // 복제 기능: location.state에서 데이터 가져오기
   useEffect(() => {
@@ -189,6 +246,13 @@ export function NewRecruitPage() {
 
   const handleSubmit = async () => {
     setError("")
+
+    // 쿨타임 체크
+    if (!canSubmit) {
+      const minutes = Math.floor(remainingSeconds! / 60)
+      const seconds = remainingSeconds! % 60
+      return setError(`도배 방지: ${minutes}분 ${seconds}초 후 등록 가능합니다`)
+    }
 
     if (!title.trim()) return setError("제목을 입력해주세요")
     if (totalSlots < 2) return setError("최소 2명 이상의 슬롯을 설정해주세요")
@@ -441,13 +505,30 @@ export function NewRecruitPage() {
             )}
           </div>
 
+          {/* 도배 방지 쿨타임 상태 */}
+          {loadingCooldown ? (
+            <div className="rounded-lg border border-border bg-muted/50 p-3 text-center text-sm text-muted-foreground">
+              쿨타임 확인 중...
+            </div>
+          ) : canSubmit ? (
+            <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3 text-center">
+              <p className="text-sm font-medium text-green-500">✅ 등록 가능</p>
+            </div>
+          ) : (
+            <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-center">
+              <p className="text-sm font-medium text-red-500">
+                ⏳ 도배 방지: {Math.floor(remainingSeconds! / 60)}분 {remainingSeconds! % 60}초 후 등록 가능
+              </p>
+            </div>
+          )}
+
           {/* 에러 */}
           {error && <p className="text-sm text-destructive">{error}</p>}
 
           {/* 등록 버튼 */}
           <Button
             onClick={handleSubmit}
-            disabled={submitting}
+            disabled={submitting || !canSubmit}
             className="w-full"
           >
             <Send className="mr-2 h-4 w-4" />

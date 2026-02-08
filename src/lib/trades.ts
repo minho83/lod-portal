@@ -158,4 +158,19 @@ export function extractItemNames(trades: Trade[]): string[] {
   return [...names]
 }
 
+/**
+ * 마지막 거래 등록 시간 조회 (도배 방지)
+ */
+export async function getLastTradeTime(): Promise<Date | null> {
+  const { data, error } = await supabase
+    .from("trades")
+    .select("created_at")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single()
+
+  if (error || !data) return null
+  return new Date(data.created_at)
+}
+
 export { PAGE_SIZE }

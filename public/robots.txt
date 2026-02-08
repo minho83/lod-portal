@@ -1,0 +1,16 @@
+# LOD 포털 - 어둠의전설 종합 도우미
+# https://lod-portal.milddok.cc
+
+User-agent: *
+Allow: /
+
+# 크롤링 제외 경로 (개인정보 보호)
+Disallow: /profile
+Disallow: /admin
+Disallow: /dev
+
+# Sitemap
+Sitemap: https://lod-portal.milddok.cc/sitemap.xml
+
+# 크롤링 속도 조절 (선택사항)
+Crawl-delay: 1
