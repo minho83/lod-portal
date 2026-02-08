@@ -48,23 +48,23 @@ export function PartyCard({
         isMyParty && "border-primary shadow-[0_0_0_1px_var(--color-primary)]",
       )}
     >
-      <CardHeader className="p-4 pb-0">
+      <CardHeader className="p-3 pb-0">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
             <LocationIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
             <div>
               <div className="flex items-center gap-2">
-                <CardTitle className="text-sm">
+                <CardTitle className="text-base">
                   {party.party_name || party.organizer}
                 </CardTitle>
                 {isMyParty && (
-                  <Badge variant="outline" className="text-primary text-xs px-1.5 py-0">
+                  <Badge variant="outline" className="text-primary text-sm px-1.5 py-0">
                     참여중
                   </Badge>
                 )}
               </div>
               {party.location && (
-                <span className="text-xs text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   {party.location}
                 </span>
               )}
@@ -81,15 +81,15 @@ export function PartyCard({
           )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-3 p-4 pt-3">
+      <CardContent className="space-y-2 p-3 pt-2">
         {/* Organizer & time */}
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
-            <User className="h-3 w-3" />
+            <User className="h-3.5 w-3.5" />
             {party.organizer}
           </span>
           <span className="flex items-center gap-1">
-            <Clock className="h-3 w-3" />
+            <Clock className="h-3.5 w-3.5" />
             {timeAgo(party.updated_at)}
           </span>
         </div>
@@ -102,7 +102,7 @@ export function PartyCard({
                 <Badge
                   key={job}
                   className={cn(
-                    "text-xs",
+                    "text-sm",
                     JOB_CONFIG[job].bgClass,
                     JOB_CONFIG[job].textClass,
                   )}
@@ -115,7 +115,7 @@ export function PartyCard({
         )}
 
         {/* Slot rows */}
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           {JOB_CLASSES.map((job) => (
             <SlotRow
               key={job}
@@ -130,7 +130,7 @@ export function PartyCard({
         <RequirementsSection requirements={party.requirements} />
 
         {/* Copy button */}
-        <div className="flex items-center gap-2 border-t border-border pt-3">
+        <div className="flex items-center gap-2 border-t border-border pt-2">
           <CopyButton
             text={templateText}
             label="구인글 복사"
@@ -138,7 +138,7 @@ export function PartyCard({
             variant="outline"
             size="xs"
           />
-          <span className="text-xs text-muted-foreground opacity-60">
+          <span className="text-sm text-muted-foreground opacity-60">
             카카오톡에 붙여넣기
           </span>
         </div>
