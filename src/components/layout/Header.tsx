@@ -64,7 +64,7 @@ export function Header() {
                 cn(
                   "flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-primary/10 text-primary"
+                    ? "bg-primary/15 text-foreground font-semibold"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )
               }
