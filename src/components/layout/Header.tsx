@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield, HelpCircle } from "lucide-react"
+import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield, HelpCircle, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -20,6 +20,7 @@ const navItems = [
   { to: "/recruit", label: "파티모집", sub: "LOD Portal", icon: Users },
   { to: "/market", label: "거래소", icon: ShoppingBag },
   { to: "/calculator", label: "라르 계산기", icon: Calculator },
+  { to: "/spirit", label: "정령 레벨업", icon: Sparkles },
   { to: "/search", label: "DB 검색", icon: Search },
   { to: "/wiki", label: "뉴비 가이드", icon: BookOpen },
   { to: "/guide", label: "사용법", icon: HelpCircle },
