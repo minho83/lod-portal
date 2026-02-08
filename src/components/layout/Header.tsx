@@ -35,13 +35,13 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         {/* 로고 */}
-        <NavLink to="/" className="flex items-center gap-2.5">
+        <NavLink to="/" className="flex items-center gap-3">
           <img
             src="/lod-portal/lod-icon.png"
             alt="LOD"
-            className="h-9 w-9 rounded-lg"
+            className="h-10 w-10 rounded-lg"
           />
-          <h1 className="hidden pr-2 text-xl font-black tracking-tight sm:block" style={{
+          <h1 className="hidden pr-4 text-2xl font-black leading-none tracking-tight sm:block" style={{
             textShadow: '2px 2px 0px rgba(0,0,0,0.3)',
             letterSpacing: '-0.5px',
             fontStyle: 'italic'
@@ -49,7 +49,7 @@ export function Header() {
             <span className="bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
               어둠의전설
             </span>
-            <span className="ml-2 text-sm font-bold text-primary">Portal</span>
+            <span className="ml-2 text-base font-bold text-primary">Portal</span>
           </h1>
         </NavLink>
 
