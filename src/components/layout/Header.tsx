@@ -39,7 +39,7 @@ export function Header() {
         {/* 로고 */}
         <NavLink to="/" className="flex items-center gap-3">
           <img
-            src="/lod-portal/lod-icon.png"
+            src="/lod-icon.png"
             alt="LOD"
             className="h-10 w-10 rounded-lg"
           />
