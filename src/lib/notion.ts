@@ -1,18 +1,41 @@
+// Notion API 토큰과 데이터베이스 ID
+// .env 파일에서 설정하거나 GitHub Secrets에서 주입
+const NOTION_TOKEN = import.meta.env.VITE_NOTION_TOKEN
+const DATABASE_ID = import.meta.env.VITE_NOTION_DATABASE_ID
+
 /**
  * Notion 데이터베이스에서 뉴비 가이드 데이터 조회
- * Vercel Serverless Function을 통해 호출
+ * CORS 프록시를 통해 직접 호출
  */
 export async function fetchNotionDatabase() {
   try {
-    const response = await fetch("/api/notion")
+    // CORS 우회를 위한 프록시 사용
+    const notionUrl = `https://api.notion.com/v1/databases/${DATABASE_ID}/query`
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(notionUrl)}`
+
+    const response = await fetch(proxyUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${NOTION_TOKEN}`,
+        "Notion-Version": "2022-06-28",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sorts: [
+          {
+            property: "순서",
+            direction: "ascending",
+          },
+        ],
+      }),
+    })
 
     if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || `API 오류: ${response.status}`)
+      throw new Error(`API 오류: ${response.status}`)
     }
 
     const data = await response.json()
-    return data.results
+    return data.results || []
   } catch (error) {
     console.error("Notion 데이터베이스 조회 실패:", error)
     throw error
