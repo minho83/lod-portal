@@ -1,4 +1,4 @@
-import { BookOpen, Bell, Users, ShoppingBag, Zap, Calculator, User } from "lucide-react"
+import { BookOpen, Bell, Users, ShoppingBag, Zap, Calculator, User, Sparkles, MapPin } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
@@ -18,7 +18,7 @@ export default function GuidePage() {
       </div>
 
       <Tabs defaultValue="intro" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
           <TabsTrigger value="intro" className="gap-1.5">
             <Zap className="w-4 h-4" />
             <span className="hidden sm:inline">시작하기</span>
@@ -43,6 +43,16 @@ export default function GuidePage() {
             <Calculator className="w-4 h-4" />
             <span className="hidden sm:inline">라르 계산기</span>
             <span className="sm:hidden">계산기</span>
+          </TabsTrigger>
+          <TabsTrigger value="spirit" className="gap-1.5">
+            <Sparkles className="w-4 h-4" />
+            <span className="hidden sm:inline">정령레벨업</span>
+            <span className="sm:hidden">정령</span>
+          </TabsTrigger>
+          <TabsTrigger value="npcmap" className="gap-1.5">
+            <MapPin className="w-4 h-4" />
+            <span className="hidden sm:inline">NPC&맵찾기</span>
+            <span className="sm:hidden">맵</span>
           </TabsTrigger>
           <TabsTrigger value="mypage" className="gap-1.5">
             <User className="w-4 h-4" />
@@ -74,6 +84,16 @@ export default function GuidePage() {
         {/* 라르 계산기 탭 */}
         <TabsContent value="calculator">
           <CalculatorGuide />
+        </TabsContent>
+
+        {/* 정령레벨업 탭 */}
+        <TabsContent value="spirit">
+          <SpiritGuide />
+        </TabsContent>
+
+        {/* NPC&맵찾기 탭 */}
+        <TabsContent value="npcmap">
+          <NpcMapGuide />
         </TabsContent>
 
         {/* 내 페이지 탭 */}
@@ -1389,6 +1409,319 @@ function MyPageGuide() {
                     <div>• 파티 신청을 삭제하면 탈퇴 처리되며 재신청해야 합니다</div>
                     <div>• 거래를 삭제하면 취소 처리되며 다시 등록해야 합니다</div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+// ============================================
+// 정령레벨업 가이드
+// ============================================
+
+function SpiritGuide() {
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>⚔️ 정령 레벨업 비용 계산기</CardTitle>
+          <CardDescription>
+            정령을 효율적으로 성장시키기 위한 필요 재료와 골드를 계산합니다
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* 기본 사용법 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">📋 기본 사용법</h3>
+            <div className="space-y-3">
+              <Step
+                number={1}
+                title="정령 정보 입력"
+                description="현재 레벨, 현재 EXP, 목표 레벨을 선택하세요"
+              />
+              <Step
+                number={2}
+                title="주당 레벨업 횟수 설정"
+                description="일주일에 몇 번 레벨업 할지 설정 (1~7회: r17 비용, 8회 이상: 추가 비용)"
+              />
+              <Step
+                number={3}
+                title="계산 결과 확인"
+                description="소요 주 수, 예상 골드, 필요 재료(스피먼트/에테르/스피튬) 확인"
+              />
+              <Step
+                number={4}
+                title="시세 입력 (선택)"
+                description="재료 시세를 입력하면 골드 환산 비용을 확인할 수 있습니다"
+              />
+              <Step
+                number={5}
+                title="보유 재료 입력 (선택)"
+                description="현재 보유한 재료를 입력하면 추가로 필요한 수량을 계산합니다"
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 비용 시스템 이해하기 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">💡 주간 레벨업 비용 시스템</h3>
+            <div className="space-y-3">
+              <ManageCard
+                title="1~7번째 레벨업 (r17 비용)"
+                description="매주 처음 7번까지는 저렴한 r17 비용으로 레벨업 가능 - 가장 효율적"
+              />
+              <ManageCard
+                title="8번째 레벨업 (r8 비용)"
+                description="주간 8번째 레벨업부터는 비용이 증가합니다"
+              />
+              <ManageCard
+                title="9번째 레벨업 (r9 비용)"
+                description="주간 9번째 레벨업은 더 높은 비용이 적용됩니다"
+              />
+              <ManageCard
+                title="10번째 이상 (r10 비용)"
+                description="주간 10번째 이상 레벨업은 가장 비싼 r10 비용 적용 - 비효율적"
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 효율적인 육성 팁 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">🎯 효율적인 육성 팁</h3>
+            <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-lg space-y-2">
+              <div className="flex items-start gap-2">
+                <span className="text-green-500">✓</span>
+                <div className="text-sm">
+                  <span className="font-semibold">주당 7번까지만 레벨업</span>
+                  <div className="text-muted-foreground">매주 7번까지만 레벨업하면 r17 비용으로 최소 비용 달성</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-500">✓</span>
+                <div className="text-sm">
+                  <span className="font-semibold">시세 비교</span>
+                  <div className="text-muted-foreground">재료 시세를 입력해서 직접 모으기 vs 구매 비용 비교</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-500">✓</span>
+                <div className="text-sm">
+                  <span className="font-semibold">장기 계획 수립</span>
+                  <div className="text-muted-foreground">목표 레벨까지 소요 주 수를 확인해서 장기 계획 세우기</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 계산 결과 항목 설명 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">📊 계산 결과 항목 설명</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">소요 주 수</span>
+                <span className="text-muted-foreground">목표 레벨까지 걸리는 기간</span>
+              </div>
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">총 EXP 횟수</span>
+                <span className="text-muted-foreground">총 레벨업 시도 횟수</span>
+              </div>
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">예상 골드</span>
+                <span className="text-muted-foreground">레벨업에 직접 사용되는 골드</span>
+              </div>
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">필요 스피먼트/에테르</span>
+                <span className="text-muted-foreground">EXP 상승에 필요한 재료</span>
+              </div>
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">필요 스피튬</span>
+                <span className="text-muted-foreground">레벨업 시 필요한 재료</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 주의사항 */}
+          <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">⚠️</div>
+              <div className="text-sm">
+                <div className="font-semibold mb-1">주의사항</div>
+                <div className="text-muted-foreground space-y-1">
+                  <div>• 주간 레벨업 횟수는 매주 월요일에 리셋됩니다</div>
+                  <div>• 8회 이상 레벨업은 비용이 급격히 증가하므로 비추천</div>
+                  <div>• 시세는 서버마다 다르므로 현재 시세를 확인 후 입력하세요</div>
+                  <div>• 계산 결과는 참고용이며 실제 게임 내 수치와 다를 수 있습니다</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+// ============================================
+// NPC&맵찾기 가이드
+// ============================================
+
+function NpcMapGuide() {
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>🗺️ NPC & 맵 찾기</CardTitle>
+          <CardDescription>
+            어둠의전설 월드의 모든 NPC와 맵을 빠르게 찾아보세요
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* 기본 사용법 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">📋 기본 사용법</h3>
+            <div className="space-y-3">
+              <Step
+                number={1}
+                title="검색어 입력"
+                description="찾고 싶은 맵 이름, NPC 이름, 또는 태그를 검색창에 입력하세요"
+              />
+              <Step
+                number={2}
+                title="필터 활용"
+                description="대륙(전체/동대륙/서대륙), 타입(마을/사냥터) 필터로 결과 좁히기"
+              />
+              <Step
+                number={3}
+                title="맵 선택"
+                description="검색 결과에서 원하는 맵 카드를 클릭하세요"
+              />
+              <Step
+                number={4}
+                title="상세 정보 확인"
+                description="맵 상세 모달에서 해당 맵의 모든 NPC 목록을 확인할 수 있습니다"
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 검색 기능 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">🔍 검색 기능</h3>
+            <div className="space-y-3">
+              <ManageCard
+                title="맵 이름 검색"
+                description="'로랜시아', '칸투르' 등 맵 이름으로 검색"
+              />
+              <ManageCard
+                title="NPC 이름 검색"
+                description="'대장장이', '잡화상인' 등 NPC 이름으로 검색하면 해당 NPC가 있는 맵 표시"
+              />
+              <ManageCard
+                title="태그 검색"
+                description="'상점', '창고', '던전' 등 태그로 검색"
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 필터 기능 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">🎛️ 필터 기능</h3>
+            <div className="space-y-3">
+              <div className="bg-mage-bg/10 border border-mage/20 p-3 rounded-lg">
+                <div className="font-medium text-sm mb-1 text-mage">동대륙 필터</div>
+                <div className="text-xs text-muted-foreground">
+                  동대륙 지역의 맵만 표시 (로랜시아, 노리아, 데비아스 등)
+                </div>
+              </div>
+              <div className="bg-warrior-bg/10 border border-warrior/20 p-3 rounded-lg">
+                <div className="font-medium text-sm mb-1 text-warrior">서대륙 필터</div>
+                <div className="text-xs text-muted-foreground">
+                  서대륙 지역의 맵만 표시 (엘베란드, 칸투르, 카리탄 등)
+                </div>
+              </div>
+              <div className="bg-muted p-3 rounded-lg">
+                <div className="font-medium text-sm mb-1">타입 필터</div>
+                <div className="text-xs text-muted-foreground">
+                  마을/사냥터 등 맵 타입별로 필터링
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 활용 팁 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">💡 활용 팁</h3>
+            <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-lg space-y-2">
+              <div className="flex items-start gap-2">
+                <span className="text-green-500">✓</span>
+                <div className="text-sm">
+                  <span className="font-semibold">NPC 위치 빠르게 찾기</span>
+                  <div className="text-muted-foreground">"대장장이" 검색 → 모든 대장장이 NPC 위치 한눈에 확인</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-500">✓</span>
+                <div className="text-sm">
+                  <span className="font-semibold">특정 기능 찾기</span>
+                  <div className="text-muted-foreground">"창고" 태그 검색 → 창고가 있는 모든 마을 표시</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-500">✓</span>
+                <div className="text-sm">
+                  <span className="font-semibold">사냥터 탐색</span>
+                  <div className="text-muted-foreground">타입 필터로 사냥터만 보기 → 레벨별 사냥터 선택</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 맵 상세 정보 */}
+          <div>
+            <h3 className="text-base font-semibold mb-3">📍 맵 상세 정보</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">맵 이름</span>
+                <span className="text-muted-foreground">맵의 정식 명칭</span>
+              </div>
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">대륙 정보</span>
+                <span className="text-muted-foreground">동대륙/서대륙 구분</span>
+              </div>
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">맵 타입</span>
+                <span className="text-muted-foreground">마을/사냥터/던전 등 분류</span>
+              </div>
+              <div className="flex justify-between p-2 bg-muted rounded">
+                <span className="font-medium">NPC 목록</span>
+                <span className="text-muted-foreground">해당 맵의 모든 NPC와 기능</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 주의사항 */}
+          <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">ℹ️</div>
+              <div className="text-sm">
+                <div className="font-semibold mb-1">참고사항</div>
+                <div className="text-muted-foreground space-y-1">
+                  <div>• NPC 위치는 게임 업데이트에 따라 변경될 수 있습니다</div>
+                  <div>• 일부 특수 NPC는 이벤트 기간에만 등장합니다</div>
+                  <div>• 검색 결과가 없다면 다른 키워드로 시도해보세요</div>
                 </div>
               </div>
             </div>
