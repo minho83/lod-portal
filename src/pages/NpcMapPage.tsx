@@ -65,11 +65,6 @@ export function NpcMapPage() {
         <h2 className="text-lg font-bold">NPC&맵찾기</h2>
       </div>
 
-      {/* 광고 영역 - 상단 */}
-      <div className="rounded-lg border-2 border-dashed border-border bg-muted/30 p-8 text-center">
-        <p className="text-sm text-muted-foreground">상단 광고 영역</p>
-      </div>
-
       {/* 검색 & 필터 */}
       <div className="space-y-4">
         {/* 검색 바 */}
@@ -156,11 +151,6 @@ export function NpcMapPage() {
           <p className="text-muted-foreground">검색 결과가 없습니다</p>
         </div>
       )}
-
-      {/* 광고 영역 - 하단 */}
-      <div className="rounded-lg border-2 border-dashed border-border bg-muted/30 p-8 text-center">
-        <p className="text-sm text-muted-foreground">하단 광고 영역</p>
-      </div>
 
       {/* 맵 상세 모달 */}
       <MapDetailModal
