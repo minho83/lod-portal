@@ -6,6 +6,7 @@ import { CalculatorPage } from "@/pages/CalculatorPage"
 import { SearchPage } from "@/pages/SearchPage"
 import { WikiPage } from "@/pages/WikiPage"
 import { ProfilePage } from "@/pages/ProfilePage"
+import { MyPage } from "@/pages/MyPage"
 import { MarketPage } from "@/pages/MarketPage"
 import { NewTradePage } from "@/pages/NewTradePage"
 import { TradeDetailPage } from "@/pages/TradeDetailPage"
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/wiki" element={<WikiPage />} />
             <Route path="/guide" element={<GuidePage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route path="/recruit" element={<RecruitListPage />} />
             <Route path="/recruit/new" element={<NewRecruitPage />} />
             <Route path="/recruit/:id" element={<RecruitDetailPage />} />

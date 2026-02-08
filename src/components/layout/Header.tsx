@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield, HelpCircle, Sparkles, Map } from "lucide-react"
+import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield, HelpCircle, Sparkles, Map, UserCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -139,6 +139,12 @@ function UserMenu({
           <NavLink to="/profile" className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
             프로필
+          </NavLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NavLink to="/mypage" className="cursor-pointer">
+            <UserCircle2 className="mr-2 h-4 w-4" />
+            내 페이지
           </NavLink>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
