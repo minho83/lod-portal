@@ -39,13 +39,13 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
         {/* 로고 */}
-        <NavLink to="/" className="flex flex-shrink-0 items-center gap-1.5 sm:gap-2">
+        <NavLink to="/" className="flex flex-shrink-0 items-center gap-2">
           <img
             src="/lod-icon.png"
             alt="LOD"
-            className="h-8 w-8 rounded-lg sm:h-9 sm:w-9 md:h-10 md:w-10"
+            className="h-9 w-9 rounded-lg transition-all md:h-10 md:w-10"
           />
-          <h1 className="pr-1 text-sm font-black leading-none tracking-tight sm:pr-1.5 sm:text-base md:pr-2 md:text-lg lg:text-xl xl:text-2xl" style={{
+          <h1 className="max-w-0 overflow-hidden pr-0 text-lg font-black leading-none tracking-tight opacity-0 transition-all duration-300 lg:max-w-xs lg:pr-3 lg:opacity-100 xl:text-2xl" style={{
             textShadow: '2px 2px 0px rgba(0,0,0,0.3)',
             letterSpacing: '-0.5px',
             fontStyle: 'italic'
@@ -53,12 +53,12 @@ export function Header() {
             <span className="bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
               어둠의전설
             </span>
-            <span className="ml-1 text-[10px] font-bold text-primary sm:ml-1.5 sm:text-xs md:text-sm lg:text-base">Portal</span>
+            <span className="ml-2 text-base font-bold text-primary">Portal</span>
           </h1>
         </NavLink>
 
         {/* 네비게이션 */}
-        <nav className="scrollbar-hide flex flex-1 items-center gap-0.5 overflow-x-auto sm:gap-1 md:gap-1.5">
+        <nav className="scrollbar-hide flex flex-1 items-center gap-1 overflow-x-auto">
           {navItems.map(({ to, label, sub, icon: Icon }) => (
             <NavLink
               key={to}
@@ -66,18 +66,18 @@ export function Header() {
               end={to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "flex flex-shrink-0 items-center gap-0.5 whitespace-nowrap rounded-md px-1.5 py-1 text-[10px] font-medium transition-all sm:gap-1 sm:px-2 sm:text-xs md:px-2.5 md:text-sm lg:gap-1.5 lg:px-3 lg:py-2",
+                  "flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition-all duration-300 lg:px-3",
                   isActive
                     ? "bg-primary/15 text-foreground font-semibold"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )
               }
             >
-              <Icon className="h-3.5 w-3.5 flex-shrink-0 sm:h-4 sm:w-4" />
-              <span>
+              <Icon className="h-4 w-4 flex-shrink-0" />
+              <span className="max-w-0 overflow-hidden opacity-0 transition-all duration-300 lg:max-w-xs lg:opacity-100">
                 {label}
                 {sub && (
-                  <span className="ml-0.5 text-[8px] font-normal opacity-60 sm:ml-1 sm:text-[10px]">({sub})</span>
+                  <span className="ml-1 text-[10px] font-normal opacity-60">({sub})</span>
                 )}
               </span>
             </NavLink>
