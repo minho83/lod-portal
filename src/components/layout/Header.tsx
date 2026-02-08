@@ -49,7 +49,7 @@ export function Header() {
             <span className="bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
               어둠의전설
             </span>
-            <span className="ml-2 text-sm font-bold text-primary">도우미</span>
+            <span className="ml-2 text-sm font-bold text-primary">Portal</span>
           </h1>
         </NavLink>
 
