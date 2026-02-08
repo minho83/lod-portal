@@ -48,7 +48,7 @@ export function PartyCard({
         isMyParty && "border-primary shadow-[0_0_0_1px_var(--color-primary)]",
       )}
     >
-      <CardHeader className="p-3 pb-0">
+      <CardHeader className="p-2 pb-0">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
             <LocationIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -81,7 +81,7 @@ export function PartyCard({
           )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-2 p-3 pt-2">
+      <CardContent className="space-y-1.5 p-2 pt-1.5">
         {/* Organizer & time */}
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
@@ -115,7 +115,7 @@ export function PartyCard({
         )}
 
         {/* Slot rows */}
-        <div className="space-y-1">
+        <div className="space-y-0.5">
           {JOB_CLASSES.map((job) => (
             <SlotRow
               key={job}
@@ -130,7 +130,7 @@ export function PartyCard({
         <RequirementsSection requirements={party.requirements} />
 
         {/* Copy button */}
-        <div className="flex items-center gap-2 border-t border-border pt-2">
+        <div className="flex items-center gap-2 border-t border-border pt-1.5">
           <CopyButton
             text={templateText}
             label="구인글 복사"
