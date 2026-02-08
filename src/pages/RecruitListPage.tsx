@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react"
 import { Link } from "react-router-dom"
-import { Search, Plus, Users, Swords, Castle, Calendar } from "lucide-react"
+import { Search, Plus, Users, Swords, Castle, ChevronLeft, ChevronRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -35,7 +35,36 @@ export function RecruitListPage() {
   const [status, setStatus] = useState<RecruitStatus | "">("")
   const [joinMode, setJoinMode] = useState<RecruitJoinMode | "">("")
   const [jobClass, setJobClass] = useState<JobClass | "">("")
-  const [selectedDate, setSelectedDate] = useState<string>("")
+  const [dayOffset, setDayOffset] = useState(0) // 0: 오늘, 1: 내일, -1: 어제
+
+  // 날짜 표시 함수
+  const getDateLabel = (offset: number) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const targetDate = new Date(today)
+    targetDate.setDate(today.getDate() + offset)
+
+    const month = targetDate.getMonth() + 1
+    const day = targetDate.getDate()
+    const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][targetDate.getDay()]
+
+    if (offset === 0) return `${month}/${day} (${dayOfWeek}) 오늘`
+    if (offset === 1) return `${month}/${day} (${dayOfWeek}) 내일`
+    if (offset > 1) return `${month}/${day} (${dayOfWeek}) +${offset}일`
+    return `${month}/${day} (${dayOfWeek})`
+  }
+
+  // 날짜 조정
+  const adjustDate = (delta: number) => {
+    setDayOffset((prev) => Math.max(-7, Math.min(30, prev + delta)))
+    setPage(1)
+  }
+
+  // 필터 초기화
+  const resetDateFilter = () => {
+    setDayOffset(0)
+    setPage(1)
+  }
 
   const loadRecruits = useCallback(async () => {
     setLoading(true)
@@ -46,7 +75,16 @@ export function RecruitListPage() {
       if (status) filters.status = status
       if (joinMode) filters.joinMode = joinMode
       if (jobClass) filters.jobClass = jobClass
-      if (selectedDate) filters.scheduledDate = selectedDate
+
+      // dayOffset을 YYYY-MM-DD 형식으로 변환
+      if (dayOffset !== 0 || recruitType || keyword || status || joinMode || jobClass) {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        const targetDate = new Date(today)
+        targetDate.setDate(today.getDate() + dayOffset)
+        filters.scheduledDate = targetDate.toISOString().split("T")[0]
+      }
+
       const result = await fetchRecruits(filters, page)
       setRecruits(result.data)
       setTotalCount(result.count)
@@ -55,7 +93,7 @@ export function RecruitListPage() {
       setTotalCount(0)
     }
     setLoading(false)
-  }, [recruitType, keyword, status, joinMode, jobClass, selectedDate, page])
+  }, [recruitType, keyword, status, joinMode, jobClass, dayOffset, page])
 
   useEffect(() => {
     loadRecruits()
@@ -124,26 +162,33 @@ export function RecruitListPage() {
             </Button>
           </div>
 
-          {/* 날짜 선택기 */}
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-            <Input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => {
-                setSelectedDate(e.target.value)
-                setPage(1)
-              }}
-              className="w-40"
-            />
-            {selectedDate && (
+          {/* 날짜 선택 */}
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="icon-sm"
+              onClick={() => adjustDate(-1)}
+              disabled={dayOffset <= -7}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <div className="min-w-[140px] text-center text-sm font-medium">
+              {getDateLabel(dayOffset)}
+            </div>
+            <Button
+              variant="outline"
+              size="icon-sm"
+              onClick={() => adjustDate(1)}
+              disabled={dayOffset >= 30}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            {dayOffset !== 0 && (
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => {
-                  setSelectedDate("")
-                  setPage(1)
-                }}
+                onClick={resetDateFilter}
+                className="ml-1"
               >
                 초기화
               </Button>
