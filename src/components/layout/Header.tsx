@@ -24,6 +24,7 @@ const navItems = [
   { to: "/npcmap", label: "NPC&맵찾기", icon: Map },
   { to: "/search", label: "DB 검색", icon: Search },
   { to: "/wiki", label: "뉴비 가이드", icon: BookOpen },
+  { to: "/guide", label: "사용법", icon: HelpCircle },
 ]
 
 function getDiscordAvatarUrl(discordId: string, avatar: string | null) {
@@ -66,10 +67,10 @@ export function Header() {
               }
             >
               <Icon className="h-4 w-4 flex-shrink-0" />
-              <span className="max-w-0 overflow-hidden opacity-0 transition-all duration-300 xl:max-w-xs xl:opacity-100">
-                {label}
+              <span className="flex max-w-0 flex-col overflow-hidden opacity-0 transition-all duration-300 xl:max-w-xs xl:opacity-100">
+                <span>{label}</span>
                 {sub && (
-                  <span className="ml-1 text-[10px] font-normal opacity-60">({sub})</span>
+                  <span className="text-[9px] font-normal leading-tight opacity-60">({sub})</span>
                 )}
               </span>
             </NavLink>
