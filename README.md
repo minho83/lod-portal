@@ -1,73 +1,212 @@
-# React + TypeScript + Vite
+# 어둠의전설 포털 (LOD Portal)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+어둠의전설(Legend of Darkness) 게임을 위한 종합 도우미 포털 서비스입니다.
 
-Currently, two official plugins are available:
+## 🎮 주요 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. 파티 모집 📋
+- **파티 모집 게시판**: 던전, 레이드, 필드 파티 모집
+- **실시간 모집 현황**: 현재 인원/최대 인원 표시
+- **클래스별 필터링**: 전사, 도적, 법사, 직자, 도가 필터
+- **파티 신청 관리**: 파티장의 승인/거절 시스템
+- **위치 및 일정**: 모임 장소, 예정 시간 설정
 
-## React Compiler
+### 2. 라르 계산기 💎
+라르(스탯 강화 아이템) 투자를 효율적으로 계산하는 도구입니다.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+#### 4가지 계산 모드
+- **필요 라르는?**: 현재 순수 HP/MP → 목표 순수 HP/MP까지 필요한 라르 개수와 비용
+- **목표 단수는?**: 목표 단수 달성에 필요한 라르 계산
+- **올릴 수 있는 수치는?**: 보유 라르로 올릴 수 있는 HP/MP 계산 (에테르 강화 목걸이 추가 데미지 포함)
+- **풀경험치 라르**: EXP 100% 채웠을 때 획득 가능한 라르 개수 계산
 
-## Expanding the ESLint configuration
+#### 주요 특징
+- 순수 스탯 공유: 한 번 입력하면 모든 탭에서 사용
+- 할인율 설정: 이벤트 기간 할인 적용
+- 라르 가격 설정: 서버별 시세 반영
+- 실시간 단수 계산: 입력 즉시 결과 표시
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 3. 거래소 💰
+아이템 사고파는 거래 게시판입니다.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **판매/구매 등록**: 아이템 이름, 가격, 수량, 설명 입력
+- **거래 상태 관리**: 판매중, 예약중, 거래완료 상태 표시
+- **검색 및 필터**: 아이템명 검색, 거래 타입 필터
+- **가격 단위**: 골드, 라르, 기타 화폐 선택 가능
+- **실시간 시세**: 최근 거래 가격 참고
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 4. 내 페이지 👤
+나의 활동을 한눈에 관리하는 대시보드입니다.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+#### 내 파티 현황
+- **종합 탭**: 체크박스로 신청한 파티/파티장인 파티 필터링
+  - 전체 선택 체크박스로 여러 파티 한번에 선택
+  - 선택 삭제 기능으로 일괄 관리
+- **신청한 파티**: 내가 신청한 파티 목록 및 승인 상태
+- **내가 파티장인 파티**: 내가 개설한 파티 모집 현황 및 관리
+
+#### 내 거래
+- **종합 탭**: 체크박스로 파는 물품/사는 물품/거래중 필터링
+  - 전체 선택 체크박스로 여러 거래 한번에 선택
+  - 선택 삭제 기능으로 일괄 관리
+- **파는 물품**: 내가 판매 등록한 아이템 목록
+- **사는 물품**: 내가 구매 요청한 아이템 목록
+- **거래중**: 예약중이거나 거래 완료된 아이템
+
+#### 편의 기능
+- **개별 삭제**: 각 항목에 휴지통 아이콘으로 즉시 삭제
+- **선택 삭제**: 체크박스로 여러 개 선택 후 일괄 삭제
+- **필터링**: 원하는 카테고리만 보기
+- **전체 선택**: 필터링된 모든 항목 한번에 선택/해제
+
+## 🛠️ 기술 스택
+
+- **Frontend**: React 19 + TypeScript
+- **Build Tool**: Vite 7
+- **Styling**: Tailwind CSS v4 + shadcn/ui
+- **Routing**: React Router v7 (HashRouter)
+- **Backend**: Supabase (PostgreSQL, Authentication)
+- **Deployment**: GitHub Pages
+
+## 📦 설치 및 실행
+
+### 사전 요구사항
+- Node.js 18 이상
+- npm 또는 yarn
+
+### 설치
+```bash
+git clone https://github.com/minho83/lod-portal.git
+cd lod-portal
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 개발 서버 실행
+```bash
+npm run dev
 ```
+
+개발 서버가 `http://localhost:5173`에서 실행됩니다.
+
+### 빌드
+```bash
+npm run build
+```
+
+빌드 결과물은 `dist/` 폴더에 생성됩니다.
+
+### 미리보기
+```bash
+npm run preview
+```
+
+## 🌐 배포
+
+### GitHub Pages
+- **URL**: https://minho83.github.io/lod-portal/
+- **자동 배포**: `main` 브랜치에 푸시 시 자동 배포
+- **배포 스크립트**: `.github/workflows/deploy.yml`
+
+### Vercel (선택적)
+Vercel 배포 가이드는 [VERCEL_DEPLOY.md](./VERCEL_DEPLOY.md)를 참고하세요.
+
+## 📖 사용 가이드
+
+### 초기 설정
+
+1. **서버 연결 설정**
+   - 최초 접속 시 서버 URL 입력 필요
+   - URL 쿼리 파라미터로도 설정 가능: `?server=https://your-server.com`
+   - 설정값은 localStorage에 저장됨
+
+2. **회원가입 및 로그인**
+   - 프로필 페이지에서 Supabase 인증 진행
+   - 구글, 디스코드 등 소셜 로그인 지원 (설정에 따라)
+
+### 파티 모집 이용하기
+
+1. **파티 모집 등록**
+   - "파티 모집" 메뉴 → "파티 모집하기" 버튼
+   - 제목, 설명, 최대 인원, 위치, 일정 입력
+   - 클래스 제한 설정 (선택)
+
+2. **파티 신청**
+   - 모집 글 클릭 → "파티 신청" 버튼
+   - 파티장의 승인 대기
+
+3. **파티 관리**
+   - "내 페이지" → "내 파티 현황"
+   - 파티장: 신청자 승인/거절
+   - 신청자: 신청 취소 가능
+
+### 라르 계산기 활용하기
+
+1. **현재 순수 스탯 입력**
+   - 페이지 상단에 현재 HP/MP 입력 (아이템 제외)
+   - 입력값은 모든 탭에서 공유됨
+
+2. **필요 라르 계산**
+   - "필요 라르는?" 탭에서 목표 HP/MP 입력
+   - 필요한 라르 개수와 골드 비용 확인
+
+3. **설정 조정**
+   - 할인율: 이벤트 기간 할인 적용
+   - 라르 가격: 서버 시세에 맞게 조정
+
+### 거래소 이용하기
+
+1. **거래 등록**
+   - "거래소" 메뉴 → "거래 등록" 버튼
+   - 거래 타입 선택 (판매/구매)
+   - 아이템 정보 입력
+
+2. **거래 검색**
+   - 검색창에 아이템명 입력
+   - 거래 타입 필터 활용
+
+3. **거래 관리**
+   - "내 페이지" → "내 거래"
+   - 거래 상태 변경, 삭제 가능
+
+### 내 페이지 활용하기
+
+1. **파티 현황 관리**
+   - "종합" 탭에서 전체 파티 확인
+   - 체크박스로 원하는 카테고리 필터링
+   - 전체 선택 후 일괄 삭제 가능
+
+2. **거래 현황 관리**
+   - "종합" 탭에서 전체 거래 확인
+   - 체크박스로 거래 타입 필터링
+   - 선택 삭제로 효율적 관리
+
+## 🎨 디자인 시스템
+
+프로젝트의 디자인 일관성을 위해 [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)를 참고하세요.
+
+### 게임 클래스 색상
+- **전사**: `text-warrior` / `bg-warrior-bg` (#e74c3c)
+- **도적**: `text-rogue` / `bg-rogue-bg` (#9b59b6)
+- **법사**: `text-mage` / `bg-mage-bg` (#3498db)
+- **직자**: `text-cleric` / `bg-cleric-bg` (#f1c40f)
+- **도가**: `text-taoist` / `bg-taoist-bg` (#1abc9c)
+
+## 🤝 기여하기
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 라이선스
+
+이 프로젝트는 MIT 라이선스를 따릅니다.
+
+## 📞 문의
+
+프로젝트 관련 문의사항은 GitHub Issues를 이용해주세요.
+
+---
+
+**어둠의전설 포털** - 게임을 더 즐겁게, 더 편리하게! 🎮✨
