@@ -82,6 +82,9 @@ export interface UserProfile {
   game_nickname: string | null
   game_class: JobClass | null
   is_admin?: boolean
+  notification_browser_enabled?: boolean
+  notification_discord_enabled?: boolean
+  discord_webhook_url?: string | null
   created_at: string
   updated_at: string
 }

@@ -10,7 +10,7 @@ interface AuthContextType {
   loading: boolean
   signInWithDiscord: () => Promise<void>
   signOut: () => Promise<void>
-  updateProfile: (data: Partial<Pick<UserProfile, "game_nickname" | "game_class">>) => Promise<void>
+  updateProfile: (data: Partial<Pick<UserProfile, "game_nickname" | "game_class" | "notification_browser_enabled" | "notification_discord_enabled" | "discord_webhook_url">>) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)

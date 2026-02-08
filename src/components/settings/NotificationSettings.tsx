@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useAuth } from "@/contexts/AuthContext"
+import { toast } from "sonner"
 import {
   requestNotificationPermission,
   getNotificationPermission,
@@ -13,21 +15,21 @@ import {
 } from "@/lib/browser-notifications"
 
 export function NotificationSettings() {
+  const { profile, updateProfile } = useAuth()
   const [browserPermission, setBrowserPermission] = useState(getNotificationPermission())
   const [browserEnabled, setBrowserEnabled] = useState(false)
   const [discordWebhook, setDiscordWebhook] = useState("")
   const [discordEnabled, setDiscordEnabled] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    // localStorage에서 설정 불러오기
-    const savedBrowserEnabled = localStorage.getItem("notification_browser_enabled") === "true"
-    const savedDiscordEnabled = localStorage.getItem("notification_discord_enabled") === "true"
-    const savedWebhook = localStorage.getItem("notification_discord_webhook") || ""
-
-    setBrowserEnabled(savedBrowserEnabled)
-    setDiscordEnabled(savedDiscordEnabled)
-    setDiscordWebhook(savedWebhook)
-  }, [])
+    if (profile) {
+      // DB에서 설정 불러오기
+      setBrowserEnabled(profile.notification_browser_enabled ?? false)
+      setDiscordEnabled(profile.notification_discord_enabled ?? false)
+      setDiscordWebhook(profile.discord_webhook_url ?? "")
+    }
+  }, [profile])
 
   const handleBrowserToggle = async (checked: boolean) => {
     if (checked) {
@@ -36,30 +38,42 @@ export function NotificationSettings() {
 
       if (permission === "granted") {
         setBrowserEnabled(true)
-        localStorage.setItem("notification_browser_enabled", "true")
+        await updateProfile({ notification_browser_enabled: true })
 
         // 테스트 알람
         showBrowserNotification("알람이 활성화되었습니다", {
           body: "이제 브라우저 알람을 받을 수 있습니다",
         })
+        toast.success("브라우저 알람이 활성화되었습니다")
       } else {
         setBrowserEnabled(false)
-        localStorage.setItem("notification_browser_enabled", "false")
+        await updateProfile({ notification_browser_enabled: false })
+        toast.error("알람 권한이 거부되었습니다")
       }
     } else {
       setBrowserEnabled(false)
-      localStorage.setItem("notification_browser_enabled", "false")
+      await updateProfile({ notification_browser_enabled: false })
+      toast.success("브라우저 알람이 비활성화되었습니다")
     }
   }
 
-  const handleDiscordToggle = (checked: boolean) => {
+  const handleDiscordToggle = async (checked: boolean) => {
     setDiscordEnabled(checked)
-    localStorage.setItem("notification_discord_enabled", checked ? "true" : "false")
+    await updateProfile({ notification_discord_enabled: checked })
+    toast.success(checked ? "Discord 알람이 활성화되었습니다" : "Discord 알람이 비활성화되었습니다")
   }
 
-  const handleDiscordWebhookSave = () => {
-    localStorage.setItem("notification_discord_webhook", discordWebhook)
-    alert("디스코드 웹훅 URL이 저장되었습니다")
+  const handleDiscordWebhookSave = async () => {
+    setSaving(true)
+    try {
+      await updateProfile({ discord_webhook_url: discordWebhook })
+      toast.success("Discord 웹훅 URL이 저장되었습니다")
+    } catch (error) {
+      console.error("Failed to save webhook:", error)
+      toast.error("저장 실패")
+    } finally {
+      setSaving(false)
+    }
   }
 
   const handleTestDiscordWebhook = async () => {
@@ -180,8 +194,8 @@ export function NotificationSettings() {
               </div>
 
               <div className="flex gap-2">
-                <Button onClick={handleDiscordWebhookSave} variant="outline">
-                  저장
+                <Button onClick={handleDiscordWebhookSave} variant="outline" disabled={saving}>
+                  {saving ? "저장 중..." : "저장"}
                 </Button>
                 <Button onClick={handleTestDiscordWebhook} variant="secondary">
                   테스트 전송
