@@ -39,13 +39,13 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
         {/* 로고 */}
-        <NavLink to="/" className="flex flex-shrink-0 items-center gap-3">
+        <NavLink to="/" className="flex flex-shrink-0 items-center gap-2">
           <img
             src="/lod-icon.png"
             alt="LOD"
-            className="h-10 w-10 rounded-lg"
+            className="h-9 w-9 rounded-lg md:h-10 md:w-10"
           />
-          <h1 className="hidden pr-4 text-2xl font-black leading-none tracking-tight sm:block" style={{
+          <h1 className="hidden pr-2 text-lg font-black leading-none tracking-tight md:pr-3 lg:block lg:text-xl xl:text-2xl" style={{
             textShadow: '2px 2px 0px rgba(0,0,0,0.3)',
             letterSpacing: '-0.5px',
             fontStyle: 'italic'
@@ -53,12 +53,12 @@ export function Header() {
             <span className="bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
               어둠의전설
             </span>
-            <span className="ml-2 text-base font-bold text-primary">Portal</span>
+            <span className="ml-1.5 text-sm font-bold text-primary lg:ml-2 lg:text-base">Portal</span>
           </h1>
         </NavLink>
 
         {/* 네비게이션 */}
-        <nav className="scrollbar-hide flex flex-1 items-center gap-1 overflow-x-auto">
+        <nav className="scrollbar-hide flex flex-1 items-center gap-0.5 overflow-x-auto md:gap-1">
           {navItems.map(({ to, label, sub, icon: Icon }) => (
             <NavLink
               key={to}
@@ -66,7 +66,7 @@ export function Header() {
               end={to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-2 py-1.5 text-sm font-medium transition-colors md:gap-1.5 md:px-2.5 lg:px-3 lg:py-2",
                   isActive
                     ? "bg-primary/15 text-foreground font-semibold"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground",
@@ -74,7 +74,7 @@ export function Header() {
               }
             >
               <Icon className="h-4 w-4 flex-shrink-0" />
-              <span className="hidden md:inline">
+              <span className="hidden text-xs lg:inline lg:text-sm">
                 {label}
                 {sub && (
                   <span className="ml-1 text-[10px] font-normal opacity-60">({sub})</span>
