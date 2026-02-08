@@ -103,6 +103,7 @@ export interface CreateRecruitInput {
   description?: string
   location?: string
   scheduled_at?: string
+  end_time?: string
   join_mode: RecruitJoinMode
   job_slots: JobSlots
   recruit_type?: RecruitType
@@ -128,6 +129,7 @@ export async function createRecruit(
       description: input.description || null,
       location: input.location || null,
       scheduled_at: input.scheduled_at || null,
+      end_time: input.end_time || null,
       join_mode: input.join_mode,
       job_slots: input.job_slots,
       max_members: maxMembers,
@@ -156,7 +158,7 @@ export async function createRecruit(
 }
 
 export type UpdateRecruitInput = Partial<
-  Pick<CreateRecruitInput, "title" | "description" | "location" | "scheduled_at" | "join_mode" | "job_slots">
+  Pick<CreateRecruitInput, "title" | "description" | "location" | "scheduled_at" | "end_time" | "join_mode" | "job_slots">
 >
 
 export async function updateRecruit(

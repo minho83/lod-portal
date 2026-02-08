@@ -84,7 +84,7 @@ export function RecruitCard({ recruit }: RecruitCardProps) {
             {recruit.scheduled_at ? (
               <span className="flex shrink-0 items-center gap-1 font-medium text-primary">
                 <Calendar className="h-3.5 w-3.5" />
-                {formatScheduledDate(recruit.scheduled_at)}
+                {formatScheduledDate(recruit.scheduled_at, recruit.end_time)}
               </span>
             ) : (
               <span className="flex shrink-0 items-center gap-1">

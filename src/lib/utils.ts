@@ -35,12 +35,15 @@ export function formatPriceDelta(price: number, marketPrice: number): { text: st
 }
 
 /**
- * 예정 시간을 상대적으로 표시 (오늘, 내일, +N일)
+ * 시작/종료 시간을 상대적으로 표시 (오늘, 내일, +N일)
  */
-export function formatScheduledDate(dateStr: string | null | undefined): string {
-  if (!dateStr) return ""
+export function formatScheduledDate(
+  startDateStr: string | null | undefined,
+  endDateStr?: string | null | undefined
+): string {
+  if (!startDateStr) return ""
 
-  const scheduled = new Date(dateStr)
+  const scheduled = new Date(startDateStr)
   const now = new Date()
 
   // 오늘, 내일 계산을 위해 날짜만 비교
@@ -49,18 +52,30 @@ export function formatScheduledDate(dateStr: string | null | undefined): string 
 
   const dayDiff = Math.floor((scheduledStart.getTime() - todayStart.getTime()) / (1000 * 60 * 60 * 24))
 
-  const timeStr = scheduled.toLocaleTimeString("ko-KR", {
+  const startTimeStr = scheduled.toLocaleTimeString("ko-KR", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
   })
 
+  // 종료 시간이 있으면 범위로 표시
+  let timeRange = startTimeStr
+  if (endDateStr) {
+    const endTime = new Date(endDateStr)
+    const endTimeStr = endTime.toLocaleTimeString("ko-KR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+    timeRange = `${startTimeStr}~${endTimeStr}`
+  }
+
   if (dayDiff === 0) {
-    return `오늘 ${timeStr}`
+    return `오늘 ${timeRange}`
   } else if (dayDiff === 1) {
-    return `내일 ${timeStr}`
+    return `내일 ${timeRange}`
   } else if (dayDiff > 1) {
-    return `+${dayDiff}일 ${timeStr}`
+    return `+${dayDiff}일 ${timeRange}`
   } else {
     // 과거 날짜는 그대로 표시
     return scheduled.toLocaleString("ko-KR", {

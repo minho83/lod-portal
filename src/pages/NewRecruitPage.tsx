@@ -36,13 +36,15 @@ export function NewRecruitPage() {
   const [partyLocation, setPartyLocation] = useState("")
   const [joinMode, setJoinMode] = useState<RecruitJoinMode>("approval")
 
-  // 예정 시간: 날짜 + 시/분
+  // 시작/종료 시간: 날짜 + 시/분
   const [date, setDate] = useState(() => {
     const today = new Date()
     return today.toISOString().split("T")[0] // YYYY-MM-DD
   })
   const [hour, setHour] = useState(getDefaultHour)
   const [minute, setMinute] = useState(0)
+  const [endHour, setEndHour] = useState(() => Math.min(getDefaultHour() + 2, 23))
+  const [endMinute, setEndMinute] = useState(0)
 
   // 템플릿
   const [templates, setTemplates] = useState<PartyTemplate[]>([])
@@ -155,22 +157,22 @@ export function NewRecruitPage() {
     setSlots((prev) => ({ ...prev, [job]: num }))
   }
 
-  const adjustHour = (delta: number) => {
-    setHour((prev) => {
-      const next = prev + delta
-      if (next < 0) return 23
-      if (next > 23) return 0
-      return next
-    })
+  // 시작 시간 30분 조정
+  const adjustStartTime = (minutes: number) => {
+    const totalMinutes = hour * 60 + minute + minutes
+    const newHour = Math.floor(totalMinutes / 60) % 24
+    const newMinute = totalMinutes % 60
+    setHour(newHour < 0 ? 24 + newHour : newHour)
+    setMinute(newMinute < 0 ? 60 + newMinute : newMinute)
   }
 
-  const adjustMinute = (delta: number) => {
-    setMinute((prev) => {
-      const next = prev + delta
-      if (next < 0) return 50
-      if (next >= 60) return 0
-      return next
-    })
+  // 종료 시간 30분 조정
+  const adjustEndTime = (minutes: number) => {
+    const totalMinutes = endHour * 60 + endMinute + minutes
+    const newHour = Math.floor(totalMinutes / 60) % 24
+    const newMinute = totalMinutes % 60
+    setEndHour(newHour < 0 ? 24 + newHour : newHour)
+    setEndMinute(newMinute < 0 ? 60 + newMinute : newMinute)
   }
 
   // 템플릿 저장
@@ -259,9 +261,12 @@ export function NewRecruitPage() {
     if (leaderJoins && !leaderName.trim())
       return setError("리더 캐릭터명을 입력해주세요")
 
-    // 선택한 날짜 + 시:분으로 ISO string 생성
+    // 선택한 날짜 + 시작/종료 시간으로 ISO string 생성
     const scheduled = new Date(date)
     scheduled.setHours(hour, minute, 0, 0)
+
+    const endTime = new Date(date)
+    endTime.setHours(endHour, endMinute, 0, 0)
 
     setSubmitting(true)
     try {
@@ -271,6 +276,7 @@ export function NewRecruitPage() {
           description: description.trim() || undefined,
           location: partyLocation.trim() || undefined,
           scheduled_at: scheduled.toISOString(),
+          end_time: endTime.toISOString(),
           join_mode: joinMode,
           job_slots: slots,
           recruit_type: recruitType,
@@ -367,24 +373,22 @@ export function NewRecruitPage() {
             />
           </div>
 
-          {/* 장소 + 예정 시간 */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <label htmlFor="location" className="text-sm font-medium">
-                장소
-              </label>
-              <Input
-                id="location"
-                placeholder="예: 토벌대, 에반"
-                value={partyLocation}
-                onChange={(e) => setPartyLocation(e.target.value)}
-              />
-            </div>
+          {/* 장소 */}
+          <div className="space-y-2">
+            <label htmlFor="location" className="text-sm font-medium">
+              장소
+            </label>
+            <Input
+              id="location"
+              placeholder="모임장소"
+              value={partyLocation}
+              onChange={(e) => setPartyLocation(e.target.value)}
+            />
           </div>
 
-          {/* 예정 시간 */}
+          {/* 시작/종료 시간 */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">예정 시간</label>
+            <label className="text-sm font-medium">시작 시간</label>
             <div className="grid grid-cols-2 gap-2">
               {/* 날짜 선택 */}
               <Input
@@ -393,47 +397,68 @@ export function NewRecruitPage() {
                 onChange={(e) => setDate(e.target.value)}
                 min={new Date().toISOString().split("T")[0]}
               />
-              {/* 시간 선택 */}
+              {/* 시작 시간 */}
               <div className="flex items-center gap-1">
-                {/* 시 */}
                 <Button
                   type="button"
                   variant="outline"
-                  size="icon"
-                  className="h-8 w-8 shrink-0"
-                  onClick={() => adjustHour(-1)}
+                  size="sm"
+                  className="h-9 px-2"
+                  onClick={() => adjustStartTime(-30)}
                 >
-                  <Minus className="h-3 w-3" />
+                  <Minus className="mr-1 h-3 w-3" />
+                  30분
                 </Button>
                 <Input
-                  type="number"
-                  min={0}
-                  max={23}
-                  value={hour}
-                  onChange={(e) => setHour(Math.max(0, Math.min(23, Number(e.target.value) || 0)))}
-                  className="h-8 w-12 text-center px-1"
-                />
-                <span className="text-sm font-medium">:</span>
-                {/* 분 */}
-                <Input
-                  type="number"
-                  min={0}
-                  max={59}
-                  step={10}
-                  value={String(minute).padStart(2, "0")}
-                  onChange={(e) => setMinute(Math.max(0, Math.min(59, Number(e.target.value) || 0)))}
-                  className="h-8 w-12 text-center px-1"
+                  type="text"
+                  readOnly
+                  value={`${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`}
+                  className="h-9 w-20 text-center font-medium"
                 />
                 <Button
                   type="button"
                   variant="outline"
-                  size="icon"
-                  className="h-8 w-8 shrink-0"
-                  onClick={() => adjustMinute(10)}
+                  size="sm"
+                  className="h-9 px-2"
+                  onClick={() => adjustStartTime(30)}
                 >
-                  <Plus className="h-3 w-3" />
+                  <Plus className="mr-1 h-3 w-3" />
+                  30분
                 </Button>
               </div>
+            </div>
+          </div>
+
+          {/* 종료 시간 */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">종료 시간</label>
+            <div className="flex items-center gap-1">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-9 px-2"
+                onClick={() => adjustEndTime(-30)}
+              >
+                <Minus className="mr-1 h-3 w-3" />
+                30분
+              </Button>
+              <Input
+                type="text"
+                readOnly
+                value={`${String(endHour).padStart(2, "0")}:${String(endMinute).padStart(2, "0")}`}
+                className="h-9 w-20 text-center font-medium"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-9 px-2"
+                onClick={() => adjustEndTime(30)}
+              >
+                <Plus className="mr-1 h-3 w-3" />
+                30분
+              </Button>
             </div>
           </div>
 

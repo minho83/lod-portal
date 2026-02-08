@@ -152,6 +152,7 @@ export interface PartyRecruit {
   description: string | null
   location: string | null
   scheduled_at: string | null
+  end_time: string | null
   join_mode: RecruitJoinMode
   status: RecruitStatus
   job_slots: JobSlots
