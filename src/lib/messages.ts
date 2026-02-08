@@ -22,16 +22,28 @@ export async function fetchTradeMessages(tradeId: string): Promise<TradeMessage[
  * 메시지 전송
  */
 export async function sendTradeMessage(tradeId: string, message: string): Promise<TradeMessage> {
+  // 현재 사용자 가져오기
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error("로그인이 필요합니다")
+
   const { data, error } = await supabase
     .from("trade_messages")
-    .insert([{ trade_id: tradeId, message }])
+    .insert([{
+      trade_id: tradeId,
+      sender_id: user.id,  // 명시적으로 sender_id 설정
+      message
+    }])
     .select(`
       *,
       sender:sender_id(id, discord_username, game_nickname, discord_avatar)
     `)
     .single()
 
-  if (error) throw error
+  if (error) {
+    console.error("메시지 저장 실패:", error)
+    throw error
+  }
+
   return data as TradeMessage
 }
 
