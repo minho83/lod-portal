@@ -4,4 +4,7 @@
 User-agent: *
 Disallow:
 
+User-agent: Yeti
+Allow: /
+
 Sitemap: https://lod-portal.cc/sitemap.xml
