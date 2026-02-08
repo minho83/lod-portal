@@ -81,6 +81,7 @@ export interface UserProfile {
   discord_avatar: string | null
   game_nickname: string | null
   game_class: JobClass | null
+  is_admin?: boolean
   created_at: string
   updated_at: string
 }

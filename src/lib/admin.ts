@@ -251,3 +251,15 @@ export async function getAdminStats(): Promise<AdminStats> {
     recent_signups: recentSignupsResult.count || 0,
   }
 }
+
+/**
+ * 관리자 권한 부여/제거
+ */
+export async function toggleAdminRole(userId: string, isAdmin: boolean) {
+  const { error } = await supabase
+    .from("profiles")
+    .update({ is_admin: isAdmin })
+    .eq("id", userId)
+
+  if (error) throw error
+}

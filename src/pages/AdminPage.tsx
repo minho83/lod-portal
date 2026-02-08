@@ -24,6 +24,7 @@ import {
   deleteTradeAdmin,
   deleteRecruitAdmin,
   getAdminStats,
+  toggleAdminRole,
   type AdminStats,
 } from "@/lib/admin"
 import type { AdminBlacklist, ScamReport, UserProfile, Trade, PartyRecruit } from "@/types"
@@ -562,6 +563,7 @@ function UsersTab() {
   const [users, setUsers] = useState<UserProfile[]>([])
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const [toggling, setToggling] = useState<string | null>(null)
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
@@ -578,6 +580,27 @@ function UsersTab() {
       toast.error("검색 실패")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleToggleAdmin = async (userId: string, currentStatus: boolean) => {
+    const newStatus = !currentStatus
+    const action = newStatus ? "부여" : "제거"
+
+    if (!confirm(`관리자 권한을 ${action}하시겠습니까?`)) return
+
+    try {
+      setToggling(userId)
+      await toggleAdminRole(userId, newStatus)
+      toast.success(`관리자 권한 ${action} 완료`)
+
+      // 목록 갱신
+      setUsers(users.map(u => u.id === userId ? { ...u, is_admin: newStatus } : u))
+    } catch (error) {
+      console.error("Failed to toggle admin role:", error)
+      toast.error(`관리자 권한 ${action} 실패`)
+    } finally {
+      setToggling(null)
     }
   }
 
@@ -616,12 +639,27 @@ function UsersTab() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <div className="font-semibold">{user.game_nickname || user.discord_username}</div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">{user.game_nickname || user.discord_username}</span>
+                      {user.is_admin && (
+                        <Badge variant="default" className="text-xs">관리자</Badge>
+                      )}
+                    </div>
                     <div className="text-sm text-muted-foreground">
                       Discord: {user.discord_username} · 가입: {new Date(user.created_at).toLocaleDateString()}
                     </div>
                   </div>
-                  {user.game_class && <Badge variant="outline">{user.game_class}</Badge>}
+                  <div className="flex items-center gap-2">
+                    {user.game_class && <Badge variant="outline">{user.game_class}</Badge>}
+                    <Button
+                      variant={user.is_admin ? "destructive" : "default"}
+                      size="sm"
+                      onClick={() => handleToggleAdmin(user.id, user.is_admin ?? false)}
+                      disabled={toggling === user.id}
+                    >
+                      {toggling === user.id ? "처리 중..." : user.is_admin ? "관리자 제거" : "관리자 부여"}
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
