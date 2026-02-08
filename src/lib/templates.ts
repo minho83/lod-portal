@@ -19,7 +19,7 @@ export async function getMyTemplates(): Promise<PartyTemplate[]> {
 }
 
 /**
- * 템플릿 생성
+ * 템플릿 생성 (최대 5개 제한)
  */
 export async function createTemplate(template: {
   template_name: string
@@ -29,6 +29,18 @@ export async function createTemplate(template: {
   slots: JobSlots
   description: string | null
 }): Promise<PartyTemplate> {
+  // 5개 제한 확인
+  const { count, error: countError } = await supabase
+    .from("party_templates")
+    .select("*", { count: "exact", head: true })
+
+  if (countError) throw countError
+
+  if (count !== null && count >= 5) {
+    throw new Error("템플릿은 최대 5개까지만 저장할 수 있습니다. 기존 템플릿을 삭제 후 다시 시도하세요.")
+  }
+
+  // 템플릿 생성
   const { data, error } = await supabase
     .from("party_templates")
     .insert([template])

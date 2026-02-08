@@ -545,18 +545,33 @@ export function NewRecruitPage() {
         <CardContent className="space-y-4">
           {/* 템플릿 저장 */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">현재 설정을 템플릿으로 저장</label>
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium">현재 설정을 템플릿으로 저장</label>
+              <span className="text-xs text-muted-foreground">
+                {templates.length}/5개
+              </span>
+            </div>
             <div className="flex gap-2">
               <Input
                 placeholder="템플릿 이름 (예: 혼돈의 탑 고정팟)"
                 value={templateName}
                 onChange={(e) => setTemplateName(e.target.value)}
+                disabled={templates.length >= 5}
               />
-              <Button onClick={handleSaveTemplate} disabled={saving} size="sm">
+              <Button
+                onClick={handleSaveTemplate}
+                disabled={saving || templates.length >= 5}
+                size="sm"
+              >
                 <Save className="mr-2 h-4 w-4" />
                 {saving ? "저장 중..." : "저장"}
               </Button>
             </div>
+            {templates.length >= 5 && (
+              <p className="text-xs text-warning">
+                ⚠️ 템플릿은 최대 5개까지 저장 가능합니다. 기존 템플릿을 삭제 후 저장하세요.
+              </p>
+            )}
           </div>
 
           {/* 템플릿 목록 */}
