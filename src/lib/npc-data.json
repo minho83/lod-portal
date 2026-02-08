@@ -1,0 +1,5486 @@
+{
+  "maps": [
+    {
+      "id": "Milles",
+      "name": "밀레스",
+      "type": "town",
+      "continent": "east",
+      "image": "1766832185432_1-1밀레스.PNG",
+      "worldX": 100,
+      "worldY": 100
+    },
+    {
+      "id": "Luers",
+      "name": "루어스",
+      "type": "town",
+      "continent": "east",
+      "image": "1766832537073_1-2루어스.png",
+      "worldX": 300,
+      "worldY": 100
+    },
+    {
+      "id": "Rucesion",
+      "name": "뤼케시온",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834834799_1-3_Rucesion.png",
+      "worldX": 500,
+      "worldY": 100
+    },
+    {
+      "id": "RucesionPort",
+      "name": "뤼케시온항구",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834843195_1-4_RucesionPort.png",
+      "worldX": 700,
+      "worldY": 100
+    },
+    {
+      "id": "Loton",
+      "name": "로톤",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834850331_1-5_Loton.png",
+      "worldX": 1575,
+      "worldY": 350
+    },
+    {
+      "id": "Suomi",
+      "name": "수오미",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834861774_1-5_Suomi.png",
+      "worldX": 100,
+      "worldY": 300
+    },
+    {
+      "id": "Abel",
+      "name": "아벨",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834937620_1-6_Abel.png",
+      "worldX": 300,
+      "worldY": 300
+    },
+    {
+      "id": "Undine",
+      "name": "운디네",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834945557_1-7_Undine.png",
+      "worldX": 500,
+      "worldY": 300
+    },
+    {
+      "id": "Tagor",
+      "name": "타고르",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834956388_1-8_Tagor.png",
+      "worldX": 700,
+      "worldY": 300
+    },
+    {
+      "id": "Piet",
+      "name": "피에트",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834963259_1-9_Piet.png",
+      "worldX": 900,
+      "worldY": 300
+    },
+    {
+      "id": "Hoen",
+      "name": "호엔",
+      "type": "town",
+      "continent": "east",
+      "image": "1766834970407_1-10_Hoen.png",
+      "worldX": 100,
+      "worldY": 500
+    },
+    {
+      "id": "Mine",
+      "name": "마인",
+      "type": "town",
+      "continent": "east",
+      "image": "1766835012985_1-11_Mine.png",
+      "worldX": 300,
+      "worldY": 500
+    },
+    {
+      "id": "AslonVillage",
+      "name": "아슬론 마을",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835021853_2-2_AslonVillage.png",
+      "worldX": 30,
+      "worldY": 138
+    },
+    {
+      "id": "AslonPlain",
+      "name": "아슬론필드",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835029345_2-1_AslonPlain.png",
+      "worldX": 26,
+      "worldY": 0
+    },
+    {
+      "id": "NoemVillage",
+      "name": "노엠마을",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835038688_2-4_NoemVillage.png",
+      "worldX": 306,
+      "worldY": 132
+    },
+    {
+      "id": "NoemPlain",
+      "name": "노엠필드",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835045902_2-3_NoemPlain.png",
+      "worldX": 308,
+      "worldY": 0
+    },
+    {
+      "id": "FireDesertEntrance",
+      "name": "불의사막 입구",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835055889_2-5_FireDesertEntrance.png",
+      "worldX": 530,
+      "worldY": 0
+    },
+    {
+      "id": "HwaronField",
+      "name": "화론필드",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835071366_2-8_HwaronField.png",
+      "worldX": 744,
+      "worldY": 0
+    },
+    {
+      "id": "HwaronVillage",
+      "name": "화론마을",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835081505_2-9_HwaronVillage.png",
+      "worldX": 926,
+      "worldY": 0
+    },
+    {
+      "id": "Hwaron_Aman1",
+      "name": "화론-아만1",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1767145728841_2-10_Hwaron_Aman1.png",
+      "worldX": 1106,
+      "worldY": 0
+    },
+    {
+      "id": "Hwaron_Aman2",
+      "name": "화론-아만2",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835097907_2-11_Hwaron_Aman2.png",
+      "worldX": 1095,
+      "worldY": 159
+    },
+    {
+      "id": "AmanJungle1",
+      "name": "아만정글1",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835109564_2-12_AmanJungle1.png",
+      "worldX": 931,
+      "worldY": 158
+    },
+    {
+      "id": "AmanJungle2",
+      "name": "아만정글2",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835120645_2-13_AmanJungle2.png",
+      "worldX": 735,
+      "worldY": 157
+    },
+    {
+      "id": "AmanJungle3",
+      "name": "아만정글3",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835134377_2-14_AmanJungle3.png",
+      "worldX": 555,
+      "worldY": 163
+    },
+    {
+      "id": "AmanJungle4",
+      "name": "아만정글4",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835144123_2-15_AmanJungle4.png",
+      "worldX": 553,
+      "worldY": 293
+    },
+    {
+      "id": "AmanJungle5",
+      "name": "아만정글5",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835150141_2-16_AmanJungle5.png",
+      "worldX": 735,
+      "worldY": 297
+    },
+    {
+      "id": "AmanVillage",
+      "name": "아만마을",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835158417_2-17_AmanVillage.png",
+      "worldX": 939,
+      "worldY": 294
+    },
+    {
+      "id": "AmanCave",
+      "name": "아만동굴",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835179100_2-18_AmanCave.png",
+      "worldX": 1099,
+      "worldY": 302
+    },
+    {
+      "id": "TabaraVillage",
+      "name": "타바리마을",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835210964_2-20_TabaraVillage.png",
+      "worldX": 945,
+      "worldY": 457
+    },
+    {
+      "id": "MiddleForest",
+      "name": "중간숲",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835228702_2-21_MiddleForest.png",
+      "worldX": 739,
+      "worldY": 458
+    },
+    {
+      "id": "TabaraPath",
+      "name": "타바라ㅣ입구",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835221469_2-19_TabaraPath.png",
+      "worldX": 1093,
+      "worldY": 457
+    },
+    {
+      "id": "PanoVillage",
+      "name": "파노마을",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835235688_2-22_PanoVillage.png",
+      "worldX": 544,
+      "worldY": 451
+    },
+    {
+      "id": "PanoForest1",
+      "name": "파노숲1",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835244158_2-23_PanoForest1.png",
+      "worldX": 335,
+      "worldY": 321
+    },
+    {
+      "id": "PanoForest2",
+      "name": "파노숲2",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835251129_2-24_PanoForest2.png",
+      "worldX": 346,
+      "worldY": 466
+    },
+    {
+      "id": "PanoForest3",
+      "name": "파노숲3",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835257929_2-25_PanoForest3.png",
+      "worldX": 125,
+      "worldY": 858
+    },
+    {
+      "id": "PanoForest4",
+      "name": "파노숲4",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835266956_2-26_PanoForest4.png",
+      "worldX": 37,
+      "worldY": 460
+    },
+    {
+      "id": "PanoForest5",
+      "name": "파노숲5",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835273391_2-27_PanoForest5.png",
+      "worldX": 43,
+      "worldY": 616
+    },
+    {
+      "id": "Nageling_W",
+      "name": "나겔링_W",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835280571_3-1_Nageling_W.png",
+      "worldX": 370,
+      "worldY": 921
+    },
+    {
+      "id": "Nageling_NW",
+      "name": "나겔링 설원 NW",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835286528_3-2_Nageling_NW.png",
+      "worldX": 455,
+      "worldY": 728
+    },
+    {
+      "id": "Nageling_N",
+      "name": "나겔링 설원 N",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835307198_3-3_Nageling_N.png",
+      "worldX": 705,
+      "worldY": 727
+    },
+    {
+      "id": "Nageling_NE",
+      "name": "나겔링 설원 NE",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835313376_3-4_NagelingNE.png",
+      "worldX": 1039,
+      "worldY": 723
+    },
+    {
+      "id": "Nageling_E",
+      "name": "나겔링 설원 E",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835327840_3-5_Nageling_E.png",
+      "worldX": 1015,
+      "worldY": 887
+    },
+    {
+      "id": "Nageling_SE",
+      "name": "나겔링 설원 SE",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835334820_3-6_Nageling_SE.png",
+      "worldX": 1003,
+      "worldY": 1098
+    },
+    {
+      "id": "Nageling_S",
+      "name": "나겔링 설원 S",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835340225_3-7_Nageling_S.png",
+      "worldX": 655,
+      "worldY": 1111
+    },
+    {
+      "id": "Nageling_SW",
+      "name": "나겔링 설원 SW",
+      "type": "hunting",
+      "continent": "west",
+      "image": "1766835345312_3-8_Nageling_SW.png",
+      "worldX": 375,
+      "worldY": 1128
+    },
+    {
+      "id": "NagelingVillage",
+      "name": "나겔링 마을",
+      "type": "town",
+      "continent": "west",
+      "image": "1766835349910_3-9_NagelingVillage.png",
+      "worldX": 663,
+      "worldY": 888
+    },
+    {
+      "id": "Milles_temple",
+      "name": "밀레스 신전",
+      "type": "town",
+      "continent": "east",
+      "image": "1766841805185_스크린샷_2025-12-27_222005.png",
+      "worldX": 500,
+      "worldY": 500
+    },
+    {
+      "id": "Milles_worldofthegods",
+      "name": "밀레스_신들의세계",
+      "type": "town",
+      "continent": "east",
+      "image": "1766841905731_스크린샷_2025-12-27_222037.png",
+      "worldX": 700,
+      "worldY": 500
+    },
+    {
+      "id": "milles_CoastalDungeon",
+      "name": "밀레스-해안던전",
+      "type": "town",
+      "continent": "east",
+      "image": "1766842981893_스크린샷_2025-12-27_223958.png",
+      "worldX": 900,
+      "worldY": 500
+    },
+    {
+      "id": "Milles_Castle",
+      "name": "밀레스성",
+      "type": "town",
+      "continent": "east",
+      "image": "1766842993804_스크린샷_2025-12-27_224032.png",
+      "worldX": 100,
+      "worldY": 700
+    },
+    {
+      "id": "Milles_CastleHall",
+      "name": "밀레스성홀",
+      "type": "town",
+      "continent": "east",
+      "image": "1766843004719_스크린샷_2025-12-27_224043.png",
+      "worldX": 300,
+      "worldY": 700
+    },
+    {
+      "id": "Luers_Castle_1F",
+      "name": "루어스성_1층",
+      "type": "town",
+      "continent": "east",
+      "image": "1766845922108_스크린샷_2025-12-27_232840.png",
+      "worldX": 500,
+      "worldY": 700
+    },
+    {
+      "id": "Luers_Castle_2F_1",
+      "name": "루어스성_2층_복도",
+      "type": "town",
+      "continent": "east",
+      "image": "1766845938143_스크린샷_2025-12-27_233125.png",
+      "worldX": 700,
+      "worldY": 700
+    },
+    {
+      "id": "Luers_Castle_2F_2",
+      "name": "루어스성_세바스찬",
+      "type": "town",
+      "continent": "east",
+      "image": "1766845983275_스크린샷_2025-12-27_233119.png",
+      "worldX": 900,
+      "worldY": 700
+    },
+    {
+      "id": "Luers_Castle_2F_3",
+      "name": "루어스성_2층홀",
+      "type": "town",
+      "continent": "east",
+      "image": "1766846009781_스크린샷_2025-12-27_233133.png",
+      "worldX": 100,
+      "worldY": 900
+    },
+    {
+      "id": "Luers_Castle_3F",
+      "name": "루어스성 3층 집무실",
+      "type": "town",
+      "continent": "east",
+      "image": "1766846029120_스크린샷_2025-12-27_233138.png",
+      "worldX": 300,
+      "worldY": 900
+    },
+    {
+      "id": "East_continent",
+      "name": "동쪽월드맵 2",
+      "type": "town",
+      "continent": "east",
+      "image": "1766847245467_스크린샷_2025-12-27_235202.png",
+      "worldX": 500,
+      "worldY": 900
+    },
+    {
+      "id": "ChristmasIsland_1",
+      "name": "크리스마스섬",
+      "type": "town",
+      "continent": "east",
+      "image": "1766847569948_스크린샷_2025-12-27_235840.png",
+      "worldX": 700,
+      "worldY": 900
+    },
+    {
+      "id": "ChristmasIsland_2",
+      "name": "크리스마스선물공장",
+      "type": "town",
+      "continent": "east",
+      "image": "1766980451197_스크린샷_2025-12-27_235846.png",
+      "worldX": 900,
+      "worldY": 900
+    },
+    {
+      "id": "ChristmasIsland_3",
+      "name": "산타클로스방",
+      "type": "town",
+      "continent": "east",
+      "image": "1766980490622_스크린샷_2025-12-27_235854.png",
+      "worldX": 100,
+      "worldY": 1100
+    },
+    {
+      "id": "Oren_1",
+      "name": "오렌",
+      "type": "town",
+      "continent": "east",
+      "image": "1766847917458_스크린샷_2025-12-28_000422.png",
+      "worldX": 300,
+      "worldY": 1100
+    },
+    {
+      "id": "market",
+      "name": "시장",
+      "type": "town",
+      "continent": "east",
+      "image": "1766848002392_스크린샷_2025-12-28_000602.png",
+      "worldX": 500,
+      "worldY": 1100
+    },
+    {
+      "id": "Ureid",
+      "name": "유리드",
+      "type": "town",
+      "continent": "east",
+      "image": "1766848581368_스크린샷_2025-12-28_001539.png",
+      "worldX": 700,
+      "worldY": 1100
+    },
+    {
+      "id": "yoyonggugulgulppeumimis",
+      "name": "적룡굴플라밋대기실",
+      "type": "town",
+      "continent": "east",
+      "image": "1766934017236_스크린샷_2025-12-28_234849.png",
+      "worldX": 900,
+      "worldY": 1100
+    },
+    {
+      "id": "ririnrinhhohon_gigissusa",
+      "name": "그린혼기숙사 1층",
+      "type": "town",
+      "continent": "east",
+      "image": "1766937856119_스크린샷_2025-12-29_005319.png",
+      "worldX": 100,
+      "worldY": 1300
+    },
+    {
+      "id": "ririnrinhhohon_sasalroropbi",
+      "name": "그린혼 기숙사 로비",
+      "type": "town",
+      "continent": "east",
+      "image": "1766937971426_스크린샷_2025-12-29_005342.png",
+      "worldX": 300,
+      "worldY": 1300
+    },
+    {
+      "id": "ririnrinhhohonhonhhauwowon",
+      "name": "그린혼학원",
+      "type": "town",
+      "continent": "east",
+      "image": "1766937948693_스크린샷_2025-12-29_005415.png",
+      "worldX": 500,
+      "worldY": 1300
+    },
+    {
+      "id": "ririnrinhhohonbobokdo",
+      "name": "그린혼학원 복도",
+      "type": "town",
+      "continent": "east",
+      "image": "1766938070396_스크린샷_2025-12-29_005329.png",
+      "worldX": 700,
+      "worldY": 1300
+    },
+    {
+      "id": "world_map",
+      "name": "월드맵",
+      "type": "town",
+      "continent": "east",
+      "image": "1766979972464_화면_캡처_2025-12-29_124548.png",
+      "worldX": 1250,
+      "worldY": 375
+    },
+    {
+      "id": "endor",
+      "name": "엔도르 개미굴",
+      "type": "town",
+      "continent": "west",
+      "image": "1767014567047_스크린샷_2025-12-29_222110.png"
+    },
+    {
+      "id": "novice",
+      "name": "노비스마을",
+      "type": "town",
+      "continent": "east",
+      "image": "1767015429369_스크린샷_2025-12-29_223455.png"
+    },
+    {
+      "id": "yongjas_park",
+      "name": "용자의공원",
+      "type": "town",
+      "continent": "east",
+      "image": "1767152751339_스크린샷_2025-12-31_121016.png"
+    },
+    {
+      "id": "museum_1f",
+      "name": "박물관 1층",
+      "type": "town",
+      "continent": "east",
+      "image": "1767152767108_스크린샷_2025-12-31_121027.png"
+    },
+    {
+      "id": "basement_of_the_museum",
+      "name": "박물관 지하",
+      "type": "town",
+      "continent": "east",
+      "image": "1767152802648_스크린샷_2025-12-31_121036.png"
+    },
+    {
+      "id": "world_tree_of_earth",
+      "name": "대지의세계수 사당",
+      "type": "town",
+      "continent": "west",
+      "image": "1767152832644_스크린샷_2025-12-31_121124.png"
+    },
+    {
+      "id": "world_tree_of_fire",
+      "name": "화염의세계수 사당",
+      "type": "town",
+      "continent": "west",
+      "image": "1767152851653_스크린샷_2025-12-31_121236.png"
+    },
+    {
+      "id": "port_athlon",
+      "name": "아슬론항구",
+      "type": "town",
+      "continent": "west",
+      "image": "1767176227523_스크린샷_2025-12-31_184905.png"
+    },
+    {
+      "id": "ship_to_athlon",
+      "name": "아슬론행 배",
+      "type": "town",
+      "continent": "west",
+      "image": "1767176264383_스크린샷_2025-12-31_185146.png"
+    },
+    {
+      "id": "inside_the_ship_to_athlon",
+      "name": "아슬론행 배 객실",
+      "type": "town",
+      "continent": "west",
+      "image": "1767176290662_스크린샷_2025-12-31_185204.png"
+    },
+    {
+      "id": "novice_f_a",
+      "name": "노비스 평원 A",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609710087_노비스평원A.png"
+    },
+    {
+      "id": "novice_f_b",
+      "name": "노비스 평원 B",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609756184_노비스평원B.png"
+    },
+    {
+      "id": "novice_d_a1",
+      "name": "노비스 지하던전 A1",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609659001_지하던전_A1.png"
+    },
+    {
+      "id": "novice_d_a2",
+      "name": "노비스 지하던전 A2",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609647523_지하던전_A2.png"
+    },
+    {
+      "id": "novice_d_a3",
+      "name": "노비스 지하던전 A3",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609633400_지하던전_A3.png"
+    },
+    {
+      "id": "novice_d_b1",
+      "name": "노비스 지하던전 B1",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609620460_지하던전B1.png"
+    },
+    {
+      "id": "novice_d_b2",
+      "name": "노비스 지하던전 B2",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609605034_지하던전_B2.png"
+    },
+    {
+      "id": "novice_d_b3",
+      "name": "노비스 지하던전 B3",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609588349_지하던전B3.png"
+    },
+    {
+      "id": "novice_d_c1",
+      "name": "노비스 지하던전 C1",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609570620_지하던전C1.png"
+    },
+    {
+      "id": "novice_d_c2",
+      "name": "노비스 지하던전 C2",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609547268_지하던전_C2.png"
+    },
+    {
+      "id": "novice_d_c3",
+      "name": "노비스 지하던전 C3",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609530988_지하던전C3.png"
+    },
+    {
+      "id": "novice_c_a",
+      "name": "노비스 지하동굴 A",
+      "type": "town",
+      "continent": "east",
+      "image": "1767609134312_스크린샷_2026-01-05_192141.png"
+    },
+    {
+      "id": "novice_c_2",
+      "name": "노비스 지하동굴 B",
+      "type": "town",
+      "continent": "east",
+      "image": "1767609113672_스크린샷_2026-01-05_192158.png"
+    },
+    {
+      "id": "novice_c_3",
+      "name": "노비스 지하동굴 C",
+      "type": "town",
+      "continent": "east",
+      "image": "1767609098273_스크린샷_2026-01-05_192212.png"
+    },
+    {
+      "id": "novice_c_4",
+      "name": "노비스 지하동굴 C4",
+      "type": "hunting",
+      "continent": "east",
+      "image": "1767609059577_스크린샷_2026-01-05_192226.png"
+    }
+  ],
+  "npcs": [
+    {
+      "id": 1,
+      "name": "신관",
+      "mapId": "Milles_temple",
+      "x": 47.4,
+      "y": 43.5,
+      "tags": [
+        "신관",
+        "체마",
+        "포인트",
+        "승급퀘"
+      ],
+      "description": "체/마력 구매 이동 npc\n포인트 구매 이동 npc\n승급 퀘스트 npc",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 2,
+      "name": "세오",
+      "mapId": "Milles_worldofthegods",
+      "x": 42.3,
+      "y": 65.2,
+      "tags": [
+        "세오",
+        "은총"
+      ],
+      "description": "체력 구매 - 키워드 :은총\n",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 3,
+      "name": "칸",
+      "mapId": "Milles_worldofthegods",
+      "x": 36.3,
+      "y": 50.2,
+      "tags": [
+        "은총",
+        "칸"
+      ],
+      "description": "마력구매 - 키워드 : 은총",
+      "color": "#4ecdc4"
+    },
+    {
+      "id": 4,
+      "name": "로오",
+      "mapId": "Milles_worldofthegods",
+      "x": 61.9751135510143,
+      "y": 50.76204902237065,
+      "tags": [
+        "순위",
+        "누적경험치",
+        "목표",
+        "경험치량"
+      ],
+      "description": "순위 및 누적경험치량 알려줌\n목표까지 경험치량 알려줌",
+      "color": "#ffe66d"
+    },
+    {
+      "id": 5,
+      "name": "세토아",
+      "mapId": "Milles_worldofthegods",
+      "x": 49.4,
+      "y": 34.3,
+      "tags": [],
+      "description": "기능x",
+      "color": "#5f27cd"
+    },
+    {
+      "id": 6,
+      "name": "밀레스 지하수로",
+      "mapId": "Milles",
+      "x": 45.2,
+      "y": 85.5,
+      "tags": [
+        "솔던",
+        "지하수로"
+      ],
+      "description": "지하수로",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 7,
+      "name": "로즈마리",
+      "mapId": "Milles",
+      "x": 66.6,
+      "y": 55.1,
+      "tags": [
+        "로즈마리"
+      ],
+      "description": "퀘스트 npc\nhttps://cafe.naver.com/sclod12/438970",
+      "color": "#4ecdc4"
+    },
+    {
+      "id": 8,
+      "name": "밀레스 엠블럼상점",
+      "mapId": "Milles",
+      "x": 22.9,
+      "y": 58.7,
+      "tags": [
+        "어둠사랑",
+        "엠블럼",
+        "탐험의용기"
+      ],
+      "description": "엠블럼상점 - 어둠사랑포인트\n",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 9,
+      "name": "밀레스 은행",
+      "mapId": "Milles",
+      "x": 47.6,
+      "y": 23.9,
+      "tags": [],
+      "description": "은행",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 10,
+      "name": "밀레스 잡화상점",
+      "mapId": "Milles",
+      "x": 30.8,
+      "y": 48.7,
+      "tags": [
+        "이아",
+        "구원",
+        "경팔돌",
+        "텔깃",
+        "세깃"
+      ],
+      "description": "잡화상점\n\n- 이아의구원 , 경팔돌 , 텔깃 , 세깃",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 11,
+      "name": "밀레스 시약상점",
+      "mapId": "Milles",
+      "x": 35.3,
+      "y": 53.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 12,
+      "name": "밀레스 무기상점",
+      "mapId": "Milles",
+      "x": 40.1,
+      "y": 55.7,
+      "tags": [
+        "목걸이",
+        "벨트",
+        "수리"
+      ],
+      "description": "목걸이,벨트",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 13,
+      "name": "밀레스 월드맵",
+      "mapId": "Milles",
+      "x": 56.2,
+      "y": 49.7,
+      "tags": [
+        "월드맵",
+        "열기구"
+      ],
+      "description": "월드맵 이동",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 14,
+      "name": "밀레스 지하묘지",
+      "mapId": "Milles",
+      "x": 68,
+      "y": 33.7,
+      "tags": [
+        "밀레스던전",
+        "밀던"
+      ],
+      "description": "밀레스던전",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 15,
+      "name": "밀레스성",
+      "mapId": "Milles",
+      "x": 78.2,
+      "y": 70.2,
+      "tags": [],
+      "description": "밀레스성",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 17,
+      "name": "쉐폰",
+      "mapId": "Milles_CastleHall",
+      "x": 61,
+      "y": 35.6,
+      "tags": [
+        "긴급서신",
+        "마이소시아의영웅"
+      ],
+      "description": "마이소시아의 영웅",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 18,
+      "name": "길드대전참가",
+      "mapId": "Luers",
+      "x": 56.8,
+      "y": 52.3,
+      "tags": [
+        "길대"
+      ],
+      "description": "길드대전 입장 npc",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 19,
+      "name": "무탑 입장 npc",
+      "mapId": "Luers",
+      "x": 60.75342474462779,
+      "y": 45.75999755859375,
+      "tags": [
+        "무탑",
+        "무한의탑"
+      ],
+      "description": "무탑 입장 npc",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 20,
+      "name": "쟁탈전도우미 / 쟁탈전참가",
+      "mapId": "Luers",
+      "x": 57.1,
+      "y": 42.7,
+      "tags": [
+        "쟁탈전",
+        "쟁탈전 신청"
+      ],
+      "description": "쟁탈전 입장",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 21,
+      "name": "혼돈의탑도우미",
+      "mapId": "Luers",
+      "x": 49.544626593806925,
+      "y": 41.092896174863384,
+      "tags": [
+        "혼탑"
+      ],
+      "description": "혼탑 입장",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 22,
+      "name": "세바스찬",
+      "mapId": "Luers_Castle_2F_2",
+      "x": 35,
+      "y": 35.3,
+      "tags": [
+        "길망"
+      ],
+      "description": "",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 23,
+      "name": "루어스 대평원",
+      "mapId": "Luers",
+      "x": 32.4,
+      "y": 25.5,
+      "tags": [
+        "루어스대평원"
+      ],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 24,
+      "name": "우드랜드 대기실",
+      "mapId": "Luers",
+      "x": 9.107468123861565,
+      "y": 54.353369763205826,
+      "tags": [
+        "우드랜드"
+      ],
+      "description": "우드 대기실",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 25,
+      "name": "루어스 월드맵",
+      "mapId": "Luers",
+      "x": 90.1,
+      "y": 49.3,
+      "tags": [
+        "열기구",
+        "월드맵"
+      ],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 26,
+      "name": "뤼케시온해안대기실",
+      "mapId": "Rucesion",
+      "x": 77.4,
+      "y": 40.8,
+      "tags": [
+        "뤼케던전"
+      ],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 27,
+      "name": "아교",
+      "mapId": "RucesionPort",
+      "x": 63.4,
+      "y": 67.3,
+      "tags": [
+        "아슬론",
+        "배표",
+        "2차승급"
+      ],
+      "description": "2차승급 아슬론 가는 배표 파는 npc",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 28,
+      "name": "산타클로스",
+      "mapId": "ChristmasIsland_3",
+      "x": 73.1,
+      "y": 39.2,
+      "tags": [
+        "씰",
+        "크리스마스씰",
+        "이벤트"
+      ],
+      "description": "산타클로스 npc",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 29,
+      "name": "선물공장 요정",
+      "mapId": "ChristmasIsland_2",
+      "x": 44.7,
+      "y": 26.2,
+      "tags": [
+        "선물상자",
+        "크리스마스씰",
+        "씰"
+      ],
+      "description": "크리스마스 선물상자 판매 npc\n",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 30,
+      "name": "백원만",
+      "mapId": "market",
+      "x": 49.5,
+      "y": 39.4,
+      "tags": [
+        "죽마",
+        "호러",
+        "시장이동"
+      ],
+      "description": "죽마 이동/ 시장이동 / 호러캐슬 대기실 이동 / ",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 31,
+      "name": "길레노아",
+      "mapId": "market",
+      "x": 49.5,
+      "y": 37.2,
+      "tags": [
+        "노점검색기",
+        "수표",
+        "노점"
+      ],
+      "description": "수표 환전 / 노점검색기구매",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 32,
+      "name": "세리카",
+      "mapId": "market",
+      "x": 49.7,
+      "y": 33.5,
+      "tags": [
+        "노점",
+        "상점개설"
+      ],
+      "description": "상점(노점개설) 스크롤 및 입문서 판매",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 33,
+      "name": "에카스",
+      "mapId": "Ureid",
+      "x": 53.3,
+      "y": 50.5,
+      "tags": [
+        "에카스"
+      ],
+      "description": "퀵던증표교환, 에카스 이벤트 장비 수령",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 34,
+      "name": "킨레이",
+      "mapId": "Ureid",
+      "x": 52.1,
+      "y": 31.6,
+      "tags": [
+        "호러",
+        "백유"
+      ],
+      "description": "호러케슬,백작부인별장,백작유리드",
+      "color": "#4ecdc4"
+    },
+    {
+      "id": 35,
+      "name": "적룡굴이동",
+      "mapId": "Ureid",
+      "x": 54.5,
+      "y": 29.9,
+      "tags": [
+        "적룡굴"
+      ],
+      "description": "적룡굴 이동 npc",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": 36,
+      "name": "밀레스 여관",
+      "mapId": "Milles",
+      "x": 69.5,
+      "y": 43.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 37,
+      "name": "모디아",
+      "mapId": "Milles",
+      "x": 71.9,
+      "y": 49,
+      "tags": [],
+      "description": "",
+      "color": "#1abc9c",
+      "url": ""
+    },
+    {
+      "id": 38,
+      "name": "안",
+      "mapId": "Milles",
+      "x": 68.7,
+      "y": 37.4,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 39,
+      "name": "듀크",
+      "mapId": "Milles",
+      "x": 28.5,
+      "y": 51.7,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 40,
+      "name": "텔리도아",
+      "mapId": "Milles",
+      "x": 30.5,
+      "y": 68.1,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 41,
+      "name": "케빈",
+      "mapId": "Milles",
+      "x": 45.8,
+      "y": 56.8,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 42,
+      "name": "네리어",
+      "mapId": "Milles",
+      "x": 50.5,
+      "y": 27.5,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 43,
+      "name": "칸다나",
+      "mapId": "Milles",
+      "x": 58.4,
+      "y": 78.1,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 44,
+      "name": "밀레스 식당(1F) / 주점(2F)",
+      "mapId": "Milles",
+      "x": 52.3,
+      "y": 73.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 45,
+      "name": "베인",
+      "mapId": "Milles",
+      "x": 82.1,
+      "y": 57.6,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 46,
+      "name": "밀레스 길드성입장도우미",
+      "mapId": "Milles",
+      "x": 48.8,
+      "y": 87.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 47,
+      "name": "루어스 은행",
+      "mapId": "Luers",
+      "x": 44.3,
+      "y": 24.5,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 48,
+      "name": "루어스 식당",
+      "mapId": "Luers",
+      "x": 56.8,
+      "y": 25.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 49,
+      "name": "카이로",
+      "mapId": "Luers",
+      "x": 74.6,
+      "y": 39.8,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 50,
+      "name": "루어스 대장간",
+      "mapId": "Luers",
+      "x": 81.3,
+      "y": 45.5,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 51,
+      "name": "루어스 여관",
+      "mapId": "Luers",
+      "x": 14.5,
+      "y": 47.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 52,
+      "name": "루어스 잡화상점",
+      "mapId": "Luers",
+      "x": 10.3,
+      "y": 50,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 53,
+      "name": "루어스 의상실",
+      "mapId": "Luers",
+      "x": 19,
+      "y": 60.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 54,
+      "name": "우드랜드 대기실",
+      "mapId": "Luers",
+      "x": 22,
+      "y": 67.8,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 55,
+      "name": "루어스 시약상점",
+      "mapId": "Luers",
+      "x": 28.9,
+      "y": 57.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 56,
+      "name": "루어스 길드성입장도우미",
+      "mapId": "Luers",
+      "x": 21.2,
+      "y": 46.2,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 57,
+      "name": "와이키키입장도우미",
+      "mapId": "Luers",
+      "x": 34,
+      "y": 59.7,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 58,
+      "name": "루어스 은행",
+      "mapId": "Luers",
+      "x": 40.8,
+      "y": 67.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 59,
+      "name": "아벨로",
+      "mapId": "Luers",
+      "x": 52.6,
+      "y": 73,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 60,
+      "name": "클룬",
+      "mapId": "Luers",
+      "x": 53.4,
+      "y": 80,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 61,
+      "name": "루어스 잡화상점B",
+      "mapId": "Luers",
+      "x": 78.7,
+      "y": 56.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 62,
+      "name": "길드가입",
+      "mapId": "Luers",
+      "x": 52.7,
+      "y": 50.7,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 63,
+      "name": "쉴소러스",
+      "mapId": "Luers",
+      "x": 41.7,
+      "y": 45.5,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 64,
+      "name": "에듀",
+      "mapId": "Luers",
+      "x": 50.8,
+      "y": 53.6,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 65,
+      "name": "헤쉬",
+      "mapId": "Luers",
+      "x": 65.1,
+      "y": 54.4,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 66,
+      "name": "OX퀴즈입장",
+      "mapId": "Luers",
+      "x": 72.1,
+      "y": 61.6,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 67,
+      "name": "우드랜드통합대기실",
+      "mapId": "Rucesion",
+      "x": 19.7,
+      "y": 37.7,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 68,
+      "name": "뤼케시온 월드맵",
+      "mapId": "Rucesion",
+      "x": 45.7,
+      "y": 47.4,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 69,
+      "name": "뤼케시온 대장간",
+      "mapId": "Rucesion",
+      "x": 16.7,
+      "y": 48.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 70,
+      "name": "뤼케시온 잡화상점",
+      "mapId": "Rucesion",
+      "x": 30,
+      "y": 35.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 71,
+      "name": "뤼케시온 여관(1F) / 주점(2F)",
+      "mapId": "Rucesion",
+      "x": 40.4,
+      "y": 37.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 72,
+      "name": "뤼케시온 여관(1F) / 주점(2F) \\",
+      "mapId": "Rucesion",
+      "x": 46.5,
+      "y": 38,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 73,
+      "name": "뤼케시온 은행A",
+      "mapId": "Rucesion",
+      "x": 42.9,
+      "y": 24.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 74,
+      "name": "뤼케시온 시약상점",
+      "mapId": "Rucesion",
+      "x": 56.4,
+      "y": 56.7,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 75,
+      "name": "뤼케시온 은행B",
+      "mapId": "Rucesion",
+      "x": 59.5,
+      "y": 64.7,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 76,
+      "name": "시장1",
+      "mapId": "Rucesion",
+      "x": 83.3,
+      "y": 63,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 77,
+      "name": "누다",
+      "mapId": "Rucesion",
+      "x": 32.2,
+      "y": 35.8,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 78,
+      "name": "둘라코스",
+      "mapId": "Rucesion",
+      "x": 32.1,
+      "y": 43,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 79,
+      "name": "제나",
+      "mapId": "Rucesion",
+      "x": 33.2,
+      "y": 67.2,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 80,
+      "name": "뤼케시온 길드성입장도우미",
+      "mapId": "Rucesion",
+      "x": 54.7,
+      "y": 61.2,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 81,
+      "name": "예키",
+      "mapId": "Rucesion",
+      "x": 72.6,
+      "y": 40.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 82,
+      "name": "체리",
+      "mapId": "Rucesion",
+      "x": 59.7,
+      "y": 30.2,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 83,
+      "name": "로드세이퍼",
+      "mapId": "Rucesion",
+      "x": 56.1,
+      "y": 32.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 84,
+      "name": "후치",
+      "mapId": "Rucesion",
+      "x": 50.2,
+      "y": 16.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 85,
+      "name": "산타",
+      "mapId": "Rucesion",
+      "x": 47.1,
+      "y": 27.4,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 86,
+      "name": "봉인지입구",
+      "mapId": "RucesionPort",
+      "x": 80.7,
+      "y": 73.3,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 87,
+      "name": "뤼케시온항구 월드맵",
+      "mapId": "RucesionPort",
+      "x": 52.8,
+      "y": 42.1,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 88,
+      "name": "뤼케시온항구 식당",
+      "mapId": "RucesionPort",
+      "x": 62.6,
+      "y": 52.5,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 89,
+      "name": "뤼케시온항구 월드맵 (오렌방향)",
+      "mapId": "RucesionPort",
+      "x": 23.3,
+      "y": 36,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 90,
+      "name": "뤼케시온항구 월드맵(오렌방향)",
+      "mapId": "RucesionPort",
+      "x": 38.3,
+      "y": 46.8,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 91,
+      "name": "로톤 식당",
+      "mapId": "Loton",
+      "x": 49.5,
+      "y": 24.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 92,
+      "name": "로톤 월드맵",
+      "mapId": "Loton",
+      "x": 48.8,
+      "y": 46.3,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 93,
+      "name": "로톤 잡화상점",
+      "mapId": "Loton",
+      "x": 24.2,
+      "y": 61.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 94,
+      "name": "로톤 대장간",
+      "mapId": "Loton",
+      "x": 37.1,
+      "y": 66.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 95,
+      "name": "로톤 은행",
+      "mapId": "Loton",
+      "x": 40.9,
+      "y": 67.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 96,
+      "name": "로톤 여관",
+      "mapId": "Loton",
+      "x": 45.4,
+      "y": 75.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 97,
+      "name": "로톤 지하수로",
+      "mapId": "Loton",
+      "x": 64.3,
+      "y": 25.5,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 98,
+      "name": "루프의캠프",
+      "mapId": "Loton",
+      "x": 92.3,
+      "y": 45.3,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 99,
+      "name": "파벨",
+      "mapId": "Loton",
+      "x": 34.7,
+      "y": 64.4,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 100,
+      "name": "링고",
+      "mapId": "Loton",
+      "x": 55.6,
+      "y": 26.2,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 101,
+      "name": "수오미 은행A",
+      "mapId": "Suomi",
+      "x": 49.3,
+      "y": 21.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 102,
+      "name": "수오미 시약상점",
+      "mapId": "Suomi",
+      "x": 54.6,
+      "y": 26.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 103,
+      "name": "수오미 보석상점A",
+      "mapId": "Suomi",
+      "x": 62.4,
+      "y": 30.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 104,
+      "name": "수오미 슬롯강화상점",
+      "mapId": "Suomi",
+      "x": 68.8,
+      "y": 36.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 105,
+      "name": "수오미 대장간B",
+      "mapId": "Suomi",
+      "x": 84,
+      "y": 48.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 106,
+      "name": "수오미 은행B",
+      "mapId": "Suomi",
+      "x": 87.9,
+      "y": 56.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 107,
+      "name": "수오미 월드맵",
+      "mapId": "Suomi",
+      "x": 74.7,
+      "y": 59.7,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 108,
+      "name": "홀리루딘성",
+      "mapId": "Suomi",
+      "x": 75.6,
+      "y": 70.8,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 109,
+      "name": "수오미 지하묘지",
+      "mapId": "Suomi",
+      "x": 60,
+      "y": 81.3,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 110,
+      "name": "수오미 여관",
+      "mapId": "Suomi",
+      "x": 45,
+      "y": 71.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 111,
+      "name": "수오미 잡화상점",
+      "mapId": "Suomi",
+      "x": 40.3,
+      "y": 72.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 112,
+      "name": "수오미 대장간A",
+      "mapId": "Suomi",
+      "x": 12.8,
+      "y": 50.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 113,
+      "name": "수오미 제조스크롤상점",
+      "mapId": "Suomi",
+      "x": 9.9,
+      "y": 52.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 114,
+      "name": "수오미 보석상점B",
+      "mapId": "Suomi",
+      "x": 33.3,
+      "y": 35.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 115,
+      "name": "케인즈",
+      "mapId": "Suomi",
+      "x": 52.4,
+      "y": 24.3,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 116,
+      "name": "스니퍼",
+      "mapId": "Suomi",
+      "x": 27,
+      "y": 38.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 117,
+      "name": "데비",
+      "mapId": "Suomi",
+      "x": 21.3,
+      "y": 55.1,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 118,
+      "name": "칼로멘",
+      "mapId": "Suomi",
+      "x": 62.8,
+      "y": 52.5,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 119,
+      "name": "성냥팔이소녀",
+      "mapId": "Suomi",
+      "x": 48.7,
+      "y": 37.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 120,
+      "name": "아벨 월드맵",
+      "mapId": "Abel",
+      "x": 34.6,
+      "y": 31.9,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 121,
+      "name": "아벨 월드맵",
+      "mapId": "Abel",
+      "x": 81.4,
+      "y": 55.1,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 122,
+      "name": "아벨 은행A",
+      "mapId": "Abel",
+      "x": 40.6,
+      "y": 29.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 123,
+      "name": "아벨 시약상점C",
+      "mapId": "Abel",
+      "x": 44.1,
+      "y": 27.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 124,
+      "name": "아벨 여관",
+      "mapId": "Abel",
+      "x": 47,
+      "y": 24.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 125,
+      "name": "아벨 대장간A",
+      "mapId": "Abel",
+      "x": 49.9,
+      "y": 22,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 126,
+      "name": "아벨 시약상점A",
+      "mapId": "Abel",
+      "x": 52.6,
+      "y": 21.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 127,
+      "name": "아벨 의상실",
+      "mapId": "Abel",
+      "x": 55.6,
+      "y": 24.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 128,
+      "name": "아벨 미용실",
+      "mapId": "Abel",
+      "x": 58.7,
+      "y": 26.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 129,
+      "name": "아벨 잡화상점A",
+      "mapId": "Abel",
+      "x": 61.5,
+      "y": 28.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 130,
+      "name": "아벨 은행C",
+      "mapId": "Abel",
+      "x": 64.3,
+      "y": 31.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 131,
+      "name": "아벨 해안던전대기실",
+      "mapId": "Abel",
+      "x": 67.7,
+      "y": 28.1,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 132,
+      "name": "아벨 대장간B",
+      "mapId": "Abel",
+      "x": 72,
+      "y": 38,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 133,
+      "name": "아벨 시약상점B",
+      "mapId": "Abel",
+      "x": 75.1,
+      "y": 39.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 134,
+      "name": "아벨 식당(1F) / 주점(2F)",
+      "mapId": "Abel",
+      "x": 78.1,
+      "y": 42.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 135,
+      "name": "아벨 엠블럼상점",
+      "mapId": "Abel",
+      "x": 51.9,
+      "y": 33.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 136,
+      "name": "아벨 잡화상점B",
+      "mapId": "Abel",
+      "x": 67.3,
+      "y": 46.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 137,
+      "name": "아벨 교회",
+      "mapId": "Abel",
+      "x": 42.8,
+      "y": 54.2,
+      "tags": [
+        "입양",
+        "결혼"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 138,
+      "name": "아벨 은행B",
+      "mapId": "Abel",
+      "x": 54,
+      "y": 74.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 139,
+      "name": "아벨 해안",
+      "mapId": "Abel",
+      "x": 28.5,
+      "y": 73.9,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 140,
+      "name": "콜린",
+      "mapId": "Abel",
+      "x": 28.5,
+      "y": 47.7,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 141,
+      "name": "크리스틴",
+      "mapId": "Abel",
+      "x": 59.4,
+      "y": 67,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 142,
+      "name": "에드벅",
+      "mapId": "Abel",
+      "x": 63.2,
+      "y": 43.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 143,
+      "name": "캘러스",
+      "mapId": "Abel",
+      "x": 75.2,
+      "y": 54.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 144,
+      "name": "달란",
+      "mapId": "Abel",
+      "x": 49.3,
+      "y": 23,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 145,
+      "name": "밀레스 콜존",
+      "mapId": "Milles",
+      "x": 51.5,
+      "y": 47.1,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 146,
+      "name": "루어스 콜존",
+      "mapId": "Luers",
+      "x": 48.6,
+      "y": 52.9,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 147,
+      "name": "뤼케시온 콜존",
+      "mapId": "Rucesion",
+      "x": 56.3,
+      "y": 35.4,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 148,
+      "name": "로톤 콜존",
+      "mapId": "Loton",
+      "x": 44,
+      "y": 40.1,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 149,
+      "name": "수오미 콜존",
+      "mapId": "Suomi",
+      "x": 38.7,
+      "y": 42.8,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 150,
+      "name": "아벨 콜존",
+      "mapId": "Abel",
+      "x": 63.9,
+      "y": 36.6,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 152,
+      "name": "파나토",
+      "mapId": "yoyonggugulgulppeumimis",
+      "x": 51,
+      "y": 52.3,
+      "tags": [
+        "발록",
+        "발록선행"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 153,
+      "name": "운디네 은행",
+      "mapId": "Undine",
+      "x": 49,
+      "y": 24.5,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 154,
+      "name": "운디네 대장간",
+      "mapId": "Undine",
+      "x": 58,
+      "y": 32.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 155,
+      "name": "운디네 지하수로",
+      "mapId": "Undine",
+      "x": 66.6,
+      "y": 32.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 156,
+      "name": "운디네 식당",
+      "mapId": "Undine",
+      "x": 72.7,
+      "y": 46.5,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 157,
+      "name": "마리아",
+      "mapId": "Undine",
+      "x": 63.9,
+      "y": 31.9,
+      "tags": [],
+      "description": "",
+      "color": "#00d4ff",
+      "url": ""
+    },
+    {
+      "id": 158,
+      "name": "운디네 여관",
+      "mapId": "Undine",
+      "x": 76,
+      "y": 49.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 159,
+      "name": "에반",
+      "mapId": "Undine",
+      "x": 79.6,
+      "y": 52.9,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 160,
+      "name": "쥬드",
+      "mapId": "Undine",
+      "x": 44.9,
+      "y": 68.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 161,
+      "name": "운디네 잡화상점",
+      "mapId": "Undine",
+      "x": 31.4,
+      "y": 53.7,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 162,
+      "name": "운디네 시약상점",
+      "mapId": "Undine",
+      "x": 18.6,
+      "y": 53.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 163,
+      "name": "운디네 월드맵",
+      "mapId": "Undine",
+      "x": 34.7,
+      "y": 40.7,
+      "tags": [],
+      "description": "",
+      "color": "#1abc9c",
+      "url": ""
+    },
+    {
+      "id": 164,
+      "name": "운디네 성수상인",
+      "mapId": "Undine",
+      "x": 46.3,
+      "y": 34.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 165,
+      "name": "메튜",
+      "mapId": "Tagor",
+      "x": 28.2,
+      "y": 67.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 166,
+      "name": "타고르 교회",
+      "mapId": "Tagor",
+      "x": 66.8,
+      "y": 48.1,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 167,
+      "name": "타고르 여관",
+      "mapId": "Tagor",
+      "x": 44.9,
+      "y": 46.7,
+      "tags": [],
+      "description": "",
+      "color": "#1abc9c",
+      "url": ""
+    },
+    {
+      "id": 168,
+      "name": "타고르 잡화상점",
+      "mapId": "Tagor",
+      "x": 35.2,
+      "y": 35.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 169,
+      "name": "타고르 보관소",
+      "mapId": "Tagor",
+      "x": 39.7,
+      "y": 26.5,
+      "tags": [],
+      "description": "",
+      "color": "#f39c12",
+      "url": ""
+    },
+    {
+      "id": 170,
+      "name": "마가레타의집",
+      "mapId": "Tagor",
+      "x": 57.4,
+      "y": 26.5,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 171,
+      "name": "타고르 마법상점",
+      "mapId": "Tagor",
+      "x": 47.3,
+      "y": 37.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 172,
+      "name": "투르크",
+      "mapId": "Tagor",
+      "x": 23.3,
+      "y": 48.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 173,
+      "name": "피에트 식당",
+      "mapId": "Piet",
+      "x": 37.9,
+      "y": 31.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 174,
+      "name": "메사라의 집",
+      "mapId": "Piet",
+      "x": 42.2,
+      "y": 27.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 175,
+      "name": "아레스의집 - 전투",
+      "mapId": "Piet",
+      "x": 46.4,
+      "y": 23.3,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 176,
+      "name": "페이의집 - 특수",
+      "mapId": "Piet",
+      "x": 50.5,
+      "y": 20.5,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 177,
+      "name": "피에트 대장간",
+      "mapId": "Piet",
+      "x": 55.8,
+      "y": 29.3,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 178,
+      "name": "피에트 은행",
+      "mapId": "Piet",
+      "x": 59.3,
+      "y": 31.5,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 179,
+      "name": "기술관",
+      "mapId": "Piet",
+      "x": 80.3,
+      "y": 48.7,
+      "tags": [],
+      "description": "",
+      "color": "#00d4ff",
+      "url": ""
+    },
+    {
+      "id": 180,
+      "name": "사리의집 - 백마법",
+      "mapId": "Piet",
+      "x": 85.8,
+      "y": 58.1,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 181,
+      "name": "피에트 여관",
+      "mapId": "Piet",
+      "x": 70.8,
+      "y": 53.3,
+      "tags": [],
+      "description": "",
+      "color": "#e74c3c",
+      "url": ""
+    },
+    {
+      "id": 182,
+      "name": "피에트 잡화상점",
+      "mapId": "Piet",
+      "x": 65.3,
+      "y": 55.1,
+      "tags": [],
+      "description": "",
+      "color": "#9b59b6",
+      "url": ""
+    },
+    {
+      "id": 183,
+      "name": "피에트 시약상점",
+      "mapId": "Piet",
+      "x": 71.3,
+      "y": 64.5,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 184,
+      "name": "윈슬렛의 집 - 흑마법",
+      "mapId": "Piet",
+      "x": 60.1,
+      "y": 80.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 185,
+      "name": "아이작의 집",
+      "mapId": "Piet",
+      "x": 54.8,
+      "y": 75.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 186,
+      "name": "키튼의 집 - 특수",
+      "mapId": "Piet",
+      "x": 45.9,
+      "y": 79.7,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 187,
+      "name": "피에트 월드맵 2",
+      "mapId": "Piet",
+      "x": 49.9,
+      "y": 90.7,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 188,
+      "name": "피에트 월드맵 1",
+      "mapId": "Piet",
+      "x": 27.6,
+      "y": 44.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 189,
+      "name": "피에트 던전",
+      "mapId": "Piet",
+      "x": 21,
+      "y": 41.7,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 190,
+      "name": "마법관",
+      "mapId": "Piet",
+      "x": 26,
+      "y": 56.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 191,
+      "name": "시나의집 - 백마법",
+      "mapId": "Piet",
+      "x": 20.5,
+      "y": 58.5,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 192,
+      "name": "리세트리트",
+      "mapId": "Piet",
+      "x": 30.1,
+      "y": 65.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 193,
+      "name": "그린혼학원 출구",
+      "mapId": "Piet",
+      "x": 25,
+      "y": 72.9,
+      "tags": [],
+      "description": "",
+      "color": "#00d4ff",
+      "url": ""
+    },
+    {
+      "id": 194,
+      "name": "피에트 마법사 모임...?",
+      "mapId": "Piet",
+      "x": 49.2,
+      "y": 28.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 195,
+      "name": "한스워드",
+      "mapId": "Hoen",
+      "x": 54.3,
+      "y": 32.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 196,
+      "name": "호엔 월드맵 1",
+      "mapId": "Hoen",
+      "x": 67.6,
+      "y": 48.1,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 197,
+      "name": "호엔 월드맵 2",
+      "mapId": "Hoen",
+      "x": 33.4,
+      "y": 66.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 198,
+      "name": "호엔 지하수로",
+      "mapId": "Hoen",
+      "x": 40.3,
+      "y": 78.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 199,
+      "name": "호엔 대장간 A",
+      "mapId": "Hoen",
+      "x": 58.3,
+      "y": 68.7,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 200,
+      "name": "호엔 대장간 B",
+      "mapId": "Hoen",
+      "x": 42.9,
+      "y": 20.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 201,
+      "name": "호엔 여관",
+      "mapId": "Hoen",
+      "x": 61.2,
+      "y": 65.9,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 202,
+      "name": "샤비",
+      "mapId": "Hoen",
+      "x": 25.5,
+      "y": 44.9,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 203,
+      "name": "호엔 양계장 주인",
+      "mapId": "Hoen",
+      "x": 32.6,
+      "y": 30.9,
+      "tags": [],
+      "description": "",
+      "color": "#e74c3c",
+      "url": ""
+    },
+    {
+      "id": 204,
+      "name": "호엔은행 B",
+      "mapId": "Hoen",
+      "x": 70.5,
+      "y": 66.3,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 205,
+      "name": "호엔은행 A",
+      "mapId": "Hoen",
+      "x": 80.8,
+      "y": 42.3,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 206,
+      "name": "호엔 잡화상점",
+      "mapId": "Hoen",
+      "x": 88.6,
+      "y": 50.5,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 207,
+      "name": "유리드 이동",
+      "mapId": "Ureid",
+      "x": 96.6,
+      "y": 63.9,
+      "tags": [
+        "퀵던대기실",
+        "유리드 이동",
+        "유리드"
+      ],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 208,
+      "name": "엔도르 던전입장",
+      "mapId": "endor",
+      "x": 49.4,
+      "y": 76.5,
+      "tags": [
+        "유적탐사"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 209,
+      "name": "연구중인파나토",
+      "mapId": "endor",
+      "x": 47.4,
+      "y": 56.3,
+      "tags": [
+        "갬유"
+      ],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 210,
+      "name": "멜로린",
+      "mapId": "novice",
+      "x": 53.1,
+      "y": 54.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 211,
+      "name": "듀크투",
+      "mapId": "novice",
+      "x": 52,
+      "y": 48.1,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 212,
+      "name": "마라메",
+      "mapId": "novice",
+      "x": 35.8,
+      "y": 50.6,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 213,
+      "name": "매넘할머니",
+      "mapId": "novice",
+      "x": 46.9,
+      "y": 61.3,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 214,
+      "name": "노비스 신전",
+      "mapId": "novice",
+      "x": 63.7,
+      "y": 34.1,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 215,
+      "name": "노비스 주점",
+      "mapId": "novice",
+      "x": 45.2,
+      "y": 50.6,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 216,
+      "name": "노비스 무기상점",
+      "mapId": "novice",
+      "x": 62.6,
+      "y": 52.9,
+      "tags": [],
+      "description": "",
+      "color": "#f39c12",
+      "url": ""
+    },
+    {
+      "id": 217,
+      "name": "노비스 잡화상점",
+      "mapId": "novice",
+      "x": 57.9,
+      "y": 48.7,
+      "tags": [],
+      "description": "",
+      "color": "#1abc9c",
+      "url": ""
+    },
+    {
+      "id": 218,
+      "name": "피에트마을 이동",
+      "mapId": "novice",
+      "x": 56.5,
+      "y": 68.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 219,
+      "name": "대지의세계수",
+      "mapId": "world_tree_of_earth",
+      "x": 59.1,
+      "y": 42,
+      "tags": [
+        "세계수",
+        "노엠",
+        "국적"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 220,
+      "name": "화염의세계수",
+      "mapId": "world_tree_of_fire",
+      "x": 48.8,
+      "y": 51.5,
+      "tags": [
+        "세계수",
+        "화론",
+        "국적"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 221,
+      "name": "모르윈",
+      "mapId": "AslonVillage",
+      "x": 16,
+      "y": 55.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 222,
+      "name": "아슬론촌장의집",
+      "mapId": "AslonVillage",
+      "x": 18,
+      "y": 48.4,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 223,
+      "name": "아슬론 잡화상점",
+      "mapId": "AslonVillage",
+      "x": 24.9,
+      "y": 38.8,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 224,
+      "name": "메데니아 뱅크",
+      "mapId": "AslonVillage",
+      "x": 28.8,
+      "y": 32.4,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 225,
+      "name": "베르민",
+      "mapId": "AslonVillage",
+      "x": 31,
+      "y": 29.2,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 226,
+      "name": "아슬론 무기상점",
+      "mapId": "AslonVillage",
+      "x": 36.1,
+      "y": 27.6,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 227,
+      "name": "레노아",
+      "mapId": "AslonVillage",
+      "x": 47,
+      "y": 38,
+      "tags": [
+        "2차승급",
+        "정령"
+      ],
+      "description": "",
+      "color": "#00d4ff",
+      "url": ""
+    },
+    {
+      "id": 228,
+      "name": "젤루스",
+      "mapId": "AslonVillage",
+      "x": 39.4,
+      "y": 42.6,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 229,
+      "name": "작은메핏",
+      "mapId": "AslonVillage",
+      "x": 79.1,
+      "y": 43.6,
+      "tags": [],
+      "description": "",
+      "color": "#e74c3c",
+      "url": ""
+    },
+    {
+      "id": 230,
+      "name": "아슬론 여관",
+      "mapId": "AslonVillage",
+      "x": 46.3,
+      "y": 57.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 231,
+      "name": "아슬론 식당",
+      "mapId": "AslonVillage",
+      "x": 56,
+      "y": 40.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 232,
+      "name": "아나크",
+      "mapId": "ship_to_athlon",
+      "x": 49.2,
+      "y": 52,
+      "tags": [
+        "하선",
+        "배도착확인"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 233,
+      "name": "메데니아 뱅크",
+      "mapId": "NoemVillage",
+      "x": 38.6,
+      "y": 35,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 234,
+      "name": "노엠주점",
+      "mapId": "NoemVillage",
+      "x": 51.1,
+      "y": 28.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 235,
+      "name": "노엠여관",
+      "mapId": "NoemVillage",
+      "x": 54.7,
+      "y": 32.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 236,
+      "name": "카스",
+      "mapId": "NoemVillage",
+      "x": 63.7,
+      "y": 52,
+      "tags": [
+        "어빌옷0",
+        "어빌옷1",
+        "어빌옷2"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 237,
+      "name": "아사히",
+      "mapId": "NoemVillage",
+      "x": 56.9,
+      "y": 53.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 238,
+      "name": "포이",
+      "mapId": "NoemVillage",
+      "x": 49,
+      "y": 42,
+      "tags": [
+        "노엠리콜"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 239,
+      "name": "무에타할머니",
+      "mapId": "NoemVillage",
+      "x": 44.6,
+      "y": 41.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 240,
+      "name": "푸이",
+      "mapId": "NoemVillage",
+      "x": 41.4,
+      "y": 44.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 241,
+      "name": "카보크",
+      "mapId": "NoemVillage",
+      "x": 41.2,
+      "y": 53.2,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 242,
+      "name": "연무관-무기점",
+      "mapId": "HwaronVillage",
+      "x": 70,
+      "y": 54.6,
+      "tags": [
+        "흑갑",
+        "백갑"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 243,
+      "name": "시약점",
+      "mapId": "HwaronVillage",
+      "x": 61.7,
+      "y": 46.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 244,
+      "name": "흉가거지",
+      "mapId": "HwaronVillage",
+      "x": 22.5,
+      "y": 39.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 245,
+      "name": "흉가",
+      "mapId": "HwaronVillage",
+      "x": 19.3,
+      "y": 42.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 246,
+      "name": "조리장",
+      "mapId": "HwaronVillage",
+      "x": 34.9,
+      "y": 53.8,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 247,
+      "name": "표목점-의상실",
+      "mapId": "HwaronVillage",
+      "x": 43.341013912781044,
+      "y": 61.439996337890626,
+      "tags": [
+        "비단",
+        "적갑"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 248,
+      "name": "메데니아뱅크",
+      "mapId": "HwaronVillage",
+      "x": 51.6,
+      "y": 65.8,
+      "tags": [
+        "페 교환"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 249,
+      "name": "아실리움",
+      "mapId": "AmanVillage",
+      "x": 48.3,
+      "y": 44.8,
+      "tags": [
+        "아만국적",
+        "국적변경"
+      ],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 250,
+      "name": "아만자치국회관",
+      "mapId": "AmanVillage",
+      "x": 44.6,
+      "y": 58.8,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 251,
+      "name": "미셀루",
+      "mapId": "AmanVillage",
+      "x": 44,
+      "y": 65.4,
+      "tags": [],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 252,
+      "name": "아만 잡화상점",
+      "mapId": "AmanVillage",
+      "x": 35.9,
+      "y": 48.4,
+      "tags": [],
+      "description": "",
+      "color": "#ee5a24",
+      "url": ""
+    },
+    {
+      "id": 253,
+      "name": "아만여관",
+      "mapId": "AmanVillage",
+      "x": 51.5,
+      "y": 79.6,
+      "tags": [],
+      "description": "",
+      "color": "#a55eea",
+      "url": ""
+    },
+    {
+      "id": 254,
+      "name": "히야트크리스탈",
+      "mapId": "AmanVillage",
+      "x": 58.7,
+      "y": 24.8,
+      "tags": [
+        "히얏던전"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 255,
+      "name": "셀라임스톤",
+      "mapId": "TabaraVillage",
+      "x": 47.7,
+      "y": 60.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 256,
+      "name": "타바리 신전",
+      "mapId": "TabaraVillage",
+      "x": 53.5,
+      "y": 52.4,
+      "tags": [],
+      "description": "",
+      "color": "#ffe66d",
+      "url": ""
+    },
+    {
+      "id": 257,
+      "name": "로리에",
+      "mapId": "TabaraVillage",
+      "x": 38.7,
+      "y": 60.1,
+      "tags": [],
+      "description": "",
+      "color": "#2ecc71",
+      "url": ""
+    },
+    {
+      "id": 258,
+      "name": "무기잡화상점",
+      "mapId": "TabaraVillage",
+      "x": 26.2,
+      "y": 55.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 259,
+      "name": "타바리여관",
+      "mapId": "TabaraVillage",
+      "x": 34.2,
+      "y": 44.9,
+      "tags": [],
+      "description": "",
+      "color": "#9b59b6",
+      "url": ""
+    },
+    {
+      "id": 260,
+      "name": "메데니아뱅크",
+      "mapId": "TabaraVillage",
+      "x": 52.7,
+      "y": 26.7,
+      "tags": [],
+      "description": "",
+      "color": "#f39c12",
+      "url": ""
+    },
+    {
+      "id": 261,
+      "name": "카타콤",
+      "mapId": "TabaraVillage",
+      "x": 83.8,
+      "y": 54.7,
+      "tags": [],
+      "description": "",
+      "color": "#1abc9c",
+      "url": ""
+    },
+    {
+      "id": 262,
+      "name": "코이시",
+      "mapId": "TabaraVillage",
+      "x": 80.1,
+      "y": 53.9,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 263,
+      "name": "파노잡화상점",
+      "mapId": "PanoVillage",
+      "x": 42.6,
+      "y": 43.1,
+      "tags": [
+        "어빌옷4"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 264,
+      "name": "파노시약점",
+      "mapId": "PanoVillage",
+      "x": 51.4,
+      "y": 75.1,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 265,
+      "name": "베이셔",
+      "mapId": "PanoVillage",
+      "x": 49.3,
+      "y": 53.6,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 266,
+      "name": "비행선장",
+      "mapId": "PanoForest3",
+      "x": 57.7,
+      "y": 54.4,
+      "tags": [
+        "나겔링입장"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 267,
+      "name": "세이아",
+      "mapId": "PanoForest5",
+      "x": 62.1,
+      "y": 47.9,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 268,
+      "name": "나겔링여관",
+      "mapId": "NagelingVillage",
+      "x": 42.1,
+      "y": 35,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 269,
+      "name": "나겔링회관",
+      "mapId": "NagelingVillage",
+      "x": 33,
+      "y": 46.4,
+      "tags": [],
+      "description": "",
+      "color": "#4ecdc4",
+      "url": ""
+    },
+    {
+      "id": 270,
+      "name": "나겔링보석상",
+      "mapId": "NagelingVillage",
+      "x": 33.89400930448611,
+      "y": 63.6,
+      "tags": [
+        "장신구업",
+        "나겔링장신구",
+        "나겔링각반",
+        "나겔링반지",
+        "나겔링글러브",
+        "신망교환"
+      ],
+      "description": "",
+      "color": "#5f27cd",
+      "url": ""
+    },
+    {
+      "id": 271,
+      "name": "나겔링대장간",
+      "mapId": "NagelingVillage",
+      "x": 65.5,
+      "y": 43.8,
+      "tags": [
+        "장비 업",
+        "나겔링장비"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 272,
+      "name": "나겔링은행",
+      "mapId": "NagelingVillage",
+      "x": 66.2,
+      "y": 64.8,
+      "tags": [
+        "스톤교환",
+        "신망"
+      ],
+      "description": "",
+      "color": "#00d4ff",
+      "url": ""
+    },
+    {
+      "id": 273,
+      "name": "나겔링시약상점",
+      "mapId": "NagelingVillage",
+      "x": 55.4,
+      "y": 73.2,
+      "tags": [],
+      "description": "",
+      "color": "#e74c3c",
+      "url": ""
+    },
+    {
+      "id": 274,
+      "name": "나겔링탑",
+      "mapId": "NagelingVillage",
+      "x": 42.3,
+      "y": 56.4,
+      "tags": [],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 275,
+      "name": "직업버프",
+      "mapId": "yongjas_park",
+      "x": 37.5,
+      "y": 60.7,
+      "tags": [
+        "직업버프"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 276,
+      "name": "지크프리트",
+      "mapId": "museum_1f",
+      "x": 47,
+      "y": 62.8,
+      "tags": [
+        "3차"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 277,
+      "name": "고대의유산",
+      "mapId": "basement_of_the_museum",
+      "x": 33.8,
+      "y": 25.4,
+      "tags": [
+        "3차승급",
+        "3차"
+      ],
+      "description": "",
+      "color": "#ff6b6b",
+      "url": ""
+    },
+    {
+      "id": 278,
+      "name": "마라메",
+      "mapId": "novice",
+      "x": 35.8,
+      "y": 50,
+      "tags": [
+        "퀘스트"
+      ],
+      "description": "퀘스트 관련 NPC",
+      "color": "#9b59b6",
+      "url": ""
+    },
+    {
+      "id": 279,
+      "name": "노비스원혼",
+      "mapId": "novice_c_4",
+      "x": 55.2,
+      "y": 41.1,
+      "tags": [
+        "원혼"
+      ],
+      "description": "인벤토리 석상사용",
+      "color": "#ff6b6b",
+      "url": ""
+    }
+  ],
+  "portals": [
+    {
+      "id": 2,
+      "name": "아슬론필드 → 노엠필드",
+      "fromMapId": "AslonPlain",
+      "fromX": 53.4,
+      "fromY": 28.8,
+      "toMapId": "NoemPlain",
+      "toX": 30.2,
+      "toY": 82.1,
+      "bidirectional": true
+    },
+    {
+      "id": 3,
+      "name": "노엠필드 → 불의사막 입구",
+      "fromMapId": "NoemPlain",
+      "fromX": 36.1,
+      "fromY": 34.9,
+      "toMapId": "FireDesertEntrance",
+      "toX": 59.2,
+      "toY": 86.5,
+      "bidirectional": true
+    },
+    {
+      "id": 4,
+      "name": "불의사막 입구 → 화론필드",
+      "fromMapId": "FireDesertEntrance",
+      "fromX": 16,
+      "fromY": 58.9,
+      "toMapId": "HwaronField",
+      "toX": 66.2,
+      "toY": 21.9,
+      "bidirectional": true
+    },
+    {
+      "id": 6,
+      "name": "화론마을 → 화론-아만1",
+      "fromMapId": "HwaronVillage",
+      "fromX": 36.6,
+      "fromY": 17.3,
+      "toMapId": "Hwaron_Aman1",
+      "toX": 70.2,
+      "toY": 75.5,
+      "bidirectional": true
+    },
+    {
+      "id": 7,
+      "name": "화론-아만1 → 화론-아만2",
+      "fromMapId": "Hwaron_Aman1",
+      "fromX": 30.2,
+      "fromY": 24.3,
+      "toMapId": "Hwaron_Aman2",
+      "toX": 71.2,
+      "toY": 77.1,
+      "bidirectional": true
+    },
+    {
+      "id": 8,
+      "name": "아슬론필드 → 노엠필드",
+      "fromMapId": "AslonPlain",
+      "fromX": 38.8,
+      "fromY": 15.4,
+      "toMapId": "NoemPlain",
+      "toX": 28.8,
+      "toY": 80.3,
+      "bidirectional": true
+    },
+    {
+      "id": 9,
+      "name": "아슬론필드 → 아슬론 마을",
+      "fromMapId": "AslonPlain",
+      "fromX": 46.4,
+      "fromY": 33.2,
+      "toMapId": "AslonVillage",
+      "toX": 33.2,
+      "toY": 71.5,
+      "bidirectional": true
+    },
+    {
+      "id": 10,
+      "name": "노엠필드 → 노엠마을",
+      "fromMapId": "NoemPlain",
+      "fromX": 45,
+      "fromY": 43.1,
+      "toMapId": "NoemVillage",
+      "toX": 78.7,
+      "toY": 60.5,
+      "bidirectional": true
+    },
+    {
+      "id": 11,
+      "name": "화론필드 → 화론마을",
+      "fromMapId": "HwaronField",
+      "fromX": 33.3,
+      "fromY": 24.1,
+      "toMapId": "HwaronVillage",
+      "toX": 74,
+      "toY": 70.1,
+      "bidirectional": true
+    },
+    {
+      "id": 13,
+      "name": "아만정글1 → 화론-아만2",
+      "fromMapId": "AmanJungle1",
+      "fromX": 67.6,
+      "fromY": 79.2,
+      "toMapId": "Hwaron_Aman2",
+      "toX": 30.3,
+      "toY": 34.9,
+      "bidirectional": true
+    },
+    {
+      "id": 14,
+      "name": "아만정글1 → 아만정글2",
+      "fromMapId": "AmanJungle1",
+      "fromX": 30.7,
+      "fromY": 31.7,
+      "toMapId": "AmanJungle2",
+      "toX": 73.2,
+      "toY": 74.1,
+      "bidirectional": true
+    },
+    {
+      "id": 15,
+      "name": "아만정글2 → 아만정글3",
+      "fromMapId": "AmanJungle2",
+      "fromX": 31.5,
+      "fromY": 31.3,
+      "toMapId": "AmanJungle3",
+      "toX": 65.1,
+      "toY": 79.5,
+      "bidirectional": true
+    },
+    {
+      "id": 16,
+      "name": "아만정글3 → 아만정글4",
+      "fromMapId": "AmanJungle3",
+      "fromX": 31.2,
+      "fromY": 29.7,
+      "toMapId": "AmanJungle4",
+      "toX": 68.3,
+      "toY": 78.9,
+      "bidirectional": true
+    },
+    {
+      "id": 17,
+      "name": "아만정글4 → 아만정글5",
+      "fromMapId": "AmanJungle4",
+      "fromX": 54.6,
+      "fromY": 19.1,
+      "toMapId": "AmanJungle5",
+      "toX": 29.9,
+      "toY": 77.1,
+      "bidirectional": true
+    },
+    {
+      "id": 18,
+      "name": "아만정글5 → 아만마을",
+      "fromMapId": "AmanJungle5",
+      "fromX": 62.6,
+      "fromY": 28.1,
+      "toMapId": "AmanVillage",
+      "toX": 29.7,
+      "toY": 77.5,
+      "bidirectional": true
+    },
+    {
+      "id": 19,
+      "name": "아만마을 → 아만동굴",
+      "fromMapId": "AmanVillage",
+      "fromX": 53.7,
+      "fromY": 18.5,
+      "toMapId": "AmanCave",
+      "toX": 20.8,
+      "toY": 84.7,
+      "bidirectional": true
+    },
+    {
+      "id": 20,
+      "name": "아만동굴 → 타바라입구",
+      "fromMapId": "AmanCave",
+      "fromX": 74.6,
+      "fromY": 10.5,
+      "toMapId": "TabaraPath",
+      "toX": 18.7,
+      "toY": 75.5,
+      "bidirectional": true
+    },
+    {
+      "id": 21,
+      "name": "타바라입구 → 타바라마을",
+      "fromMapId": "TabaraPath",
+      "fromX": 72.6,
+      "fromY": 16.3,
+      "toMapId": "TabaraVillage",
+      "toX": 38.2,
+      "toY": 86.5,
+      "bidirectional": true
+    },
+    {
+      "id": 22,
+      "name": "타바라마을 → 중간숲",
+      "fromMapId": "TabaraVillage",
+      "fromX": 71.6,
+      "fromY": 31.1,
+      "toMapId": "MiddleForest",
+      "toX": 27,
+      "toY": 73.9,
+      "bidirectional": true
+    },
+    {
+      "id": 23,
+      "name": "중간숲 → 파노마을",
+      "fromMapId": "MiddleForest",
+      "fromX": 79.9,
+      "fromY": 69.3,
+      "toMapId": "PanoVillage",
+      "toX": 37,
+      "toY": 26.9,
+      "bidirectional": true
+    },
+    {
+      "id": 24,
+      "name": "파노마을 → 파노숲1",
+      "fromMapId": "PanoVillage",
+      "fromX": 75.5,
+      "fromY": 70.1,
+      "toMapId": "PanoForest1",
+      "toX": 39,
+      "toY": 27.7,
+      "bidirectional": true
+    },
+    {
+      "id": 25,
+      "name": "파노숲1 → 파노숲2",
+      "fromMapId": "PanoForest1",
+      "fromX": 75.7,
+      "fromY": 74.1,
+      "toMapId": "PanoForest2",
+      "toX": 33.6,
+      "toY": 36.9,
+      "bidirectional": true
+    },
+    {
+      "id": 26,
+      "name": "파노숲2 → 파노숲3",
+      "fromMapId": "PanoForest2",
+      "fromX": 68.4,
+      "fromY": 86.6,
+      "toMapId": "PanoForest3",
+      "toX": 40.6,
+      "toY": 21.3,
+      "bidirectional": true
+    },
+    {
+      "id": 27,
+      "name": "파노숲3 → 나겔링_W",
+      "fromMapId": "PanoForest3",
+      "fromX": 60.6,
+      "fromY": 58.3,
+      "toMapId": "Nageling_W",
+      "toX": 40.7,
+      "toY": 41.7,
+      "bidirectional": true
+    },
+    {
+      "id": 28,
+      "name": "파노숲2 → 파노숲4",
+      "fromMapId": "PanoForest2",
+      "fromX": 69,
+      "fromY": 41.9,
+      "toMapId": "PanoForest4",
+      "toX": 37.8,
+      "toY": 91,
+      "bidirectional": true
+    },
+    {
+      "id": 29,
+      "name": "파노숲4 → 파노숲5",
+      "fromMapId": "PanoForest4",
+      "fromX": 41.6,
+      "fromY": 25.2,
+      "toMapId": "PanoForest5",
+      "toX": 70.1,
+      "toY": 75,
+      "bidirectional": true
+    },
+    {
+      "id": 30,
+      "name": "나겔링_W → 나겔링 설원 NW",
+      "fromMapId": "Nageling_W",
+      "fromX": 64.1,
+      "fromY": 24.3,
+      "toMapId": "Nageling_NW",
+      "toX": 28.1,
+      "toY": 71,
+      "bidirectional": true
+    },
+    {
+      "id": 31,
+      "name": "나겔링 설원 NW → 나겔링 설원 N",
+      "fromMapId": "Nageling_NW",
+      "fromX": 83.7,
+      "fromY": 62.7,
+      "toMapId": "Nageling_N",
+      "toX": 25.8,
+      "toY": 30.1,
+      "bidirectional": true
+    },
+    {
+      "id": 32,
+      "name": "나겔링 설원 N → 나겔링 마을",
+      "fromMapId": "Nageling_N",
+      "fromX": 20.1,
+      "fromY": 65.2,
+      "toMapId": "NagelingVillage",
+      "toX": 84.3,
+      "toY": 46,
+      "bidirectional": true
+    },
+    {
+      "id": 33,
+      "name": "나겔링_W → 나겔링 마을",
+      "fromMapId": "Nageling_W",
+      "fromX": 75.6,
+      "fromY": 70.1,
+      "toMapId": "NagelingVillage",
+      "toX": 39,
+      "toY": 24.9,
+      "bidirectional": true
+    },
+    {
+      "id": 34,
+      "name": "나겔링 설원 N → 나겔링 설원 NE",
+      "fromMapId": "Nageling_N",
+      "fromX": 59.4,
+      "fromY": 81.2,
+      "toMapId": "Nageling_NE",
+      "toX": 40.3,
+      "toY": 25.3,
+      "bidirectional": true
+    },
+    {
+      "id": 35,
+      "name": "나겔링 설원 NE → 나겔링 설원 E",
+      "fromMapId": "Nageling_NE",
+      "fromX": 28.1,
+      "fromY": 75.4,
+      "toMapId": "Nageling_E",
+      "toX": 63.8,
+      "toY": 25.7,
+      "bidirectional": true
+    },
+    {
+      "id": 36,
+      "name": "나겔링 설원 E → 나겔링 마을",
+      "fromMapId": "Nageling_E",
+      "fromX": 29.1,
+      "fromY": 29.7,
+      "toMapId": "NagelingVillage",
+      "toX": 83.3,
+      "toY": 63.4,
+      "bidirectional": true
+    },
+    {
+      "id": 37,
+      "name": "나겔링 설원 E → 나겔링 설원 SE",
+      "fromMapId": "Nageling_E",
+      "fromX": 27,
+      "fromY": 71.9,
+      "toMapId": "Nageling_SE",
+      "toX": 85.8,
+      "toY": 43.1,
+      "bidirectional": true
+    },
+    {
+      "id": 38,
+      "name": "나겔링 설원 SE → 나겔링 설원 S",
+      "fromMapId": "Nageling_SE",
+      "fromX": 22.5,
+      "fromY": 34.8,
+      "toMapId": "Nageling_S",
+      "toX": 59,
+      "toY": 80.9,
+      "bidirectional": true
+    },
+    {
+      "id": 39,
+      "name": "나겔링 설원 S → 나겔링 마을",
+      "fromMapId": "Nageling_S",
+      "fromX": 68,
+      "fromY": 27.2,
+      "toMapId": "NagelingVillage",
+      "toX": 17.3,
+      "toY": 64.9,
+      "bidirectional": true
+    },
+    {
+      "id": 40,
+      "name": "나겔링 설원 S → 나겔링 설원 SW",
+      "fromMapId": "Nageling_S",
+      "fromX": 26.3,
+      "fromY": 30.7,
+      "toMapId": "Nageling_SW",
+      "toX": 59.4,
+      "toY": 83.4,
+      "bidirectional": true
+    },
+    {
+      "id": 41,
+      "name": "나겔링 설원 SW → 나겔링_W",
+      "fromMapId": "Nageling_SW",
+      "fromX": 57.2,
+      "fromY": 20.2,
+      "toMapId": "Nageling_W",
+      "toX": 26.6,
+      "toY": 73.8,
+      "bidirectional": true
+    },
+    {
+      "id": 42,
+      "name": "밀레스 → 밀레스 신전",
+      "fromMapId": "Milles",
+      "fromX": 86.8,
+      "fromY": 53.7,
+      "toMapId": "Milles_temple",
+      "toX": 32.8,
+      "toY": 56.9,
+      "bidirectional": true
+    },
+    {
+      "id": 43,
+      "name": "밀레스 신전 → 밀레스_신들의세계",
+      "fromMapId": "Milles_temple",
+      "fromX": 46.4,
+      "fromY": 45.6,
+      "toMapId": "Milles_worldofthegods",
+      "toX": 51.5,
+      "toY": 65.1,
+      "bidirectional": true
+    },
+    {
+      "id": 44,
+      "name": "밀레스성홀 → 밀레스성",
+      "fromMapId": "Milles_CastleHall",
+      "fromX": 3.2,
+      "fromY": 87.4,
+      "toMapId": "Milles_Castle",
+      "toX": 56.7,
+      "toY": 48.9,
+      "bidirectional": true
+    },
+    {
+      "id": 45,
+      "name": "밀레스성 → 밀레스",
+      "fromMapId": "Milles_Castle",
+      "fromX": 27.9,
+      "fromY": 45,
+      "toMapId": "Milles",
+      "toX": 80.1,
+      "toY": 70.1,
+      "bidirectional": true
+    },
+    {
+      "id": 46,
+      "name": "밀레스 → 밀레스-해안던전",
+      "fromMapId": "Milles",
+      "fromX": 64.2,
+      "fromY": 85,
+      "toMapId": "milles_CoastalDungeon",
+      "toX": 43.2,
+      "toY": 66.1,
+      "bidirectional": true
+    },
+    {
+      "id": 47,
+      "name": "루어스성 3층 집무실 → 루어스성_2층홀",
+      "fromMapId": "Luers_Castle_3F",
+      "fromX": 32.1,
+      "fromY": 64.2,
+      "toMapId": "Luers_Castle_2F_3",
+      "toX": 67.1,
+      "toY": 71.3,
+      "bidirectional": true
+    },
+    {
+      "id": 48,
+      "name": "루어스성_2층홀 → 루어스성_2층_복도",
+      "fromMapId": "Luers_Castle_2F_3",
+      "fromX": 30.8,
+      "fromY": 69.6,
+      "toMapId": "Luers_Castle_2F_1",
+      "toX": 78,
+      "toY": 37.9,
+      "bidirectional": true
+    },
+    {
+      "id": 49,
+      "name": "루어스성_2층_복도 → 루어스성_세바스찬",
+      "fromMapId": "Luers_Castle_2F_1",
+      "fromX": 36.4,
+      "fromY": 67.6,
+      "toMapId": "Luers_Castle_2F_2",
+      "toX": 62.8,
+      "toY": 57.9,
+      "bidirectional": true
+    },
+    {
+      "id": 50,
+      "name": "루어스성_2층_복도 → 루어스성_1층",
+      "fromMapId": "Luers_Castle_2F_1",
+      "fromX": 22.3,
+      "fromY": 83.2,
+      "toMapId": "Luers_Castle_1F",
+      "toX": 71.9,
+      "toY": 56.4,
+      "bidirectional": true
+    },
+    {
+      "id": 51,
+      "name": "루어스성_1층 → 루어스",
+      "fromMapId": "Luers_Castle_1F",
+      "fromX": 26.3,
+      "fromY": 53,
+      "toMapId": "Luers",
+      "toX": 45.8,
+      "toY": 41.3,
+      "bidirectional": true
+    },
+    {
+      "id": 52,
+      "name": "산타클로스의방 → 크리스마스선물공장",
+      "fromMapId": "ChristmasIsland_3",
+      "fromX": 38.4,
+      "fromY": 51.1,
+      "toMapId": "ChristmasIsland_2",
+      "toX": 72.8,
+      "toY": 52.1,
+      "bidirectional": true
+    },
+    {
+      "id": 53,
+      "name": "크리스마스선물공장 → 크리스마스섬",
+      "fromMapId": "ChristmasIsland_2",
+      "fromX": 35.2,
+      "fromY": 68.7,
+      "toMapId": "ChristmasIsland_1",
+      "toX": 45.8,
+      "toY": 48.1,
+      "bidirectional": true
+    },
+    {
+      "id": 54,
+      "name": "크리스마스선물공장 → 산타클로스방",
+      "fromMapId": "ChristmasIsland_2",
+      "fromX": -4.8,
+      "fromY": -76.5,
+      "toMapId": "ChristmasIsland_3",
+      "toX": -4.8,
+      "toY": -76.5,
+      "bidirectional": true
+    },
+    {
+      "id": 55,
+      "name": "크리스마스섬 → 동쪽월드맵 2",
+      "fromMapId": "ChristmasIsland_1",
+      "fromX": 61.5,
+      "fromY": 44.7,
+      "toMapId": "East_continent",
+      "toX": 71.5,
+      "toY": 65.6,
+      "bidirectional": true
+    },
+    {
+      "id": 56,
+      "name": "동쪽월드맵 2 → 뤼케시온항구",
+      "fromMapId": "East_continent",
+      "fromX": 44.9,
+      "fromY": 14.8,
+      "toMapId": "RucesionPort",
+      "toX": 38.3,
+      "toY": 47.1,
+      "bidirectional": true
+    },
+    {
+      "id": 57,
+      "name": "오렌 → 동쪽월드맵 2",
+      "fromMapId": "Oren_1",
+      "fromX": 32.4,
+      "fromY": 61.4,
+      "toMapId": "East_continent",
+      "toX": 64.9,
+      "toY": 38.1,
+      "bidirectional": true
+    },
+    {
+      "id": 59,
+      "name": "뤼케시온항구 → 동쪽월드맵 2",
+      "fromMapId": "RucesionPort",
+      "fromX": 23.4,
+      "fromY": 36.3,
+      "toMapId": "East_continent",
+      "toX": 43.3,
+      "toY": 14.9,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": ""
+    },
+    {
+      "id": 60,
+      "name": "발록선행 퀘스트",
+      "fromMapId": "yoyonggugulgulppeumimis",
+      "fromX": 51.3,
+      "fromY": 52.5,
+      "toMapId": "Ureid",
+      "toX": 53.2,
+      "toY": 52.2,
+      "bidirectional": false,
+      "type": "quest",
+      "url": "https://lod.nexon.com/board/1493172227/7673",
+      "description": "월드맵-> 시장 ->'백원만'Npc클릭\n\n죽음의마을진입로 클릭 -> 유리드에어리어 (21.5) 적룡굴이동Npc 클릭\n\n적룡굴대기실 이동 클릭\n\n1. 적룡굴대기실 파나토Npc [ 타이핑 : 유리드 ]\n2. 퀵던전 에카스Npc [ 타이핑 : 파나토 ]\n3. 유리드지정귀환석 지정 [ 아이템창 유리드지정귀환석 더블클릭 ]\n4. 퀵던전 클리어 [ 퀵던전보상교환증표 10개 모으기 / 1존당 지하유적 8개, 우드랜드 10개, 해저 14개, 광선 25개 획득가능\n5. 퀵던전 에카스Npc [ 타이핑 : 모아왔습니다] * 보상 메타트론의가호 10개\n6. 적룡굴대기실 파나토Npc [ 타이핑 : 발록 ]\n7. 인벤토리창 '레이드광장귀환석' 사용 후 클레마티스 Npc [타이핑 : 발록 ]\n　*캐릭터등급 13단 이상 진행 가능 ( 25.06.26 패치 변경 : 누적경험치 6310억 달성)　\n\n8. 그룹장,발록도전 타이핑 상관 없이 발록 클리어 하면 퀘스트 완료\n9. 적룡굴대기실 파나토Npc [ 타이핑 : 발록 ] * 보상 경험치 10억 보유경험치 확인 후 진행요망",
+      "tags": []
+    },
+    {
+      "id": 61,
+      "name": "발록선행 퀘스트 (완료)",
+      "fromMapId": "Ureid",
+      "fromX": 53.2,
+      "fromY": 52.2,
+      "toMapId": "Ureid",
+      "toX": 53.2,
+      "toY": 52.2,
+      "bidirectional": false,
+      "type": "quest-target",
+      "url": "https://lod.nexon.com/board/1493172227/7673",
+      "description": "퀘스트의 최종 목적지입니다.",
+      "tags": []
+    },
+    {
+      "id": 62,
+      "name": "그린혼기숙사 1층 → 그린혼학원 복도",
+      "fromMapId": "ririnrinhhohon_gigissusa",
+      "fromX": 65.9,
+      "fromY": 70.3,
+      "toMapId": "ririnrinhhohonbobokdo",
+      "toX": 63.6,
+      "toY": 32.7,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 63,
+      "name": "그린혼학원 복도 → 그린혼 기숙사 로비",
+      "fromMapId": "ririnrinhhohonbobokdo",
+      "fromX": 59,
+      "fromY": 58.3,
+      "toMapId": "ririnrinhhohon_sasalroropbi",
+      "toX": 39.1,
+      "toY": 33.3,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 64,
+      "name": "그린혼 기숙사 로비 → 그린혼학원",
+      "fromMapId": "ririnrinhhohon_sasalroropbi",
+      "fromX": 57.4,
+      "fromY": 72.3,
+      "toMapId": "ririnrinhhohonhonhhauwowon",
+      "toX": 39.4,
+      "toY": 38.9,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 65,
+      "name": "월드맵 → 루어스",
+      "fromMapId": "world_map",
+      "fromX": 48.5,
+      "fromY": 51.7,
+      "toMapId": "Luers",
+      "toX": 85.8,
+      "toY": 48.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 66,
+      "name": "월드맵 → 타고르",
+      "fromMapId": "world_map",
+      "fromX": 49.2,
+      "fromY": 33.9,
+      "toMapId": "Tagor",
+      "toX": 16.4,
+      "toY": 57.1,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 67,
+      "name": "월드맵 → 밀레스",
+      "fromMapId": "world_map",
+      "fromX": 54.5,
+      "fromY": 75.9,
+      "toMapId": "Milles",
+      "toX": 52.8,
+      "toY": 49.4,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 68,
+      "name": "월드맵 → 아벨",
+      "fromMapId": "world_map",
+      "fromX": 72,
+      "fromY": 57.5,
+      "toMapId": "Abel",
+      "toX": 83.6,
+      "toY": 57.7,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 69,
+      "name": "월드맵 → 로톤",
+      "fromMapId": "world_map",
+      "fromX": 77.6,
+      "fromY": 35.4,
+      "toMapId": "Loton",
+      "toX": 44.8,
+      "toY": 50.6,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 70,
+      "name": "월드맵 → 수오미",
+      "fromMapId": "world_map",
+      "fromX": 64.4,
+      "fromY": 33.8,
+      "toMapId": "Suomi",
+      "toX": 70.7,
+      "toY": 66,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 71,
+      "name": "월드맵 → 피에트",
+      "fromMapId": "world_map",
+      "fromX": 77.9,
+      "fromY": 21.1,
+      "toMapId": "Piet",
+      "toX": 33.8,
+      "toY": 43,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 72,
+      "name": "월드맵 → 마인",
+      "fromMapId": "world_map",
+      "fromX": 57,
+      "fromY": 22.6,
+      "toMapId": "Mine",
+      "toX": 35.7,
+      "toY": 66.8,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 73,
+      "name": "월드맵 → 운디네",
+      "fromMapId": "world_map",
+      "fromX": 30.6,
+      "fromY": 21.8,
+      "toMapId": "Undine",
+      "toX": 38.7,
+      "toY": 36.3,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 74,
+      "name": "월드맵 → 호엔",
+      "fromMapId": "world_map",
+      "fromX": 22.1,
+      "fromY": 35.4,
+      "toMapId": "Hoen",
+      "toX": 63.6,
+      "toY": 48.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 75,
+      "name": "월드맵 → 뤼케시온",
+      "fromMapId": "world_map",
+      "fromX": 36,
+      "fromY": 73.8,
+      "toMapId": "Rucesion",
+      "toX": 43.3,
+      "toY": 51.7,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 76,
+      "name": "월드맵 → 뤼케시온항구",
+      "fromMapId": "world_map",
+      "fromX": 28.6,
+      "fromY": 86.5,
+      "toMapId": "RucesionPort",
+      "toX": 54.6,
+      "toY": 30.7,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 77,
+      "name": "월드맵 → 시장",
+      "fromMapId": "world_map",
+      "fromX": 38.7,
+      "fromY": 59,
+      "toMapId": "market",
+      "toX": 50.7,
+      "toY": 45.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 78,
+      "name": "크리스마스선물공장 → 산타클로스방",
+      "fromMapId": "ChristmasIsland_2",
+      "fromX": -3.7,
+      "fromY": -31.2,
+      "toMapId": "ChristmasIsland_3",
+      "toX": -3.7,
+      "toY": -31.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 79,
+      "name": "퀘스트 완료",
+      "fromMapId": "endor",
+      "fromX": 47.1,
+      "fromY": 79.9,
+      "toMapId": "endor",
+      "toX": 51.8,
+      "toY": 76.3,
+      "bidirectional": false,
+      "type": "quest-target",
+      "url": "",
+      "description": "퀘스트의 최종 목적지입니다.",
+      "tags": []
+    },
+    {
+      "id": 80,
+      "name": "엔도르 개미굴 → 노엠필드",
+      "fromMapId": "endor",
+      "fromX": 32.9,
+      "fromY": 66.1,
+      "toMapId": "NoemPlain",
+      "toX": 44.8,
+      "toY": 54.6,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 81,
+      "name": "화염의세계수 사당 → 화론마을",
+      "fromMapId": "world_tree_of_fire",
+      "fromX": 36.1,
+      "fromY": 63.7,
+      "toMapId": "HwaronVillage",
+      "toX": 71.2,
+      "toY": 29.4,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 82,
+      "name": "대지의세계수 사당 → 노엠마을",
+      "fromMapId": "world_tree_of_earth",
+      "fromX": 32.8,
+      "fromY": 68.2,
+      "toMapId": "NoemVillage",
+      "toX": 87.1,
+      "toY": 45,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 83,
+      "name": "",
+      "fromMapId": "RucesionPort",
+      "fromX": 60.7,
+      "fromY": 68.1,
+      "toMapId": "ship_to_athlon",
+      "toX": 46.8,
+      "toY": 52.4,
+      "bidirectional": false,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 84,
+      "name": "아슬론행 배 → 아슬론행 배 객실",
+      "fromMapId": "ship_to_athlon",
+      "fromX": 41.4,
+      "fromY": 49.2,
+      "toMapId": "inside_the_ship_to_athlon",
+      "toX": 26.1,
+      "toY": 36.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 85,
+      "name": "",
+      "fromMapId": "ship_to_athlon",
+      "fromX": 45.4,
+      "fromY": 54.8,
+      "toMapId": "port_athlon",
+      "toX": 60.73732727683634,
+      "toY": 51.75999755859375,
+      "bidirectional": false,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 86,
+      "name": "아슬론항구 → 아슬론필드",
+      "fromMapId": "port_athlon",
+      "fromX": 65.5,
+      "fromY": 43,
+      "toMapId": "AslonPlain",
+      "toX": 48.4,
+      "toY": 76.3,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 87,
+      "name": "노비스 지하던전 A1 → 노비스 평원 A",
+      "fromMapId": "novice_d_a1",
+      "fromX": 27.4,
+      "fromY": 51.2,
+      "toMapId": "novice_f_a",
+      "toX": 67.9,
+      "toY": 48.6,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 88,
+      "name": "노비스 평원 A → 노비스마을",
+      "fromMapId": "novice_f_a",
+      "fromX": 42.9,
+      "fromY": 28.2,
+      "toMapId": "novice",
+      "toX": 68.8,
+      "toY": 61,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 89,
+      "name": "노비스마을 → 노비스 평원 B",
+      "fromMapId": "novice",
+      "fromX": 31,
+      "fromY": 63.8,
+      "toMapId": "novice_f_b",
+      "toX": 64.8,
+      "toY": 37,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 90,
+      "name": "노비스 평원 B → 노비스 지하던전 C3",
+      "fromMapId": "novice_f_b",
+      "fromX": 59.7,
+      "fromY": 66.2,
+      "toMapId": "novice_d_c3",
+      "toX": 70,
+      "toY": 50,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 91,
+      "name": "노비스 지하던전 C3 → 노비스 지하던전 B3",
+      "fromMapId": "novice_d_c3",
+      "fromX": 35.2,
+      "fromY": 36.8,
+      "toMapId": "novice_d_b3",
+      "toX": 62.1,
+      "toY": 69.6,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 92,
+      "name": "노비스 지하던전 B3 → 노비스 지하던전 A3",
+      "fromMapId": "novice_d_b3",
+      "fromX": 34.5,
+      "fromY": 35.6,
+      "toMapId": "novice_d_a3",
+      "toX": 63,
+      "toY": 65.6,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 93,
+      "name": "노비스 지하던전 A3 → 노비스 지하던전 A2",
+      "fromMapId": "novice_d_a3",
+      "fromX": 28.2,
+      "fromY": 61.2,
+      "toMapId": "novice_d_a2",
+      "toX": 58.5,
+      "toY": 33.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 94,
+      "name": "노비스 지하던전 A2 → 노비스 지하던전 A1",
+      "fromMapId": "novice_d_a2",
+      "fromX": 27.2,
+      "fromY": 60.6,
+      "toMapId": "novice_d_a1",
+      "toX": 58.3,
+      "toY": 33.8,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 95,
+      "name": "노비스 지하던전 A1 → 노비스 지하던전 B1",
+      "fromMapId": "novice_d_a1",
+      "fromX": 61.9,
+      "fromY": 68.2,
+      "toMapId": "novice_d_b1",
+      "toX": 34.6,
+      "toY": 37.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 96,
+      "name": "노비스 지하던전 B1 → 노비스 지하던전 B2",
+      "fromMapId": "novice_d_b1",
+      "fromX": 59.4,
+      "fromY": 32.8,
+      "toMapId": "novice_d_b2",
+      "toX": 27,
+      "toY": 61.8,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 97,
+      "name": "노비스 지하던전 B1 → 노비스 지하던전 C1",
+      "fromMapId": "novice_d_b1",
+      "fromX": 62,
+      "fromY": 69.4,
+      "toMapId": "novice_d_c1",
+      "toX": 35,
+      "toY": 36.6,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 98,
+      "name": "노비스 지하던전 C1 → 노비스 지하던전 C2",
+      "fromMapId": "novice_d_c1",
+      "fromX": 59.1,
+      "fromY": 32.2,
+      "toMapId": "novice_d_c2",
+      "toX": 28.6,
+      "toY": 60.4,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 99,
+      "name": "노비스 지하던전 C2 → 노비스 지하던전 C3",
+      "fromMapId": "novice_d_c2",
+      "fromX": 59.6,
+      "fromY": 33,
+      "toMapId": "novice_d_c3",
+      "toX": 27.4,
+      "toY": 61.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 100,
+      "name": "노비스 지하던전 C2 → 노비스 지하던전 B2",
+      "fromMapId": "novice_d_c2",
+      "fromX": 35.2,
+      "fromY": 37,
+      "toMapId": "novice_d_b2",
+      "toX": 61.8,
+      "toY": 67,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 101,
+      "name": "노비스 지하던전 B2 → 노비스 지하던전 B3",
+      "fromMapId": "novice_d_b2",
+      "fromX": 59.1,
+      "fromY": 33,
+      "toMapId": "novice_d_b3",
+      "toX": 27.2,
+      "toY": 61.4,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 102,
+      "name": "노비스 지하던전 B2 → 노비스 지하던전 A2",
+      "fromMapId": "novice_d_b2",
+      "fromX": 34.7,
+      "fromY": 35.6,
+      "toMapId": "novice_d_a2",
+      "toX": 61.9,
+      "toY": 67,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 103,
+      "name": "노비스 지하던전 B2 → 노비스 지하동굴 A",
+      "fromMapId": "novice_d_b2",
+      "fromX": 50.3,
+      "fromY": 50.4,
+      "toMapId": "novice_c_a",
+      "toX": 29,
+      "toY": 47.2,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 104,
+      "name": "노비스 지하동굴 A → 노비스 지하동굴 B",
+      "fromMapId": "novice_c_a",
+      "fromX": 60.4,
+      "fromY": 68.6,
+      "toMapId": "novice_c_2",
+      "toX": 40.8,
+      "toY": 30.8,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 105,
+      "name": "노비스 지하동굴 B → 노비스 지하동굴 C",
+      "fromMapId": "novice_c_2",
+      "fromX": 72.9,
+      "fromY": 56.2,
+      "toMapId": "novice_c_3",
+      "toX": 26.1,
+      "toY": 23,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": 106,
+      "name": "노비스 지하동굴 C → 노비스 지하동굴 C4",
+      "fromMapId": "novice_c_3",
+      "fromX": 77.7,
+      "fromY": 69.4,
+      "toMapId": "novice_c_4",
+      "toX": 25.6,
+      "toY": 48.4,
+      "bidirectional": true,
+      "type": "portal",
+      "url": "",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "quests": [
+    {
+      "id": 1,
+      "name": "입양",
+      "description": "",
+      "steps": [
+        {
+          "type": "move",
+          "mapId": "Abel",
+          "x": 41.9,
+          "y": 57.8,
+          "description": "아벨 교회 안으로 이동후 주교에게 대화 / 5서클 이상 부모와 같이 있어야함",
+          "id": 1767442314152
+        }
+      ],
+      "createdAt": "2026-01-03T12:12:07.278Z"
+    },
+    {
+      "id": 2,
+      "name": "팜펫의변화",
+      "description": "",
+      "steps": [
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 45,
+          "y": 52.2,
+          "npcId": 215,
+          "npcName": "노비스 주점",
+          "description": "데포이 / 팜팻 타이핑",
+          "id": 1767610348064
+        },
+        {
+          "type": "kill",
+          "mapId": "novice_f_a",
+          "x": 44.5,
+          "y": 36.8,
+          "target": "팜팻",
+          "count": 3,
+          "description": "팜팻을 잡고 정수 3개 획득",
+          "id": 1767610394605
+        },
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 45.9,
+          "y": 50.8,
+          "npcId": 215,
+          "npcName": "노비스 주점",
+          "description": "데포이 / 정수 3개획득후 팜팻 타이핑",
+          "id": 1767610503207
+        },
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 53.3,
+          "y": 54.8,
+          "npcId": 210,
+          "npcName": "멜로린",
+          "description": "멜로린와(과) 대화",
+          "id": 1767610542253
+        }
+      ],
+      "createdAt": "2026-01-05T10:57:17.462Z"
+    },
+    {
+      "id": 3,
+      "name": "처음만나는던전",
+      "description": "",
+      "steps": [
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 53.2,
+          "y": 55.2,
+          "npcId": 210,
+          "npcName": "멜로린",
+          "description": "멜로린와(과) 대화",
+          "id": 1767610675836
+        },
+        {
+          "type": "kill",
+          "mapId": "novice_f_a",
+          "x": 47.3,
+          "y": 45,
+          "target": "브라운팜팻/말벌/뱀(초록뱀) 3마리씩 잡기",
+          "description": "브라운팜팻/말벌/뱀(초록뱀) 3마리씩 잡기",
+          "id": 1767610707790
+        },
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 53.6,
+          "y": 55.4,
+          "npcId": 210,
+          "npcName": "멜로린",
+          "description": "멜로린와(과) 대화",
+          "id": 1767610865798
+        },
+        {
+          "type": "kill",
+          "mapId": "novice_d_a1",
+          "x": 36.5,
+          "y": 54.8,
+          "target": "카디 / 멜로더 3마리",
+          "description": "카디 / 멜로더 3마리 잡기",
+          "id": 1767610929056
+        },
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 54.8,
+          "y": 55.5,
+          "npcId": 210,
+          "npcName": "멜로린",
+          "description": "멜로린와(과) 대화",
+          "id": 1767611064267
+        },
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 45.7,
+          "y": 50.3,
+          "npcId": 215,
+          "npcName": "노비스 주점",
+          "description": "노비스 주점 / 데포이와 대화  / 석상 타이핑",
+          "id": 1767611104648
+        },
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 54.3,
+          "y": 52.1,
+          "npcId": 210,
+          "npcName": "멜로린",
+          "description": "멜로린와(과) 대화",
+          "id": 1767611165318
+        },
+        {
+          "type": "move",
+          "mapId": "novice_c_4",
+          "x": 52.3,
+          "y": 41.5,
+          "description": "지하동굴 C4로 이동하여 인벤토리 원혼 소환용 석상 사용",
+          "id": 1767611271857
+        },
+        {
+          "type": "kill",
+          "mapId": "novice_c_4",
+          "x": 55,
+          "y": 43.9,
+          "target": "노비스원혼",
+          "description": "노비스원혼잡기",
+          "id": 1767611289125
+        },
+        {
+          "type": "talk",
+          "mapId": "novice",
+          "x": 52.3,
+          "y": 55.1,
+          "npcId": 210,
+          "npcName": "멜로린",
+          "description": "멜로린와(과) 대화",
+          "id": 1767611477530
+        }
+      ],
+      "createdAt": "2026-01-05T11:11:19.420Z",
+      "category": "",
+      "url": "",
+      "updatedAt": "2026-01-05T14:55:03.496Z"
+    }
+  ]
+}

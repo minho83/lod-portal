@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield, HelpCircle, Sparkles } from "lucide-react"
+import { Swords, Calculator, Search, BookOpen, ShoppingBag, Users, LogIn, LogOut, User, TestTube, Shield, HelpCircle, Sparkles, Map } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -21,6 +21,7 @@ const navItems = [
   { to: "/market", label: "거래소", icon: ShoppingBag },
   { to: "/calculator", label: "라르 계산기", icon: Calculator },
   { to: "/spirit", label: "정령 레벨업", icon: Sparkles },
+  { to: "/npcmap", label: "NPC&맵찾기", icon: Map },
   { to: "/search", label: "DB 검색", icon: Search },
   { to: "/wiki", label: "뉴비 가이드", icon: BookOpen },
   { to: "/guide", label: "사용법", icon: HelpCircle },
@@ -36,9 +37,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
         {/* 로고 */}
-        <NavLink to="/" className="flex items-center gap-3">
+        <NavLink to="/" className="flex flex-shrink-0 items-center gap-3">
           <img
             src="/lod-icon.png"
             alt="LOD"
@@ -57,7 +58,7 @@ export function Header() {
         </NavLink>
 
         {/* 네비게이션 */}
-        <nav className="flex items-center gap-1">
+        <nav className="scrollbar-hide flex flex-1 items-center gap-1 overflow-x-auto">
           {navItems.map(({ to, label, sub, icon: Icon }) => (
             <NavLink
               key={to}
@@ -65,14 +66,14 @@ export function Header() {
               end={to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-primary/15 text-foreground font-semibold"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )
               }
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4 flex-shrink-0" />
               <span className="hidden md:inline">
                 {label}
                 {sub && (
@@ -84,7 +85,7 @@ export function Header() {
         </nav>
 
         {/* 로그인 / 유저 메뉴 */}
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex flex-shrink-0 items-center justify-end gap-2">
           {loading ? (
             <Skeleton className="h-8 w-8 rounded-full" />
           ) : user ? (

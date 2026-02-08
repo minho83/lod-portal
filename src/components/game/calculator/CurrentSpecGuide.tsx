@@ -11,7 +11,7 @@ interface CurrentSpecGuideProps {
   settings: CalcSettings
 }
 
-export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
+export function CurrentSpecGuide({ settings: _settings }: CurrentSpecGuideProps) {
   const [currentHp, setCurrentHp] = useState("")
   const [currentMp, setCurrentMp] = useState("")
   const [targetHp, setTargetHp] = useState("")

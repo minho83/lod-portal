@@ -13,6 +13,7 @@ import { RecruitListPage } from "@/pages/RecruitListPage"
 import { NewRecruitPage } from "@/pages/NewRecruitPage"
 import { RecruitDetailPage } from "@/pages/RecruitDetailPage"
 import { SpiritPage } from "@/pages/SpiritPage"
+import { NpcMapPage } from "@/pages/NpcMapPage"
 import DevNotificationsPage from "@/pages/DevNotificationsPage"
 import AdminPage from "@/pages/AdminPage"
 import GuidePage from "@/pages/GuidePage"
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="/" element={<PartyPage />} />
             <Route path="/calculator" element={<CalculatorPage />} />
             <Route path="/spirit" element={<SpiritPage />} />
+            <Route path="/npcmap" element={<NpcMapPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/wiki" element={<WikiPage />} />
             <Route path="/guide" element={<GuidePage />} />
