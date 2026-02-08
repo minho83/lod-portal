@@ -38,7 +38,6 @@ export async function fetchMyRecruits(userId: string) {
       members:party_members(*)
     `)
     .eq("author_id", userId)
-    .neq("status", "cancelled")
     .order("created_at", { ascending: false })
 
   if (error) throw error
@@ -82,13 +81,28 @@ export async function fetchMyBuyingItems(userId: string) {
 }
 
 /**
- * 거래중인 물품 목록 조회
+ * 거래중인 물품 목록 조회 (판매자 또는 구매자로 참여한 거래)
  */
 export async function fetchMyTradingItems(userId: string) {
   const { data, error } = await supabase
     .from("trades")
-    .select("*")
-    .eq("seller_id", userId)
+    .select("*, seller:profiles!trades_seller_id_fkey(*)")
+    .or(`seller_id.eq.${userId},buyer_id.eq.${userId}`)
+    .in("status", ["reserved", "sold"])
+    .order("created_at", { ascending: false })
+
+  if (error) throw error
+  return data as Trade[]
+}
+
+/**
+ * 내가 구매 요청한 거래 목록 조회 (buyer_id = 나)
+ */
+export async function fetchMyBuyerTrades(userId: string) {
+  const { data, error } = await supabase
+    .from("trades")
+    .select("*, seller:profiles!trades_seller_id_fkey(*)")
+    .eq("buyer_id", userId)
     .in("status", ["reserved", "sold"])
     .order("created_at", { ascending: false })
 

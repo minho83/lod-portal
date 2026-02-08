@@ -7,6 +7,7 @@ import {
   ArrowUpCircle,
   ArrowDownCircle,
   Handshake,
+  ShoppingCart,
   Clock,
   MapPin,
   Calendar,
@@ -27,6 +28,7 @@ import {
   fetchMySellingItems,
   fetchMyBuyingItems,
   fetchMyTradingItems,
+  fetchMyBuyerTrades,
   deletePartyApplication,
   deletePartyApplications,
   deletePartyRecruit,
@@ -176,11 +178,13 @@ function MyRecruitCard({
     cancelled: "취소",
   }
 
+  const isCancelled = recruit.status === "cancelled"
+
   return (
-    <Card>
+    <Card className={cn(isCancelled && "opacity-50")}>
       <CardContent className="py-4">
         <div className="flex items-start gap-3">
-          {selectable && (
+          {selectable && !isCancelled && (
             <Checkbox
               checked={selected}
               onCheckedChange={(checked) =>
@@ -227,10 +231,12 @@ function MyRecruitCard({
               </div>
             </div>
           </div>
-          <Button asChild size="sm" variant="outline">
-            <Link to={`/recruit/${recruit.id}`}>관리</Link>
-          </Button>
-          {onDelete && (
+          {!isCancelled && (
+            <Button asChild size="sm" variant="outline">
+              <Link to={`/recruit/${recruit.id}`}>관리</Link>
+            </Button>
+          )}
+          {onDelete && !isCancelled && (
             <Button
               size="icon-sm"
               variant="ghost"
@@ -248,12 +254,14 @@ function MyRecruitCard({
 
 function TradeItemCard({
   trade,
+  role,
   selectable,
   selected,
   onSelect,
   onDelete,
 }: {
   trade: Trade
+  role?: "seller" | "buyer"
   selectable?: boolean
   selected?: boolean
   onSelect?: (id: string, checked: boolean) => void
@@ -302,6 +310,19 @@ function TradeItemCard({
               >
                 {statusLabels[trade.status]}
               </Badge>
+              {role && (
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "text-xs",
+                    role === "seller"
+                      ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                      : "bg-orange-500/10 text-orange-400 border-orange-500/20"
+                  )}
+                >
+                  {role === "seller" ? "판매자" : "구매자"}
+                </Badge>
+              )}
             </div>
             <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
               <div className="flex items-center gap-1">
@@ -364,6 +385,7 @@ export function MyPage() {
   const [sellingItems, setSellingItems] = useState<Trade[]>([])
   const [buyingItems, setBuyingItems] = useState<Trade[]>([])
   const [tradingItems, setTradingItems] = useState<Trade[]>([])
+  const [buyerTrades, setBuyerTrades] = useState<Trade[]>([])
   const [loadingTrade, setLoadingTrade] = useState(false)
   const [errorTrade, setErrorTrade] = useState<string | null>(null)
 
@@ -372,6 +394,7 @@ export function MyPage() {
     selling: true,
     buying: true,
     trading: true,
+    buyerTrades: true,
   })
   const [selectedTrades, setSelectedTrades] = useState<Set<string>>(new Set())
 
@@ -399,14 +422,16 @@ export function MyPage() {
     setLoadingTrade(true)
     setErrorTrade(null)
     try {
-      const [selling, buying, trading] = await Promise.all([
+      const [selling, buying, trading, buyer] = await Promise.all([
         fetchMySellingItems(user.id),
         fetchMyBuyingItems(user.id),
         fetchMyTradingItems(user.id),
+        fetchMyBuyerTrades(user.id),
       ])
       setSellingItems(selling)
       setBuyingItems(buying)
       setTradingItems(trading)
+      setBuyerTrades(buyer)
     } catch (err) {
       setErrorTrade(err instanceof Error ? err.message : "데이터를 불러올 수 없습니다")
     }
@@ -417,6 +442,20 @@ export function MyPage() {
     if (user) {
       loadPartyData()
       loadTradeData()
+    }
+  }, [user])
+
+  // 탭 포커스 복귀 시 데이터 새로고침
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && user) {
+        loadPartyData()
+        loadTradeData()
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
     }
   }, [user])
 
@@ -477,6 +516,7 @@ export function MyPage() {
         ...(tradeFilter.selling ? sellingItems.map((t) => t.id) : []),
         ...(tradeFilter.buying ? buyingItems.map((t) => t.id) : []),
         ...(tradeFilter.trading ? tradingItems.map((t) => t.id) : []),
+        ...(tradeFilter.buyerTrades ? buyerTrades.map((t) => t.id) : []),
       ])
       setSelectedTrades(allIds)
     } else {
@@ -502,7 +542,8 @@ export function MyPage() {
     const totalVisible =
       (tradeFilter.selling ? sellingItems.length : 0) +
       (tradeFilter.buying ? buyingItems.length : 0) +
-      (tradeFilter.trading ? tradingItems.length : 0)
+      (tradeFilter.trading ? tradingItems.length : 0) +
+      (tradeFilter.buyerTrades ? buyerTrades.length : 0)
     const totalSelected = selectedTrades.size
     if (totalVisible === 0) return { checked: false, indeterminate: false }
     if (totalSelected === 0) return { checked: false, indeterminate: false }
@@ -605,6 +646,7 @@ export function MyPage() {
     ...(tradeFilter.selling ? sellingItems : []),
     ...(tradeFilter.buying ? buyingItems : []),
     ...(tradeFilter.trading ? tradingItems : []),
+    ...(tradeFilter.buyerTrades ? buyerTrades : []),
   ]
 
   // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
@@ -803,7 +845,7 @@ export function MyPage() {
         {/* 거래 탭 */}
         <TabsContent value="trade" className="space-y-4">
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="overview" className="flex items-center gap-1.5">
                 <List className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">종합</span>
@@ -818,6 +860,11 @@ export function MyPage() {
                 <ArrowDownCircle className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">사는 물품</span>
                 <span className="sm:hidden">구매</span>
+              </TabsTrigger>
+              <TabsTrigger value="buyer-trades" className="flex items-center gap-1.5">
+                <ShoppingCart className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">구매 요청</span>
+                <span className="sm:hidden">요청</span>
               </TabsTrigger>
               <TabsTrigger value="trading" className="flex items-center gap-1.5">
                 <Handshake className="h-3.5 w-3.5" />
@@ -872,6 +919,18 @@ export function MyPage() {
                             }
                           />
                           거래중
+                        </label>
+                        <label className="flex items-center gap-2 text-sm">
+                          <Checkbox
+                            checked={tradeFilter.buyerTrades}
+                            onCheckedChange={(checked) =>
+                              setTradeFilter((prev) => ({
+                                ...prev,
+                                buyerTrades: checked as boolean,
+                              }))
+                            }
+                          />
+                          구매 요청
                         </label>
                       </div>
                       <Button
@@ -934,10 +993,22 @@ export function MyPage() {
                           <TradeItemCard
                             key={trade.id}
                             trade={trade}
+                            role={trade.buyer_id === user?.id ? "buyer" : "seller"}
                             selectable
                             selected={selectedTrades.has(trade.id)}
                             onSelect={handleSelectTrade}
                             onDelete={handleDeleteTrade}
+                          />
+                        ))}
+                      {tradeFilter.buyerTrades &&
+                        buyerTrades.map((trade) => (
+                          <TradeItemCard
+                            key={`buyer-${trade.id}`}
+                            trade={trade}
+                            role="buyer"
+                            selectable
+                            selected={selectedTrades.has(trade.id)}
+                            onSelect={handleSelectTrade}
                           />
                         ))}
                     </div>
@@ -996,6 +1067,31 @@ export function MyPage() {
               )}
             </TabsContent>
 
+            {/* 구매 요청 탭 */}
+            <TabsContent value="buyer-trades">
+              {loadingTrade ? (
+                <LoadingSkeleton />
+              ) : errorTrade ? (
+                <ErrorState message={errorTrade} onRetry={loadTradeData} />
+              ) : buyerTrades.length === 0 ? (
+                <EmptyState
+                  icon={ShoppingCart}
+                  title="구매 요청한 거래가 없습니다"
+                  description="거래소에서 물품을 구매 요청하면 여기에 표시됩니다"
+                />
+              ) : (
+                <div className="space-y-3">
+                  {buyerTrades.map((trade) => (
+                    <TradeItemCard
+                      key={trade.id}
+                      trade={trade}
+                      role="buyer"
+                    />
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
             {/* 거래중 탭 */}
             <TabsContent value="trading">
               {loadingTrade ? (
@@ -1014,7 +1110,8 @@ export function MyPage() {
                     <TradeItemCard
                       key={trade.id}
                       trade={trade}
-                      onDelete={handleDeleteTrade}
+                      role={trade.buyer_id === user?.id ? "buyer" : "seller"}
+                      onDelete={trade.seller_id === user?.id ? handleDeleteTrade : undefined}
                     />
                   ))}
                 </div>
