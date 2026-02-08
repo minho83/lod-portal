@@ -144,3 +144,101 @@
     display: none;
   }
 }
+
+/* ── Notion 페이지 커스텀 스타일 (LOD Portal 디자인 매칭) ── */
+.notion-container {
+  @apply rounded-lg border border-border bg-card p-6;
+}
+
+/* Notion 다크모드 커스터마이징 */
+.notion-custom.dark-mode {
+  --notion-red: var(--warrior);
+  --notion-pink: var(--rogue);
+  --notion-blue: var(--mage);
+  --notion-purple: var(--rogue);
+  --notion-teal: var(--taoist);
+  --notion-yellow: var(--cleric);
+  --notion-orange: var(--warning);
+  --notion-brown: #a8a29e;
+  --notion-gray: var(--muted-foreground);
+  --notion-default: var(--foreground);
+}
+
+.notion-custom {
+  color: var(--foreground);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.notion-custom .notion-page {
+  @apply bg-transparent p-0;
+  width: 100%;
+}
+
+.notion-custom .notion-title {
+  @apply mb-4 text-2xl font-bold text-foreground;
+}
+
+.notion-custom .notion-h1 {
+  @apply mb-3 mt-6 text-xl font-bold text-foreground;
+}
+
+.notion-custom .notion-h2 {
+  @apply mb-2 mt-5 text-lg font-semibold text-foreground;
+}
+
+.notion-custom .notion-h3 {
+  @apply mb-2 mt-4 text-base font-semibold text-foreground;
+}
+
+.notion-custom .notion-text {
+  @apply text-muted-foreground;
+}
+
+.notion-custom .notion-list {
+  @apply my-2;
+}
+
+.notion-custom .notion-list-item {
+  @apply text-muted-foreground;
+}
+
+.notion-custom .notion-callout {
+  @apply my-3 rounded-md border border-border bg-secondary/30 p-4;
+}
+
+.notion-custom .notion-code {
+  @apply rounded bg-secondary px-1.5 py-0.5 font-mono text-sm text-foreground;
+}
+
+.notion-custom .notion-code-block {
+  @apply my-3 rounded-md border border-border bg-secondary p-4;
+}
+
+.notion-custom .notion-quote {
+  @apply my-3 border-l-4 border-primary pl-4 italic text-muted-foreground;
+}
+
+.notion-custom .notion-divider {
+  @apply my-4 border-t border-border;
+}
+
+.notion-custom .notion-table {
+  @apply my-3 w-full overflow-x-auto rounded-md border border-border;
+}
+
+.notion-custom .notion-table-cell {
+  @apply border-r border-b border-border bg-card px-3 py-2 text-sm text-muted-foreground;
+}
+
+.notion-custom .notion-table-header-cell {
+  @apply bg-secondary font-semibold text-foreground;
+}
+
+.notion-custom .notion-toggle {
+  @apply my-2 cursor-pointer rounded-md border border-border bg-card p-3 transition-colors hover:bg-accent;
+}
+
+.notion-custom a {
+  @apply text-primary underline-offset-4 hover:underline;
+}

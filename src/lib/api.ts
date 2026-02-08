@@ -64,8 +64,27 @@ export async function searchDatabase(
 }
 
 export async function fetchWiki(): Promise<{ blocks: unknown[] }> {
-  const serverUrl = getServerUrl()
-  const res = await fetchWithTimeout(`${serverUrl}/api/wiki`)
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
-  return res.json()
+  // Notion Public 페이지 직접 조회
+  const pageId = "18d50fc9dbd282998b9881d7d965f53f"
+
+  try {
+    // Notion Public API 프록시 사용 (notion-api.splitbee.io)
+    const res = await fetchWithTimeout(
+      `https://notion-api.splitbee.io/v1/page/${pageId}`,
+      15000
+    )
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    return res.json()
+  } catch (error) {
+    // 프록시 실패 시 서버 API로 폴백
+    try {
+      const serverUrl = getServerUrl()
+      if (!serverUrl) throw new Error("서버 URL이 설정되지 않았습니다")
+      const res = await fetchWithTimeout(`${serverUrl}/api/wiki`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      return res.json()
+    } catch {
+      throw error // 원래 에러를 던짐
+    }
+  }
 }
