@@ -1,77 +1,20 @@
-const PAGE_ID = "18d50fc9dbd282998b9881d7d965f53f"
-
 /**
- * Notion Public 페이지에서 데이터 조회
+ * Notion 데이터베이스에서 뉴비 가이드 데이터 조회
+ * Vercel Serverless Function을 통해 호출
  */
 export async function fetchNotionDatabase() {
   try {
-    // Notion Public API 프록시 사용
-    const response = await fetch(
-      `https://notion-api.splitbee.io/v1/page/${PAGE_ID}`
-    )
+    const response = await fetch("/api/notion")
 
     if (!response.ok) {
-      throw new Error(`Notion API 오류: ${response.status}`)
+      const error = await response.json()
+      throw new Error(error.error || `API 오류: ${response.status}`)
     }
 
     const data = await response.json()
-
-    // 모든 블록 데이터 추출
-    const blocks = Object.values(data).filter((item: any) => item.value)
-
-    // collection 타입의 블록들을 찾아서 변환
-    const results = blocks
-      .filter((block: any) => block.value.type === "page" || block.value.type === "collection_view")
-      .map((block: any) => {
-        const properties = block.value.properties || {}
-
-        return {
-          id: block.value.id,
-          properties: {
-            제목: {
-              title: properties.title ? [{ plain_text: properties.title[0]?.[0] || "" }] : [],
-            },
-            카테고리: {
-              select: { name: properties.카테고리?.[0]?.[0] || "기타" },
-            },
-            내용: {
-              rich_text: properties.내용 ? [{ plain_text: properties.내용[0]?.[0] || "" }] : [],
-            },
-            중요: {
-              checkbox: properties.중요?.[0]?.[0] === "Yes" || false,
-            },
-            아이콘: {
-              rich_text: properties.아이콘 ? [{ plain_text: properties.아이콘[0]?.[0] || "" }] : [],
-            },
-          },
-        }
-      })
-
-    return results
+    return data.results
   } catch (error) {
     console.error("Notion 데이터베이스 조회 실패:", error)
-    throw error
-  }
-}
-
-/**
- * Notion 페이지 블록 조회
- */
-export async function fetchNotionBlocks(pageId: string) {
-  try {
-    const response = await fetch(
-      `https://notion-api.splitbee.io/v1/page/${pageId}`
-    )
-
-    if (!response.ok) {
-      throw new Error(`Notion API 오류: ${response.status}`)
-    }
-
-    const data = await response.json()
-    const blocks = Object.values(data).filter((item: any) => item.value)
-    return blocks.map((block: any) => block.value)
-  } catch (error) {
-    console.error("Notion 블록 조회 실패:", error)
     throw error
   }
 }
