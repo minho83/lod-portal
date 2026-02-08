@@ -10,6 +10,7 @@ import { fetchTradeById, updateTradeStatus, fetchMarketPrices } from "@/lib/trad
 import { TradeBadge } from "@/components/game/TradeBadge"
 import { ReportDialog } from "@/components/market/ReportDialog"
 import { formatPrice, formatPriceDelta, timeAgo } from "@/lib/utils"
+import { linkifySafe } from "@/lib/linkify"
 import type { Trade, TradeStatus, MarketPrice } from "@/types"
 
 const SELL_STATUS_LABELS: Record<TradeStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
@@ -213,7 +214,7 @@ export function TradeDetailPage() {
             <div className="space-y-1">
               <p className="text-sm font-medium">상세 설명</p>
               <p className="whitespace-pre-wrap text-sm text-muted-foreground">
-                {trade.item_description}
+                {linkifySafe(trade.item_description)}
               </p>
             </div>
           )}
