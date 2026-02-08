@@ -58,7 +58,7 @@ export function Header() {
         </NavLink>
 
         {/* 네비게이션 */}
-        <nav className="scrollbar-hide flex flex-1 items-center gap-1 overflow-x-auto">
+        <nav className="scrollbar-hide flex flex-1 items-center gap-1 overflow-x-auto pr-2">
           {navItems.map(({ to, label, sub, icon: Icon }) => (
             <NavLink
               key={to}
