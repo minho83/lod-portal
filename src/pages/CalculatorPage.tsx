@@ -37,8 +37,8 @@ export function CalculatorPage() {
       <Alert>
         <InfoIcon className="h-4 w-4" />
         <AlertDescription className="text-sm">
-          <strong>사용 방법:</strong> 아래 탭에서 원하는 계산 방식을 선택하고 값을 입력하면 자동으로 결과가 표시됩니다.
-          값을 입력하면 즉시 필요한 라르 개수, 비용, 단수 변화를 확인할 수 있습니다.
+          <strong>💡 TIP:</strong> 모든 HP/MP는 <strong className="text-primary">순수 스탯(아이템 제외)</strong>을 입력하세요.
+          값을 입력하면 자동으로 필요한 라르, 비용, 단수 변화가 계산됩니다.
         </AlertDescription>
       </Alert>
 
@@ -46,11 +46,23 @@ export function CalculatorPage() {
         <CardContent className="py-4">
           <div className="space-y-2 text-sm">
             <p className="font-medium text-foreground">📌 각 탭 기능 안내</p>
-            <ul className="space-y-1 text-muted-foreground ml-4">
-              <li>• <span className="text-primary font-medium">필요 라르는?</span> - 현재 스탯에서 목표 스탯까지 필요한 라르 계산</li>
-              <li>• <span className="text-primary font-medium">목표 단수는?</span> - 특정 단수에 도달하기 위한 라르 계산</li>
-              <li>• <span className="text-primary font-medium">올릴 수 있는 수치는?</span> - 보유한 라르로 올릴 수 있는 HP/MP 계산</li>
-              <li>• <span className="text-primary font-medium">풀경험치 라르</span> - 경험치 100%를 라르로 전환 시 획득 가능한 개수 계산</li>
+            <ul className="space-y-1.5 text-muted-foreground ml-4">
+              <li>
+                • <span className="text-primary font-medium">필요 라르는?</span><br />
+                <span className="text-xs ml-2">현재 순수 HP/MP → 목표 순수 HP/MP까지 필요한 라르 개수와 비용 계산</span>
+              </li>
+              <li>
+                • <span className="text-primary font-medium">목표 단수는?</span><br />
+                <span className="text-xs ml-2">현재 순수 HP/MP에서 목표 단수에 도달하기 위해 필요한 라르 개수 계산</span>
+              </li>
+              <li>
+                • <span className="text-primary font-medium">올릴 수 있는 수치는?</span><br />
+                <span className="text-xs ml-2">현재 순수 HP/MP + 보유 라르로 올릴 수 있는 HP/MP 계산 (에테르 강화 목걸이 추가 데미지 포함)</span>
+              </li>
+              <li>
+                • <span className="text-primary font-medium">풀경험치 라르</span><br />
+                <span className="text-xs ml-2">현재 HP/MP 기준으로 EXP 100% 채웠을 때 획득 가능한 라르 개수 계산</span>
+              </li>
             </ul>
           </div>
         </CardContent>
