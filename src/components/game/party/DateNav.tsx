@@ -3,12 +3,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export function DateNav({
   dateDisplay,
-  isToday,
   onPrev,
   onNext,
 }: {
   dateDisplay: string
-  isToday: boolean
   onPrev: () => void
   onNext: () => void
 }) {

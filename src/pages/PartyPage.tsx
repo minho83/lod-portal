@@ -135,7 +135,6 @@ export function PartyPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <DateNav
               dateDisplay={dateDisplay}
-              isToday={isToday}
               onPrev={() => changeDate(-1)}
               onNext={() => changeDate(1)}
             />
