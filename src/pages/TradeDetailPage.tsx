@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { ArrowLeft, Tag, Handshake, Clock, User, AlertCircle, Layers, ShieldAlert } from "lucide-react"
+import { ArrowLeft, Tag, Handshake, Clock, User, AlertCircle, Layers, ShieldAlert, MessageCircle } from "lucide-react"
+import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -220,12 +221,25 @@ export function TradeDetailPage() {
           )}
 
           {/* 등록자 정보 */}
-          <div className="flex items-center gap-4 rounded-lg bg-muted/50 p-3">
-            <User className="h-5 w-5 text-muted-foreground" />
-            <div>
-              <p className="text-sm font-medium">{sellerName}</p>
-              <p className="text-xs text-muted-foreground">{isBuy ? "구매자" : "판매자"}</p>
+          <div className="space-y-2 rounded-lg bg-muted/50 p-3">
+            <div className="flex items-center gap-3">
+              <User className="h-5 w-5 text-muted-foreground" />
+              <div className="flex-1">
+                <p className="text-sm font-medium">{sellerName}</p>
+                <p className="text-xs text-muted-foreground">{isBuy ? "구매자" : "판매자"}</p>
+              </div>
             </div>
+            {trade.seller?.discord_username && (
+              <div className="flex items-center gap-2 pl-8">
+                <MessageCircle className="h-4 w-4 text-primary" />
+                <div className="flex-1">
+                  <p className="text-xs text-muted-foreground">Discord</p>
+                  <p className="text-sm font-medium text-primary">
+                    {trade.seller.discord_username}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 시간 정보 */}
@@ -291,9 +305,35 @@ export function TradeDetailPage() {
             </div>
           )}
 
+          {/* 구매자 액션 (본인 글이 아닐 때) */}
+          {!isOwner && user && (trade.status === "active" || trade.status === "reserved") && (
+            <div className="space-y-2 border-t border-border pt-4">
+              <Button
+                size="sm"
+                className="w-full"
+                onClick={() => {
+                  if (trade.seller?.discord_username) {
+                    navigator.clipboard.writeText(trade.seller.discord_username)
+                    toast.success(`Discord ID가 복사되었습니다!\n${trade.seller.discord_username}`)
+                  } else {
+                    toast.info("판매자의 Discord 정보가 없습니다")
+                  }
+                }}
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                거래 문의하기
+              </Button>
+              {trade.status === "reserved" && (
+                <p className="text-center text-xs text-muted-foreground">
+                  ⏳ 현재 예약중인 물품입니다
+                </p>
+              )}
+            </div>
+          )}
+
           {/* 신고 버튼 (본인 글이 아닐 때만) */}
           {!isOwner && user && (
-            <div className="border-t border-border pt-4">
+            <div className={`${(trade.status === "active" || trade.status === "reserved") ? "" : "border-t border-border pt-4"}`}>
               <Button
                 variant="outline"
                 size="sm"
