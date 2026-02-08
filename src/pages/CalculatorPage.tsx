@@ -4,6 +4,7 @@ import { Calculator, Target, TrendingUp, Gem, Battery } from "lucide-react"
 import { DEFAULT_SETTINGS, loadSettings, saveSettings } from "@/components/game/calculator/types"
 import type { CalcSettings } from "@/components/game/calculator/types"
 import { SettingsPanel } from "@/components/game/calculator/SettingsPanel"
+import { CurrentSpecGuide } from "@/components/game/calculator/CurrentSpecGuide"
 import { RequiredMode } from "@/components/game/calculator/RequiredMode"
 import { TargetDansuMode } from "@/components/game/calculator/TargetDansuMode"
 import { ReverseMode } from "@/components/game/calculator/ReverseMode"
@@ -31,6 +32,8 @@ export function CalculatorPage() {
       </div>
 
       <SettingsPanel settings={settings} onChange={handleSettingsChange} />
+
+      <CurrentSpecGuide settings={settings} />
 
       <Tabs defaultValue="required">
         <TabsList className="w-full">
