@@ -2,16 +2,9 @@ import { useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import {
-  calculateFullExpRar,
-  formatExp,
-} from "@/lib/calculator"
+import { calculateFullExpRar } from "@/lib/calculator"
 import type { CalcSettings } from "@/components/game/calculator/types"
-import {
-  ResultCard,
-  ResultRow,
-  CostSummary,
-} from "@/components/game/calculator/shared"
+import { ResultCard, CostSummary } from "@/components/game/calculator/shared"
 
 export function FullExpMode({
   settings,
@@ -34,10 +27,7 @@ export function FullExpMode({
     <div className="space-y-6">
       {result ? (
         <ResultCard title="풀경험치 라르 계산 (EXP 100% → 라르)">
-          <ResultRow label="현재 단수" value={`${result.dansu}단`} valueClass="text-primary" />
-          <ResultRow label="최대 보유 경험치" value={formatExp(result.maxExp)} />
-
-          <div className="grid gap-3 sm:grid-cols-2 pt-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             <Card className={cn("border", result.recommended === "hp" ? "border-warrior/50" : "border-border")}>
               <CardContent className="space-y-2 py-3">
                 <div className="flex items-center justify-between">

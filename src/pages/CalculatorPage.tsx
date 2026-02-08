@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useMemo } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Calculator, Target, TrendingUp, Gem, Battery, InfoIcon, User, ChevronDown } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,7 +13,7 @@ import { DEFAULT_SETTINGS, loadSettings, saveSettings } from "@/components/game/
 import type { CalcSettings } from "@/components/game/calculator/types"
 import { SettingsPanel } from "@/components/game/calculator/SettingsPanel"
 import { StatInputGroup, DansuDisplay } from "@/components/game/calculator/shared"
-import { calculateTotalExp, calculateDansu } from "@/lib/calculator"
+import { calculateTotalExp, calculateDansu, formatExp, dansuTable } from "@/lib/calculator"
 import { RequiredMode } from "@/components/game/calculator/RequiredMode"
 import { TargetDansuMode } from "@/components/game/calculator/TargetDansuMode"
 import { ReverseMode } from "@/components/game/calculator/ReverseMode"
@@ -35,6 +35,17 @@ export function CalculatorPage() {
     setSettings(newSettings)
     saveSettings(newSettings)
   }, [])
+
+  // 현재 단수 및 최대 보유 경험치 계산
+  const dansuInfo = useMemo(() => {
+    const hp = parseInt(currentHp) || 0
+    const mp = parseInt(currentMp) || 0
+    const totalExp = calculateTotalExp(hp, mp)
+    const dansuResult = calculateDansu(totalExp)
+    const dansuEntry = dansuTable.find((e) => e.dansu === dansuResult.dansu)
+    const maxExp = dansuEntry ? dansuEntry.exp : 0
+    return { dansuResult, maxExp }
+  }, [currentHp, currentMp])
 
   return (
     <div className="space-y-6">
@@ -123,12 +134,12 @@ export function CalculatorPage() {
               />
             </div>
           </div>
-          <div className="mt-4">
-            <DansuDisplay
-              result={calculateDansu(
-                calculateTotalExp(parseInt(currentHp) || 0, parseInt(currentMp) || 0)
-              )}
-            />
+          <div className="mt-4 space-y-3">
+            <DansuDisplay result={dansuInfo.dansuResult} />
+            <div className="flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
+              <span className="text-sm font-medium text-muted-foreground">최대 보유 경험치</span>
+              <span className="text-sm font-bold text-primary">{formatExp(dansuInfo.maxExp)}</span>
+            </div>
           </div>
         </CardContent>
       </Card>

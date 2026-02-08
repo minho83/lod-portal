@@ -2,6 +2,13 @@ import { useState, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   calculateHpExp,
   calculateMpExp,
   calculateTotalExp,
@@ -81,17 +88,18 @@ export function TargetDansuMode({
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">목표 단수</label>
-            <select
-              value={targetDansu}
-              onChange={(e) => setTargetDansu(e.target.value)}
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            >
-              {dansuTable.map((entry) => (
-                <option key={entry.dansu} value={String(entry.dansu)}>
-                  {entry.dansu}단 ({formatExp(entry.exp)})
-                </option>
-              ))}
-            </select>
+            <Select value={targetDansu} onValueChange={setTargetDansu}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {dansuTable.map((entry) => (
+                  <SelectItem key={entry.dansu} value={String(entry.dansu)}>
+                    {entry.dansu}단 ({formatExp(entry.exp)})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
