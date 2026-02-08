@@ -257,7 +257,7 @@ export async function getAdminStats(): Promise<AdminStats> {
  */
 export async function toggleAdminRole(userId: string, isAdmin: boolean) {
   const { error } = await supabase
-    .from("profiles")
+    .from("user_profiles")
     .update({ is_admin: isAdmin })
     .eq("id", userId)
 

@@ -965,7 +965,6 @@ function MarketGuide() {
                 <div className="text-sm">
                   <div className="font-semibold mb-1">사기 피해 방지</div>
                   <div className="text-muted-foreground space-y-1">
-                    <div>• 선입금 요구는 절대 금지입니다</div>
                     <div>• 게임 내에서 동시에 아이템/돈을 교환하세요</div>
                     <div>• 사기를 당했다면 즉시 신고하세요 (프로필 → 사기 신고)</div>
                     <div>• 블랙리스트에 등록된 유저는 거래하지 마세요</div>
