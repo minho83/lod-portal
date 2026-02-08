@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { ArrowLeft, Send, Minus, Plus, Save, Trash2, FolderOpen } from "lucide-react"
+import { ArrowLeft, Send, Save, Trash2, FolderOpen, ChevronLeft, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -36,15 +36,17 @@ export function NewRecruitPage() {
   const [partyLocation, setPartyLocation] = useState("")
   const [joinMode, setJoinMode] = useState<RecruitJoinMode>("approval")
 
-  // 시작/종료 시간: 날짜 + 시/분
-  const [date, setDate] = useState(() => {
-    const today = new Date()
-    return today.toISOString().split("T")[0] // YYYY-MM-DD
+  // 날짜: 오늘 기준 +/- 일수
+  const [dayOffset, setDayOffset] = useState(0)
+
+  // 시작 시간: 직접 입력 (HH:MM)
+  const [startTime, setStartTime] = useState(() => {
+    const defaultHour = getDefaultHour()
+    return `${String(defaultHour).padStart(2, "0")}:00`
   })
-  const [hour, setHour] = useState(getDefaultHour)
-  const [minute, setMinute] = useState(0)
-  const [endHour, setEndHour] = useState(() => Math.min(getDefaultHour() + 2, 23))
-  const [endMinute, setEndMinute] = useState(0)
+
+  // 종료까지 시간 (분 단위)
+  const [duration, setDuration] = useState(60) // 기본 1시간
 
   // 템플릿
   const [templates, setTemplates] = useState<PartyTemplate[]>([])
@@ -157,22 +159,17 @@ export function NewRecruitPage() {
     setSlots((prev) => ({ ...prev, [job]: num }))
   }
 
-  // 시작 시간 30분 조정
-  const adjustStartTime = (minutes: number) => {
-    const totalMinutes = hour * 60 + minute + minutes
-    const newHour = Math.floor(totalMinutes / 60) % 24
-    const newMinute = totalMinutes % 60
-    setHour(newHour < 0 ? 24 + newHour : newHour)
-    setMinute(newMinute < 0 ? 60 + newMinute : newMinute)
+  // 날짜 표시 함수
+  const getDateLabel = (offset: number) => {
+    if (offset === 0) return "오늘"
+    if (offset === 1) return "내일"
+    if (offset > 1) return `+${offset}일`
+    return `${offset}일 전`
   }
 
-  // 종료 시간 30분 조정
-  const adjustEndTime = (minutes: number) => {
-    const totalMinutes = endHour * 60 + endMinute + minutes
-    const newHour = Math.floor(totalMinutes / 60) % 24
-    const newMinute = totalMinutes % 60
-    setEndHour(newHour < 0 ? 24 + newHour : newHour)
-    setEndMinute(newMinute < 0 ? 60 + newMinute : newMinute)
+  // 날짜 조정
+  const adjustDate = (delta: number) => {
+    setDayOffset((prev) => Math.max(-7, Math.min(30, prev + delta)))
   }
 
   // 템플릿 저장
@@ -261,12 +258,20 @@ export function NewRecruitPage() {
     if (leaderJoins && !leaderName.trim())
       return setError("리더 캐릭터명을 입력해주세요")
 
-    // 선택한 날짜 + 시작/종료 시간으로 ISO string 생성
-    const scheduled = new Date(date)
-    scheduled.setHours(hour, minute, 0, 0)
+    // 날짜 계산 (오늘 + dayOffset)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const targetDate = new Date(today)
+    targetDate.setDate(today.getDate() + dayOffset)
 
-    const endTime = new Date(date)
-    endTime.setHours(endHour, endMinute, 0, 0)
+    // 시작 시간 파싱
+    const [startHour, startMinute] = startTime.split(":").map(Number)
+    const scheduled = new Date(targetDate)
+    scheduled.setHours(startHour, startMinute, 0, 0)
+
+    // 종료 시간 계산 (시작 시간 + duration)
+    const endTime = new Date(scheduled)
+    endTime.setMinutes(endTime.getMinutes() + duration)
 
     setSubmitting(true)
     try {
@@ -386,79 +391,67 @@ export function NewRecruitPage() {
             />
           </div>
 
-          {/* 시작/종료 시간 */}
+          {/* 날짜 선택 */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">시작 시간</label>
-            <div className="grid grid-cols-2 gap-2">
-              {/* 날짜 선택 */}
-              <Input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                min={new Date().toISOString().split("T")[0]}
-              />
-              {/* 시작 시간 */}
-              <div className="flex items-center gap-1">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="h-9 px-2"
-                  onClick={() => adjustStartTime(-30)}
-                >
-                  <Minus className="mr-1 h-3 w-3" />
-                  30분
-                </Button>
-                <Input
-                  type="text"
-                  readOnly
-                  value={`${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`}
-                  className="h-9 w-20 text-center font-medium"
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="h-9 px-2"
-                  onClick={() => adjustStartTime(30)}
-                >
-                  <Plus className="mr-1 h-3 w-3" />
-                  30분
-                </Button>
+            <label className="text-sm font-medium">날짜</label>
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => adjustDate(-1)}
+                disabled={dayOffset <= -7}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <div className="flex-1 text-center font-medium">
+                {getDateLabel(dayOffset)}
               </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => adjustDate(1)}
+                disabled={dayOffset >= 30}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
 
-          {/* 종료 시간 */}
+          {/* 시작 시간 */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">종료 시간</label>
-            <div className="flex items-center gap-1">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="h-9 px-2"
-                onClick={() => adjustEndTime(-30)}
-              >
-                <Minus className="mr-1 h-3 w-3" />
-                30분
-              </Button>
-              <Input
-                type="text"
-                readOnly
-                value={`${String(endHour).padStart(2, "0")}:${String(endMinute).padStart(2, "0")}`}
-                className="h-9 w-20 text-center font-medium"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="h-9 px-2"
-                onClick={() => adjustEndTime(30)}
-              >
-                <Plus className="mr-1 h-3 w-3" />
-                30분
-              </Button>
+            <label htmlFor="startTime" className="text-sm font-medium">
+              시작 시간
+            </label>
+            <Input
+              id="startTime"
+              type="time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="text-center"
+            />
+          </div>
+
+          {/* 종료까지 시간 */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">종료까지</label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { label: "30분", value: 30 },
+                { label: "1시간", value: 60 },
+                { label: "2시간", value: 120 },
+              ].map((option) => (
+                <Button
+                  key={option.value}
+                  type="button"
+                  variant={duration === option.value ? "default" : "outline"}
+                  onClick={() => setDuration(option.value)}
+                  className="w-full"
+                >
+                  {option.label}
+                </Button>
+              ))}
             </div>
           </div>
 
