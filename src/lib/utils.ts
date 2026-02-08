@@ -35,7 +35,7 @@ export function formatPriceDelta(price: number, marketPrice: number): { text: st
 }
 
 /**
- * 예정 시간을 상대적으로 표시 (오늘, 내일, 모레 등)
+ * 예정 시간을 상대적으로 표시 (오늘, 내일, +N일)
  */
 export function formatScheduledDate(dateStr: string | null | undefined): string {
   if (!dateStr) return ""
@@ -43,7 +43,7 @@ export function formatScheduledDate(dateStr: string | null | undefined): string 
   const scheduled = new Date(dateStr)
   const now = new Date()
 
-  // 오늘, 내일, 모레 계산을 위해 날짜만 비교
+  // 오늘, 내일 계산을 위해 날짜만 비교
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   const scheduledStart = new Date(scheduled.getFullYear(), scheduled.getMonth(), scheduled.getDate())
 
@@ -59,11 +59,10 @@ export function formatScheduledDate(dateStr: string | null | undefined): string 
     return `오늘 ${timeStr}`
   } else if (dayDiff === 1) {
     return `내일 ${timeStr}`
-  } else if (dayDiff === 2) {
-    return `모레 ${timeStr}`
-  } else if (dayDiff > 2 && dayDiff <= 7) {
-    return `${dayDiff}일 후 ${timeStr}`
+  } else if (dayDiff > 1) {
+    return `+${dayDiff}일 ${timeStr}`
   } else {
+    // 과거 날짜는 그대로 표시
     return scheduled.toLocaleString("ko-KR", {
       month: "short",
       day: "numeric",
