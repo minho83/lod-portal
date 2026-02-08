@@ -64,11 +64,15 @@ export function MessageDialog({ open, onOpenChange, trade }: MessageDialogProps)
     setSending(true)
     try {
       const newMessage = await sendTradeMessage(trade.id, input.trim())
-      setMessages([...messages, newMessage])
+      console.log("메시지 전송 성공:", newMessage)
+
+      // 메시지 목록 새로고침
+      await loadMessages()
       setInput("")
+      toast.success("메시지가 전송되었습니다")
     } catch (error) {
       toast.error("메시지 전송에 실패했습니다")
-      console.error(error)
+      console.error("메시지 전송 오류:", error)
     } finally {
       setSending(false)
     }

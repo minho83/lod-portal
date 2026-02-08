@@ -102,7 +102,17 @@ export function TradeDetailPage() {
       // 상태 업데이트
       setTrade({ ...trade, buyer_id: user.id, status: "reserved" })
 
-      toast.success("거래 요청이 전송되었습니다!")
+      // Discord ID 복사
+      if (trade.seller?.discord_username) {
+        await navigator.clipboard.writeText(trade.seller.discord_username)
+        toast.success(
+          `거래 요청이 전송되었습니다!\n\n판매자에게 알림이 전송되었습니다.\nDiscord ID: ${trade.seller.discord_username}\n(클립보드에 복사됨)\n\n"거래 문의" 버튼으로 1:1 대화도 가능합니다.`
+        )
+      } else {
+        toast.success(
+          "거래 요청이 전송되었습니다!\n\n판매자에게 알림이 전송되었습니다.\n\"거래 문의\" 버튼으로 1:1 대화도 가능합니다."
+        )
+      }
     } catch (error) {
       toast.error("거래 요청에 실패했습니다")
       console.error(error)
