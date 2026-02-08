@@ -54,6 +54,7 @@ export function MarketPage() {
       if (keyword) filters.keyword = keyword
       if (category) filters.category = category
       if (tradeType) filters.tradeType = tradeType
+      if (user) filters.userId = user.id
       const result = await fetchTrades(filters, page)
       setTrades(result.data)
       setTotalCount(result.count)
@@ -73,7 +74,7 @@ export function MarketPage() {
       setTotalCount(0)
     }
     setLoading(false)
-  }, [keyword, category, tradeType, page])
+  }, [keyword, category, tradeType, page, user])
 
   useEffect(() => {
     loadTrades()

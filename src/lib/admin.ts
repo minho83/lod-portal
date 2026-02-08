@@ -263,3 +263,37 @@ export async function toggleAdminRole(userId: string, isAdmin: boolean) {
 
   if (error) throw error
 }
+
+/**
+ * 전체 사용자에게 알림 전송 (관리자 전체공지)
+ */
+export async function broadcastNotification(
+  title: string,
+  message: string,
+  link?: string,
+  adminId?: string,
+): Promise<number> {
+  const { data, error } = await supabase.rpc("broadcast_notification", {
+    p_title: title,
+    p_message: message,
+    p_link: link || null,
+    p_admin_id: adminId || null,
+  })
+
+  if (error) throw error
+  return data as number
+}
+
+/**
+ * 최근 가입 사용자 목록 (기본 로드용)
+ */
+export async function getRecentUsers(limit = 50) {
+  const { data, error } = await supabase
+    .from("user_profiles")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit)
+
+  if (error) throw error
+  return data as UserProfile[]
+}

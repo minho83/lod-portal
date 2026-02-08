@@ -8,6 +8,7 @@ export interface TradeFilters {
   tradeType?: TradeType
   minPrice?: number
   maxPrice?: number
+  userId?: string // 로그인 사용자 ID (당사자 거래 포함용)
 }
 
 export interface TradeListResult {
@@ -30,6 +31,11 @@ export async function fetchTrades(
 
   if (filters.status) {
     query = query.eq("status", filters.status)
+  } else if (filters.userId) {
+    // 로그인 사용자: active + 내가 관련된 reserved 거래
+    query = query.or(
+      `status.eq.active,and(status.eq.reserved,or(seller_id.eq.${filters.userId},buyer_id.eq.${filters.userId}))`
+    )
   } else {
     query = query.eq("status", "active")
   }

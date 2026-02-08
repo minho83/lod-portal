@@ -274,6 +274,7 @@ export type NotificationType =
   | "trade_reservation"   // 거래소 예약
   | "trade_comment"       // 거래소 댓글
   | "scam_report_result"  // 사기 신고 결과
+  | "system_announcement" // 관리자 전체 공지
 
 export interface Notification {
   id: string

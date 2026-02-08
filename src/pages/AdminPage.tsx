@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Shield, Users, AlertTriangle, FileText, BarChart, Plus, Trash2, Search, CheckCircle, XCircle, Clock } from "lucide-react"
+import { Shield, Users, AlertTriangle, FileText, BarChart, Plus, Trash2, Search, CheckCircle, XCircle, Clock, Megaphone, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -19,12 +19,14 @@ import {
   getScamReportsAdmin,
   updateScamReportStatus,
   searchUsers,
+  getRecentUsers,
   getRecentTrades,
   getRecentRecruits,
   deleteTradeAdmin,
   deleteRecruitAdmin,
   getAdminStats,
   toggleAdminRole,
+  broadcastNotification,
   type AdminStats,
 } from "@/lib/admin"
 import type { AdminBlacklist, ScamReport, UserProfile, Trade, PartyRecruit } from "@/types"
@@ -61,10 +63,14 @@ export default function AdminPage() {
       </div>
 
       <Tabs defaultValue="stats" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="stats">
             <BarChart className="w-4 h-4 mr-2" />
             통계
+          </TabsTrigger>
+          <TabsTrigger value="announce">
+            <Megaphone className="w-4 h-4 mr-2" />
+            전체알림
           </TabsTrigger>
           <TabsTrigger value="blacklist">
             <Shield className="w-4 h-4 mr-2" />
@@ -87,6 +93,11 @@ export default function AdminPage() {
         {/* 통계 탭 */}
         <TabsContent value="stats">
           <StatsTab />
+        </TabsContent>
+
+        {/* 전체알림 탭 */}
+        <TabsContent value="announce">
+          <AnnouncementTab adminId={user.id} />
         </TabsContent>
 
         {/* 블랙리스트 탭 */}
@@ -173,6 +184,97 @@ function StatCard({ icon: Icon, label, value, color = "text-primary" }: {
         </div>
       </CardContent>
     </Card>
+  )
+}
+
+// ============================================
+// 전체알림 탭
+// ============================================
+
+function AnnouncementTab({ adminId }: { adminId: string }) {
+  const [title, setTitle] = useState("")
+  const [message, setMessage] = useState("")
+  const [link, setLink] = useState("")
+  const [sending, setSending] = useState(false)
+
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!title.trim() || !message.trim()) {
+      toast.error("제목과 내용을 입력하세요")
+      return
+    }
+
+    if (!confirm("전체 사용자에게 알림을 전송하시겠습니까?")) return
+
+    try {
+      setSending(true)
+      const count = await broadcastNotification(
+        title.trim(),
+        message.trim(),
+        link.trim() || undefined,
+        adminId,
+      )
+      toast.success(`${count}명에게 알림이 전송되었습니다`)
+      setTitle("")
+      setMessage("")
+      setLink("")
+    } catch (error) {
+      console.error("Failed to broadcast:", error)
+      toast.error("전체알림 전송 실패")
+    } finally {
+      setSending(false)
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-xl font-semibold mb-1">전체 알림 보내기</h2>
+        <p className="text-sm text-muted-foreground">모든 사용자에게 공지 알림을 전송합니다</p>
+      </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          <form onSubmit={handleSend} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="announce-title">제목 *</Label>
+              <Input
+                id="announce-title"
+                placeholder="공지 제목"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="announce-message">내용 *</Label>
+              <Textarea
+                id="announce-message"
+                placeholder="공지 내용을 입력하세요"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                rows={4}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="announce-link">링크 (선택)</Label>
+              <Input
+                id="announce-link"
+                placeholder="/market 또는 /recruit 등"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+              />
+            </div>
+            <Button type="submit" disabled={sending} className="w-full">
+              <Send className="w-4 h-4 mr-2" />
+              {sending ? "전송 중..." : "전체 알림 전송"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
 
@@ -561,18 +663,39 @@ function ReportCard({
 
 function UsersTab() {
   const [users, setUsers] = useState<UserProfile[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [toggling, setToggling] = useState<string | null>(null)
+  const [isSearchResult, setIsSearchResult] = useState(false)
+
+  // 기본 로드: 최근 가입 사용자
+  useEffect(() => {
+    loadRecentUsersList()
+  }, [])
+
+  const loadRecentUsersList = async () => {
+    try {
+      setLoading(true)
+      setIsSearchResult(false)
+      const data = await getRecentUsers(50)
+      setUsers(data)
+    } catch (error) {
+      console.error("Failed to load users:", error)
+      toast.error("사용자 목록 로드 실패")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
-      toast.error("검색어를 입력하세요")
+      loadRecentUsersList()
       return
     }
 
     try {
       setLoading(true)
+      setIsSearchResult(true)
       const data = await searchUsers(searchQuery.trim())
       setUsers(data)
     } catch (error) {
@@ -606,9 +729,18 @@ function UsersTab() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h2 className="text-xl font-semibold mb-1">사용자 관리</h2>
-        <p className="text-sm text-muted-foreground">사용자 검색 및 조회</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold mb-1">사용자 관리</h2>
+          <p className="text-sm text-muted-foreground">
+            {isSearchResult ? "검색 결과" : `최근 가입 사용자 (${users.length}명)`}
+          </p>
+        </div>
+        {isSearchResult && (
+          <Button variant="outline" size="sm" onClick={loadRecentUsersList}>
+            전체 목록
+          </Button>
+        )}
       </div>
 
       <div className="flex gap-2">
@@ -625,11 +757,11 @@ function UsersTab() {
       </div>
 
       {loading ? (
-        <div className="text-center py-8 text-muted-foreground">검색 중...</div>
+        <div className="text-center py-8 text-muted-foreground">로딩 중...</div>
       ) : users.length === 0 ? (
         <Card>
           <CardContent className="p-8 text-center text-muted-foreground">
-            검색 결과가 없습니다
+            {isSearchResult ? "검색 결과가 없습니다" : "가입된 사용자가 없습니다"}
           </CardContent>
         </Card>
       ) : (
@@ -637,29 +769,36 @@ function UsersTab() {
           {users.map((user) => (
             <Card key={user.id}>
               <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex-1">
+                <div className="flex items-start gap-3">
+                  <div className="flex-1 space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold">{user.game_nickname || user.discord_username}</span>
+                      <span className="font-semibold">{user.game_nickname || "닉네임 미설정"}</span>
                       {user.is_admin && (
                         <Badge variant="default" className="text-xs">관리자</Badge>
                       )}
+                      {user.game_class && <Badge variant="outline">{user.game_class}</Badge>}
                     </div>
-                    <div className="text-sm text-muted-foreground">
-                      Discord: {user.discord_username} · 가입: {new Date(user.created_at).toLocaleDateString()}
+                    <div className="text-sm text-muted-foreground space-y-0.5">
+                      <div>Discord: {user.discord_username}</div>
+                      {user.discord_id && (
+                        <div>Discord ID: <span className="font-mono text-xs">{user.discord_id}</span></div>
+                      )}
+                      <div>
+                        가입: {new Date(user.created_at).toLocaleString("ko-KR")}
+                        {user.updated_at && user.updated_at !== user.created_at && (
+                          <> · 수정: {new Date(user.updated_at).toLocaleString("ko-KR")}</>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {user.game_class && <Badge variant="outline">{user.game_class}</Badge>}
-                    <Button
-                      variant={user.is_admin ? "destructive" : "default"}
-                      size="sm"
-                      onClick={() => handleToggleAdmin(user.id, user.is_admin ?? false)}
-                      disabled={toggling === user.id}
-                    >
-                      {toggling === user.id ? "처리 중..." : user.is_admin ? "관리자 제거" : "관리자 부여"}
-                    </Button>
-                  </div>
+                  <Button
+                    variant={user.is_admin ? "destructive" : "default"}
+                    size="sm"
+                    onClick={() => handleToggleAdmin(user.id, user.is_admin ?? false)}
+                    disabled={toggling === user.id}
+                  >
+                    {toggling === user.id ? "처리 중..." : user.is_admin ? "관리자 제거" : "관리자 부여"}
+                  </Button>
                 </div>
               </CardContent>
             </Card>

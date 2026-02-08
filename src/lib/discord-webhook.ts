@@ -18,6 +18,7 @@ const NOTIFICATION_TYPE_COLORS: Record<NotificationType, number> = {
   trade_reservation: 0x9b59b6, // 보라색
   trade_comment: 0x1abc9c, // 청록색
   scam_report_result: 0xf1c40f, // 노란색
+  system_announcement: 0xff6b35, // 주황색 (공지)
 }
 
 const NOTIFICATION_TYPE_ICONS: Record<NotificationType, string> = {
@@ -30,6 +31,7 @@ const NOTIFICATION_TYPE_ICONS: Record<NotificationType, string> = {
   trade_reservation: "💰",
   trade_comment: "💬",
   scam_report_result: "⚠️",
+  system_announcement: "📢",
 }
 
 /**

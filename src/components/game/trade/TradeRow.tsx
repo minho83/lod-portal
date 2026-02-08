@@ -27,6 +27,11 @@ export function TradeRow({ trade, priceMap }: { trade: Trade; priceMap: Map<stri
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
           <span className="truncate text-sm font-semibold">{trade.item_name}</span>
+          {trade.status === "reserved" && (
+            <Badge className="shrink-0 bg-yellow-500/10 text-yellow-500 border-yellow-500/20 text-[10px] px-1.5 py-0">
+              예약중
+            </Badge>
+          )}
           {isBundle && (
             <Badge variant="secondary" className="shrink-0 text-[10px] px-1.5 py-0">
               <Layers className="mr-0.5 h-2.5 w-2.5" />

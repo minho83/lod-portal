@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react"
-import { useSearchParams } from "react-router-dom"
-import { LogIn, Save, Trash2, Ban, ShieldAlert, Clock, CheckCircle2, XCircle, AlertCircle } from "lucide-react"
+import { useSearchParams, Link } from "react-router-dom"
+import { LogIn, Save, Trash2, Ban, ShieldAlert, Clock, CheckCircle2, XCircle, AlertCircle, ShoppingCart } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -19,9 +19,10 @@ import { useAuth } from "@/contexts/AuthContext"
 import { JOB_CONFIG } from "@/components/game/ClassBadge"
 import { fetchBlacklist, removeFromBlacklist } from "@/lib/blacklist"
 import { getMyReports } from "@/lib/scam-reports"
+import { supabase } from "@/lib/supabase"
 import { NotificationSettings } from "@/components/settings/NotificationSettings"
 import { REPORT_TYPE_LABELS } from "@/types"
-import type { JobClass, BlacklistEntry, ScamReport } from "@/types"
+import type { JobClass, BlacklistEntry, ScamReport, Trade } from "@/types"
 
 const JOB_OPTIONS = Object.entries(JOB_CONFIG) as [JobClass, (typeof JOB_CONFIG)[JobClass]][]
 
@@ -50,6 +51,10 @@ export function ProfilePage() {
   const [reports, setReports] = useState<ScamReport[]>([])
   const [reportsLoading, setReportsLoading] = useState(false)
 
+  // 내 거래
+  const [myTrades, setMyTrades] = useState<Trade[]>([])
+  const [myTradesLoading, setMyTradesLoading] = useState(false)
+
   const activeTab = searchParams.get("tab") || "profile"
 
   const loadBlacklist = useCallback(async () => {
@@ -74,6 +79,24 @@ export function ProfilePage() {
     setReportsLoading(false)
   }, [])
 
+  const loadMyTrades = useCallback(async () => {
+    if (!user) return
+    setMyTradesLoading(true)
+    try {
+      const { data } = await supabase
+        .from("trades")
+        .select("*, seller:profiles!trades_seller_id_fkey(*)")
+        .or(`seller_id.eq.${user.id},buyer_id.eq.${user.id}`)
+        .in("status", ["active", "reserved"])
+        .order("updated_at", { ascending: false })
+        .limit(20)
+      setMyTrades((data as Trade[]) || [])
+    } catch {
+      // ignore
+    }
+    setMyTradesLoading(false)
+  }, [user])
+
   // profile이 로드되면 폼 초기화
   useEffect(() => {
     if (profile && !initialized) {
@@ -82,8 +105,9 @@ export function ProfilePage() {
       setInitialized(true)
       loadBlacklist()
       loadReports()
+      loadMyTrades()
     }
-  }, [profile, initialized, loadBlacklist, loadReports])
+  }, [profile, initialized, loadBlacklist, loadReports, loadMyTrades])
 
   if (loading) {
     return (
@@ -127,11 +151,12 @@ export function ProfilePage() {
       <h2 className="text-xl font-bold">프로필</h2>
 
       <Tabs value={activeTab} onValueChange={(v) => setSearchParams({ tab: v })}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="profile">내 정보</TabsTrigger>
-          <TabsTrigger value="notifications">알람 설정</TabsTrigger>
-          <TabsTrigger value="blacklist">블랙리스트</TabsTrigger>
-          <TabsTrigger value="reports">내 신고</TabsTrigger>
+          <TabsTrigger value="trades">내 거래</TabsTrigger>
+          <TabsTrigger value="notifications">알람</TabsTrigger>
+          <TabsTrigger value="blacklist">블랙</TabsTrigger>
+          <TabsTrigger value="reports">신고</TabsTrigger>
         </TabsList>
 
         {/* ═══ 내 정보 탭 ═══ */}
@@ -200,6 +225,70 @@ export function ProfilePage() {
                 <Save className="mr-2 h-4 w-4" />
                 {saving ? "저장 중..." : "저장"}
               </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* ═══ 내 거래 탭 ═══ */}
+        <TabsContent value="trades">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <ShoppingCart className="h-4 w-4" />
+                내 거래 목록
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {myTradesLoading ? (
+                <Skeleton className="h-24 w-full" />
+              ) : myTrades.length === 0 ? (
+                <p className="py-8 text-center text-sm text-muted-foreground">
+                  진행 중인 거래가 없습니다
+                </p>
+              ) : (
+                myTrades.map((trade) => {
+                  const isSeller = trade.seller_id === user!.id
+                  const statusLabels: Record<string, string> = {
+                    active: "판매 중",
+                    reserved: "예약 중",
+                    sold: "판매 완료",
+                    expired: "만료",
+                    cancelled: "취소",
+                  }
+                  const statusColors: Record<string, string> = {
+                    active: "bg-green-500/10 text-green-500 border-green-500/20",
+                    reserved: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
+                    sold: "bg-gray-500/10 text-gray-500 border-gray-500/20",
+                    expired: "bg-gray-500/10 text-gray-500 border-gray-500/20",
+                    cancelled: "bg-red-500/10 text-red-500 border-red-500/20",
+                  }
+                  return (
+                    <Link
+                      key={trade.id}
+                      to={`/market/${trade.id}`}
+                      className="block rounded-md border p-3 hover:bg-muted/30 transition-colors"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium">{trade.item_name}</span>
+                            <Badge className={statusColors[trade.status] || ""}>
+                              {statusLabels[trade.status] || trade.status}
+                            </Badge>
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {trade.price.toLocaleString()} {trade.price_unit || "어둠돈"}
+                            <span className="mx-1">·</span>
+                            {isSeller ? "내가 판매" : "내가 예약"}
+                            <span className="mx-1">·</span>
+                            {new Date(trade.updated_at || trade.created_at).toLocaleDateString("ko-KR")}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })
+              )}
             </CardContent>
           </Card>
         </TabsContent>

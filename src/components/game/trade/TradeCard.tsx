@@ -19,9 +19,14 @@ export function TradeCard({ trade, priceMap }: { trade: Trade; priceMap: Map<str
     <Link to={`/market/${trade.id}`}>
       <Card className="transition-colors hover:border-primary/50 h-full py-0 gap-0">
         <CardContent className="space-y-1.5 p-2 px-2">
-          {/* 상단: 거래유형 + 카테고리/묶음 + 협상 */}
+          {/* 상단: 거래유형 + 카테고리/묶음 + 협상 + 예약 */}
           <div className="flex flex-wrap items-center gap-1">
             <TradeBadge tradeType={trade.trade_type} />
+            {trade.status === "reserved" && (
+              <Badge className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20 text-[10px] px-1.5 py-0">
+                예약중
+              </Badge>
+            )}
             {isBundle ? (
               <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
                 <Layers className="mr-0.5 h-2.5 w-2.5" />
