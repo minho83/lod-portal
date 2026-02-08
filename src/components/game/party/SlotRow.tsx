@@ -66,21 +66,33 @@ export function SlotRow({
 export function RequirementsSection({
   requirements,
 }: {
-  requirements: Record<string, string>
+  requirements: Record<string, string> & { _notes?: string[] }
 }) {
-  const entries = Object.entries(requirements)
-  if (entries.length === 0) return null
+  const notes = requirements._notes ?? []
+  const entries = Object.entries(requirements).filter(([key]) => key !== "_notes")
+  if (notes.length === 0 && entries.length === 0) return null
 
   return (
     <div className="space-y-1">
-      <span className="text-xs font-medium text-muted-foreground">요구사항</span>
-      <div className="flex flex-wrap gap-1.5">
-        {entries.map(([key, value]) => (
-          <Badge key={key} variant="secondary" className="text-xs">
-            {key}: {value}
-          </Badge>
-        ))}
-      </div>
+      <span className="text-xs font-medium text-muted-foreground">조건</span>
+      {notes.length > 0 && (
+        <div className="rounded bg-muted/30 px-2 py-1">
+          {notes.map((note, i) => (
+            <p key={i} className="text-xs text-muted-foreground leading-relaxed">
+              {note}
+            </p>
+          ))}
+        </div>
+      )}
+      {entries.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {entries.map(([key, value]) => (
+            <Badge key={key} variant="secondary" className="text-xs">
+              {key}: {value}
+            </Badge>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

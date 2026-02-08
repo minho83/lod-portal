@@ -23,7 +23,7 @@ export interface Party {
   mage_slots: string[]
   cleric_slots: string[]
   taoist_slots: string[]
-  requirements: Record<string, string>
+  requirements: Record<string, string> & { _notes?: string[] }
 }
 
 export interface SearchResult {
