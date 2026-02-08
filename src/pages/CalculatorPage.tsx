@@ -1,8 +1,14 @@
 import { useState, useCallback, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Calculator, Target, TrendingUp, Gem, Battery, InfoIcon, User } from "lucide-react"
+import { Calculator, Target, TrendingUp, Gem, Battery, InfoIcon, User, ChevronDown } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { Button } from "@/components/ui/button"
 import { DEFAULT_SETTINGS, loadSettings, saveSettings } from "@/components/game/calculator/types"
 import type { CalcSettings } from "@/components/game/calculator/types"
 import { SettingsPanel } from "@/components/game/calculator/SettingsPanel"
@@ -17,6 +23,7 @@ export function CalculatorPage() {
   const [settings, setSettings] = useState<CalcSettings>(DEFAULT_SETTINGS)
   const [currentHp, setCurrentHp] = useState("0")
   const [currentMp, setCurrentMp] = useState("0")
+  const [isGuideOpen, setIsGuideOpen] = useState(true)
 
   // localStorage에서 설정 로드
   useEffect(() => {
@@ -38,13 +45,55 @@ export function CalculatorPage() {
 
       <SettingsPanel settings={settings} onChange={handleSettingsChange} />
 
-      <Alert>
-        <InfoIcon className="h-4 w-4" />
-        <AlertDescription className="text-sm">
-          <strong>💡 TIP:</strong> 아래에 <strong className="text-primary">현재 순수 스탯(아이템 제외)</strong>을 먼저 입력하세요.
-          입력한 값은 모든 탭에서 공유되며, 값을 입력하면 자동으로 계산됩니다.
-        </AlertDescription>
-      </Alert>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Alert>
+          <InfoIcon className="h-4 w-4" />
+          <AlertDescription className="text-sm">
+            <strong>💡 TIP:</strong> 아래에 <strong className="text-primary">현재 순수 스탯(아이템 제외)</strong>을 먼저 입력하세요.
+            입력한 값은 모든 탭에서 공유되며, 값을 입력하면 자동으로 계산됩니다.
+          </AlertDescription>
+        </Alert>
+
+        <Collapsible open={isGuideOpen} onOpenChange={setIsGuideOpen}>
+          <Card className="border-primary/20 bg-primary/5">
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                className="w-full justify-between px-4 py-3 h-auto hover:bg-transparent"
+              >
+                <span className="font-medium text-foreground text-sm">📌 각 탭 기능 안내</span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ${
+                    isGuideOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent className="pt-0 pb-4">
+                <ul className="space-y-1.5 text-muted-foreground ml-4 text-sm">
+                  <li>
+                    • <span className="text-primary font-medium">필요 라르는?</span><br />
+                    <span className="text-xs ml-2">현재 순수 HP/MP → 목표 순수 HP/MP까지 필요한 라르 개수와 비용 계산</span>
+                  </li>
+                  <li>
+                    • <span className="text-primary font-medium">목표 단수는?</span><br />
+                    <span className="text-xs ml-2">현재 순수 HP/MP에서 목표 단수에 도달하기 위해 필요한 라르 개수 계산</span>
+                  </li>
+                  <li>
+                    • <span className="text-primary font-medium">올릴 수 있는 수치는?</span><br />
+                    <span className="text-xs ml-2">현재 순수 HP/MP + 보유 라르로 올릴 수 있는 HP/MP 계산 (에테르 강화 목걸이 추가 데미지 포함)</span>
+                  </li>
+                  <li>
+                    • <span className="text-primary font-medium">풀경험치 라르</span><br />
+                    <span className="text-xs ml-2">현재 HP/MP 기준으로 EXP 100% 채웠을 때 획득 가능한 라르 개수 계산</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
+      </div>
 
       <Card className="border-primary/20 bg-primary/10">
         <CardHeader>
@@ -80,32 +129,6 @@ export function CalculatorPage() {
                 calculateTotalExp(parseInt(currentHp) || 0, parseInt(currentMp) || 0)
               )}
             />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="border-primary/20 bg-primary/5">
-        <CardContent className="py-4">
-          <div className="space-y-2 text-sm">
-            <p className="font-medium text-foreground">📌 각 탭 기능 안내</p>
-            <ul className="space-y-1.5 text-muted-foreground ml-4">
-              <li>
-                • <span className="text-primary font-medium">필요 라르는?</span><br />
-                <span className="text-xs ml-2">현재 순수 HP/MP → 목표 순수 HP/MP까지 필요한 라르 개수와 비용 계산</span>
-              </li>
-              <li>
-                • <span className="text-primary font-medium">목표 단수는?</span><br />
-                <span className="text-xs ml-2">현재 순수 HP/MP에서 목표 단수에 도달하기 위해 필요한 라르 개수 계산</span>
-              </li>
-              <li>
-                • <span className="text-primary font-medium">올릴 수 있는 수치는?</span><br />
-                <span className="text-xs ml-2">현재 순수 HP/MP + 보유 라르로 올릴 수 있는 HP/MP 계산 (에테르 강화 목걸이 추가 데미지 포함)</span>
-              </li>
-              <li>
-                • <span className="text-primary font-medium">풀경험치 라르</span><br />
-                <span className="text-xs ml-2">현재 HP/MP 기준으로 EXP 100% 채웠을 때 획득 가능한 라르 개수 계산</span>
-              </li>
-            </ul>
           </div>
         </CardContent>
       </Card>
