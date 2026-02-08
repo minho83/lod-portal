@@ -43,7 +43,7 @@ import { SlotDisplay } from "@/components/game/SlotDisplay"
 import { MemberList } from "@/components/game/MemberList"
 import { STATUS_CONFIG } from "@/components/game/RecruitCard"
 import { JOB_OPTIONS } from "@/lib/constants"
-import { Ban } from "lucide-react"
+import { Ban, Copy } from "lucide-react"
 import type { PartyRecruit, JobClass, JobSlots, RecruitStatus } from "@/types"
 
 export function RecruitDetailPage() {
@@ -247,6 +247,22 @@ export function RecruitDetailPage() {
         </Card>
       </div>
     )
+  }
+
+  // 복제 기능
+  const handleClone = () => {
+    navigate("/recruit/new", {
+      state: {
+        clone: {
+          recruit_type: recruit.recruit_type,
+          title: recruit.title,
+          description: recruit.description,
+          location: recruit.location,
+          join_mode: recruit.join_mode,
+          job_slots: recruit.job_slots,
+        },
+      },
+    })
   }
 
   const isAuthor = user?.id === recruit.author_id
@@ -489,6 +505,21 @@ export function RecruitDetailPage() {
                 </span>
               </div>
             </>
+          )}
+
+          {/* 복제 버튼 (작성자만) */}
+          {!editing && isAuthor && (
+            <div className="border-t border-border pt-4">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={handleClone}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                이 파티 복제하기
+              </Button>
+            </div>
           )}
 
           {/* 작성자 액션 */}

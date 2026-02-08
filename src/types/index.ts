@@ -179,6 +179,19 @@ export interface PartyMember {
   user?: UserProfile
 }
 
+export interface PartyTemplate {
+  id: string
+  user_id: string
+  template_name: string
+  recruit_type: RecruitType
+  location: string | null
+  join_mode: RecruitJoinMode
+  slots: JobSlots
+  description: string | null
+  created_at: string
+  updated_at: string
+}
+
 // 블랙리스트
 export interface BlacklistEntry {
   id: string

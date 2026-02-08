@@ -1,6 +1,6 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { ArrowLeft, Send, Minus, Plus } from "lucide-react"
+import { useState, useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
+import { ArrowLeft, Send, Minus, Plus, Save, Trash2, FolderOpen } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,10 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { toast } from "sonner"
 import { useAuth } from "@/contexts/AuthContext"
 import { createRecruit } from "@/lib/recruits"
+import { getMyTemplates, createTemplate, deleteTemplate } from "@/lib/templates"
 import { JOB_OPTIONS, RECRUIT_TYPE_CONFIG, RECRUIT_TYPES } from "@/lib/constants"
-import type { JobClass, JobSlots, RecruitJoinMode, RecruitType } from "@/types"
+import type { JobClass, JobSlots, RecruitJoinMode, RecruitType, PartyTemplate } from "@/types"
 
 function getDefaultHour(): number {
   const now = new Date()
@@ -26,16 +28,26 @@ function getDefaultHour(): number {
 export function NewRecruitPage() {
   const { user, profile } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [recruitType, setRecruitType] = useState<RecruitType>("party")
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
-  const [location, setLocation] = useState("")
+  const [partyLocation, setPartyLocation] = useState("")
   const [joinMode, setJoinMode] = useState<RecruitJoinMode>("approval")
 
-  // 예정 시간: 오늘 날짜 기본, 시/분만 조작
+  // 예정 시간: 날짜 + 시/분
+  const [date, setDate] = useState(() => {
+    const today = new Date()
+    return today.toISOString().split("T")[0] // YYYY-MM-DD
+  })
   const [hour, setHour] = useState(getDefaultHour)
   const [minute, setMinute] = useState(0)
+
+  // 템플릿
+  const [templates, setTemplates] = useState<PartyTemplate[]>([])
+  const [templateName, setTemplateName] = useState("")
+  const [saving, setSaving] = useState(false)
 
   // 직업 슬롯
   const [slots, setSlots] = useState<JobSlots>({
@@ -57,6 +69,29 @@ export function NewRecruitPage() {
   const [error, setError] = useState("")
 
   const totalSlots = Object.values(slots).reduce((a, b) => a + b, 0)
+
+  // 템플릿 목록 로드
+  useEffect(() => {
+    if (user) {
+      getMyTemplates().then(setTemplates).catch(console.error)
+    }
+  }, [user])
+
+  // 복제 기능: location.state에서 데이터 가져오기
+  useEffect(() => {
+    const cloneData = location.state?.clone as Partial<typeof slots> | undefined
+    if (cloneData) {
+      setRecruitType((cloneData as any).recruit_type || "party")
+      setTitle((cloneData as any).title || "")
+      setDescription((cloneData as any).description || "")
+      setPartyLocation((cloneData as any).location || "")
+      setJoinMode((cloneData as any).join_mode || "approval")
+      if ((cloneData as any).job_slots) {
+        setSlots((cloneData as any).job_slots)
+      }
+      toast.success("파티 정보를 복제했습니다. 시간을 수정하고 등록하세요.")
+    }
+  }, [location.state])
 
   const updateSlot = (job: JobClass, value: string) => {
     const num = Math.max(0, Math.min(10, Number(value) || 0))
@@ -81,6 +116,65 @@ export function NewRecruitPage() {
     })
   }
 
+  // 템플릿 저장
+  const handleSaveTemplate = async () => {
+    if (!templateName.trim()) {
+      toast.error("템플릿 이름을 입력하세요")
+      return
+    }
+
+    setSaving(true)
+    try {
+      await createTemplate({
+        template_name: templateName,
+        recruit_type: recruitType,
+        location: partyLocation || null,
+        join_mode: joinMode,
+        slots,
+        description: description || null,
+      })
+
+      toast.success(`템플릿 "${templateName}" 저장 완료!`)
+      setTemplateName("")
+
+      // 목록 새로고침
+      const updated = await getMyTemplates()
+      setTemplates(updated)
+    } catch (error) {
+      console.error("Failed to save template:", error)
+      toast.error("템플릿 저장 실패")
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // 템플릿 불러오기
+  const handleLoadTemplate = (template: PartyTemplate) => {
+    setRecruitType(template.recruit_type)
+    setPartyLocation(template.location || "")
+    setJoinMode(template.join_mode)
+    setSlots(template.slots)
+    setDescription(template.description || "")
+    toast.success(`템플릿 "${template.template_name}" 불러오기 완료!`)
+  }
+
+  // 템플릿 삭제
+  const handleDeleteTemplate = async (id: string, name: string) => {
+    if (!confirm(`템플릿 "${name}"을(를) 삭제하시겠습니까?`)) return
+
+    try {
+      await deleteTemplate(id)
+      toast.success("템플릿 삭제 완료")
+
+      // 목록 새로고침
+      const updated = await getMyTemplates()
+      setTemplates(updated)
+    } catch (error) {
+      console.error("Failed to delete template:", error)
+      toast.error("템플릿 삭제 실패")
+    }
+  }
+
   if (!user) {
     return (
       <div className="mx-auto max-w-lg p-4">
@@ -101,8 +195,8 @@ export function NewRecruitPage() {
     if (leaderJoins && !leaderName.trim())
       return setError("리더 캐릭터명을 입력해주세요")
 
-    // 오늘 날짜 + 선택한 시:분으로 ISO string 생성
-    const scheduled = new Date()
+    // 선택한 날짜 + 시:분으로 ISO string 생성
+    const scheduled = new Date(date)
     scheduled.setHours(hour, minute, 0, 0)
 
     setSubmitting(true)
@@ -111,7 +205,7 @@ export function NewRecruitPage() {
         {
           title: title.trim(),
           description: description.trim() || undefined,
-          location: location.trim() || undefined,
+          location: partyLocation.trim() || undefined,
           scheduled_at: scheduled.toISOString(),
           join_mode: joinMode,
           job_slots: slots,
@@ -128,12 +222,6 @@ export function NewRecruitPage() {
       setSubmitting(false)
     }
   }
-
-  const todayStr = new Date().toLocaleDateString("ko-KR", {
-    month: "long",
-    day: "numeric",
-    weekday: "short",
-  })
 
   return (
     <div className="mx-auto max-w-lg space-y-4 p-4">
@@ -204,13 +292,24 @@ export function NewRecruitPage() {
               <Input
                 id="location"
                 placeholder="예: 토벌대, 에반"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                value={partyLocation}
+                onChange={(e) => setPartyLocation(e.target.value)}
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">예정 시간</label>
-              <p className="text-xs text-muted-foreground">{todayStr}</p>
+          </div>
+
+          {/* 예정 시간 */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">예정 시간</label>
+            <div className="grid grid-cols-2 gap-2">
+              {/* 날짜 선택 */}
+              <Input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                min={new Date().toISOString().split("T")[0]}
+              />
+              {/* 시간 선택 */}
               <div className="flex items-center gap-1">
                 {/* 시 */}
                 <Button
@@ -354,6 +453,63 @@ export function NewRecruitPage() {
             <Send className="mr-2 h-4 w-4" />
             {submitting ? "등록 중..." : "모집글 등록"}
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* 템플릿 관리 */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">템플릿 관리</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* 템플릿 저장 */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">현재 설정을 템플릿으로 저장</label>
+            <div className="flex gap-2">
+              <Input
+                placeholder="템플릿 이름 (예: 카오스 타워 고정팟)"
+                value={templateName}
+                onChange={(e) => setTemplateName(e.target.value)}
+              />
+              <Button onClick={handleSaveTemplate} disabled={saving} size="sm">
+                <Save className="mr-2 h-4 w-4" />
+                {saving ? "저장 중..." : "저장"}
+              </Button>
+            </div>
+          </div>
+
+          {/* 템플릿 목록 */}
+          {templates.length > 0 && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium">저장된 템플릿</label>
+              <div className="space-y-2">
+                {templates.map((template) => (
+                  <div
+                    key={template.id}
+                    className="flex items-center gap-2 rounded-md border p-2"
+                  >
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="flex-1 justify-start"
+                      onClick={() => handleLoadTemplate(template)}
+                    >
+                      <FolderOpen className="mr-2 h-4 w-4" />
+                      {template.template_name}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      className="text-destructive hover:text-destructive"
+                      onClick={() => handleDeleteTemplate(template.id, template.template_name)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
