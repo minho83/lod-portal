@@ -14,26 +14,27 @@ interface CurrentSpecGuideProps {
 export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
   const [currentHp, setCurrentHp] = useState("")
   const [currentMp, setCurrentMp] = useState("")
+  const [targetHp, setTargetHp] = useState("")
+  const [targetMp, setTargetMp] = useState("")
+
+  // 라르당 증가량 (일반적인 기본값)
+  const HP_PER_LAR = 10
+  const MP_PER_LAR = 5
 
   // 필요 라르 계산
-  const calculateRequiredLar = (current: number, target: number): number => {
+  const calculateRequiredLar = (current: number, target: number, perLar: number): number => {
     if (!current || !target || target <= current) return 0
-
     const diff = target - current
-    const larPerPoint = settings.jobClass === "mage" || settings.jobClass === "cleric"
-      ? settings.mpPerLar
-      : settings.hpPerLar
-
-    return Math.ceil(diff / larPerPoint)
+    return Math.ceil(diff / perLar)
   }
 
-  const targetHp = parseInt(settings.targetHp) || 0
-  const targetMp = parseInt(settings.targetMp) || 0
   const curHp = parseInt(currentHp) || 0
   const curMp = parseInt(currentMp) || 0
+  const tarHp = parseInt(targetHp) || 0
+  const tarMp = parseInt(targetMp) || 0
 
-  const requiredLarForHp = calculateRequiredLar(curHp, targetHp)
-  const requiredLarForMp = calculateRequiredLar(curMp, targetMp)
+  const requiredLarForHp = calculateRequiredLar(curHp, tarHp, HP_PER_LAR)
+  const requiredLarForMp = calculateRequiredLar(curMp, tarMp, MP_PER_LAR)
 
   return (
     <Card className="border-primary/20 bg-primary/5">
@@ -83,7 +84,7 @@ export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
           {/* 스텝 2: 현재 스펙 입력 */}
           <AccordionItem value="step2">
             <AccordionTrigger className="text-sm font-medium">
-              ✏️ STEP 2. 현재 체력/마력 입력하기
+              ✏️ STEP 2. 현재/목표 체력/마력 입력하기
             </AccordionTrigger>
             <AccordionContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -103,6 +104,21 @@ export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
                 </div>
 
                 <div className="space-y-2">
+                  <Label htmlFor="targetHp" className="flex items-center gap-2">
+                    <span className="text-red-400">🎯</span> 목표 체력 (HP)
+                  </Label>
+                  <Input
+                    id="targetHp"
+                    type="number"
+                    min={0}
+                    value={targetHp}
+                    onChange={(e) => setTargetHp(e.target.value)}
+                    placeholder="예: 1500"
+                    className="text-lg"
+                  />
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="currentMp" className="flex items-center gap-2">
                     <span className="text-blue-400">💙</span> 현재 마력 (MP)
                   </Label>
@@ -116,24 +132,39 @@ export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
                     className="text-lg"
                   />
                 </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="targetMp" className="flex items-center gap-2">
+                    <span className="text-blue-400">🎯</span> 목표 마력 (MP)
+                  </Label>
+                  <Input
+                    id="targetMp"
+                    type="number"
+                    min={0}
+                    value={targetMp}
+                    onChange={(e) => setTargetMp(e.target.value)}
+                    placeholder="예: 700"
+                    className="text-lg"
+                  />
+                </div>
               </div>
 
-              {(curHp > 0 || curMp > 0) && (
+              {(curHp > 0 && tarHp > 0) || (curMp > 0 && tarMp > 0) ? (
                 <div className="rounded-lg border-2 border-primary bg-primary/10 p-4 space-y-3">
                   <div className="flex items-center gap-2 mb-2">
                     <Calculator className="h-5 w-5 text-primary" />
                     <span className="font-bold text-foreground">계산 결과</span>
                   </div>
 
-                  {curHp > 0 && (
+                  {curHp > 0 && tarHp > 0 && (
                     <div className="flex justify-between items-center p-3 rounded-md bg-background/50">
                       <div>
                         <div className="text-sm text-muted-foreground">
                           체력: <span className="text-red-400 font-medium">{curHp.toLocaleString()}</span> → {" "}
-                          <span className="text-primary font-medium">{targetHp.toLocaleString()}</span>
+                          <span className="text-primary font-medium">{tarHp.toLocaleString()}</span>
                         </div>
                         <div className="text-xs text-muted-foreground mt-1">
-                          필요 수치: {(targetHp - curHp).toLocaleString()}
+                          필요 수치: {Math.max(0, tarHp - curHp).toLocaleString()} (라르당 +{HP_PER_LAR})
                         </div>
                       </div>
                       <div className="text-right">
@@ -145,15 +176,15 @@ export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
                     </div>
                   )}
 
-                  {curMp > 0 && (
+                  {curMp > 0 && tarMp > 0 && (
                     <div className="flex justify-between items-center p-3 rounded-md bg-background/50">
                       <div>
                         <div className="text-sm text-muted-foreground">
                           마력: <span className="text-blue-400 font-medium">{curMp.toLocaleString()}</span> → {" "}
-                          <span className="text-primary font-medium">{targetMp.toLocaleString()}</span>
+                          <span className="text-primary font-medium">{tarMp.toLocaleString()}</span>
                         </div>
                         <div className="text-xs text-muted-foreground mt-1">
-                          필요 수치: {(targetMp - curMp).toLocaleString()}
+                          필요 수치: {Math.max(0, tarMp - curMp).toLocaleString()} (라르당 +{MP_PER_LAR})
                         </div>
                       </div>
                       <div className="text-right">
@@ -165,7 +196,7 @@ export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
                     </div>
                   )}
                 </div>
-              )}
+              ) : null}
             </AccordionContent>
           </AccordionItem>
 
@@ -180,19 +211,19 @@ export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
                   <p className="font-medium text-foreground mb-2">라르 1개당 증가 수치:</p>
                   <div className="grid grid-cols-2 gap-2 text-muted-foreground">
                     <div className="flex items-center gap-2">
-                      <span className="text-warrior">전사</span>: 체력 +{settings.hpPerLar}
+                      <span className="text-warrior">전사</span>: 체력 +{HP_PER_LAR}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-rogue">도적</span>: 체력 +{settings.hpPerLar}
+                      <span className="text-rogue">도적</span>: 체력 +{HP_PER_LAR}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-mage">법사</span>: 마력 +{settings.mpPerLar}
+                      <span className="text-mage">법사</span>: 마력 +{MP_PER_LAR}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-cleric">직자</span>: 마력 +{settings.mpPerLar}
+                      <span className="text-cleric">직자</span>: 마력 +{MP_PER_LAR}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-taoist">도가</span>: 체력 +{settings.hpPerLar}
+                      <span className="text-taoist">도가</span>: 체력 +{HP_PER_LAR}
                     </div>
                   </div>
                 </div>
@@ -208,11 +239,11 @@ export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
                 <div className="border-t pt-3">
                   <p className="font-medium text-foreground mb-2">예시 계산:</p>
                   <div className="bg-primary/10 p-3 rounded-md text-muted-foreground">
-                    <p>전사 캐릭터 (체력 +{settings.hpPerLar}/라르)</p>
+                    <p>전사 캐릭터 (체력 +{HP_PER_LAR}/라르)</p>
                     <p className="mt-2">• 현재 체력: 1000</p>
                     <p>• 목표 체력: 1500</p>
                     <p>• 필요 수치: 1500 - 1000 = 500</p>
-                    <p className="text-primary font-medium">• 필요 라르: 500 ÷ {settings.hpPerLar} = {Math.ceil(500 / settings.hpPerLar)}개</p>
+                    <p className="text-primary font-medium">• 필요 라르: 500 ÷ {HP_PER_LAR} = {Math.ceil(500 / HP_PER_LAR)}개</p>
                   </div>
                 </div>
               </div>
@@ -220,7 +251,7 @@ export function CurrentSpecGuide({ settings }: CurrentSpecGuideProps) {
               <Alert>
                 <InfoIcon className="h-4 w-4" />
                 <AlertDescription>
-                  💡 <strong>참고:</strong> 위의 "계산 설정"에서 직업과 라르당 증가량을 조정할 수 있습니다.
+                  💡 <strong>참고:</strong> 라르당 증가량은 일반적인 기본값입니다. 실제 게임 설정에 따라 다를 수 있습니다.
                 </AlertDescription>
               </Alert>
             </AccordionContent>
