@@ -287,18 +287,38 @@ export function NewRecruitPage() {
     }
   }
 
-  return (
-    <div className="mx-auto max-w-lg space-y-4 p-4">
-      <Button variant="ghost" size="sm" onClick={() => navigate("/recruit")}>
-        <ArrowLeft className="mr-1.5 h-4 w-4" />
-        목록으로 돌아가기
-      </Button>
+  // 직업 슬롯을 간단하게 표시하는 함수
+  const formatSlots = (slots: JobSlots) => {
+    const jobLabels: Record<JobClass, string> = {
+      warrior: "전",
+      rogue: "도",
+      mage: "법",
+      cleric: "직",
+      taoist: "도가",
+    }
+    return Object.entries(slots)
+      .filter(([_, count]) => count > 0)
+      .map(([job, count]) => `${jobLabels[job as JobClass]}${count}`)
+      .join(" ")
+  }
 
-      <Card>
-        <CardHeader>
-          <CardTitle>모집글 등록</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+  return (
+    <div className="p-4">
+      <div className="mx-auto mb-4 max-w-5xl">
+        <Button variant="ghost" size="sm" onClick={() => navigate("/recruit")}>
+          <ArrowLeft className="mr-1.5 h-4 w-4" />
+          목록으로 돌아가기
+        </Button>
+      </div>
+
+      {/* 데스크톱: 2열 레이아웃, 모바일: 1열 */}
+      <div className="mx-auto grid max-w-5xl gap-4 lg:grid-cols-[1fr_320px]">
+        {/* 왼쪽: 메인 폼 */}
+        <Card className="h-fit">
+          <CardHeader>
+            <CardTitle>모집글 등록</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
           {/* 모집 유형 */}
           <div className="space-y-2">
             <label className="text-sm font-medium">모집 유형</label>
@@ -537,77 +557,121 @@ export function NewRecruitPage() {
         </CardContent>
       </Card>
 
-      {/* 템플릿 관리 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">템플릿 관리</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* 템플릿 저장 */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">현재 설정을 템플릿으로 저장</label>
-              <span className="text-xs text-muted-foreground">
-                {templates.length}/5개
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <Input
-                placeholder="템플릿 이름 (예: 혼돈의 탑 고정팟)"
-                value={templateName}
-                onChange={(e) => setTemplateName(e.target.value)}
-                disabled={templates.length >= 5}
-              />
-              <Button
-                onClick={handleSaveTemplate}
-                disabled={saving || templates.length >= 5}
-                size="sm"
-              >
-                <Save className="mr-2 h-4 w-4" />
-                {saving ? "저장 중..." : "저장"}
-              </Button>
-            </div>
-            {templates.length >= 5 && (
-              <p className="text-xs text-warning">
-                ⚠️ 템플릿은 최대 5개까지 저장 가능합니다. 기존 템플릿을 삭제 후 저장하세요.
-              </p>
-            )}
-          </div>
-
-          {/* 템플릿 목록 */}
-          {templates.length > 0 && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium">저장된 템플릿</label>
+        {/* 오른쪽: 템플릿 관리 */}
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">템플릿 관리</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* 템플릿 저장 */}
               <div className="space-y-2">
-                {templates.map((template) => (
-                  <div
-                    key={template.id}
-                    className="flex items-center gap-2 rounded-md border p-2"
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium">현재 설정 저장</label>
+                  <span className="text-xs text-muted-foreground">
+                    {templates.length}/5
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="템플릿 이름"
+                    value={templateName}
+                    onChange={(e) => setTemplateName(e.target.value)}
+                    disabled={templates.length >= 5}
+                    className="text-sm"
+                  />
+                  <Button
+                    onClick={handleSaveTemplate}
+                    disabled={saving || templates.length >= 5}
+                    size="sm"
                   >
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="flex-1 justify-start"
-                      onClick={() => handleLoadTemplate(template)}
-                    >
-                      <FolderOpen className="mr-2 h-4 w-4" />
-                      {template.template_name}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="text-destructive hover:text-destructive"
-                      onClick={() => handleDeleteTemplate(template.id, template.template_name)}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
-                ))}
+                    <Save className="h-4 w-4" />
+                  </Button>
+                </div>
+                {templates.length >= 5 && (
+                  <p className="text-xs text-warning">
+                    ⚠️ 최대 5개까지 저장 가능
+                  </p>
+                )}
               </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+
+              {/* 템플릿 목록 */}
+              {templates.length > 0 && (
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">저장된 템플릿</label>
+                  <div className="max-h-[500px] space-y-2 overflow-y-auto pr-1">
+                    {templates.map((template) => {
+                      const typeConfig = RECRUIT_TYPE_CONFIG[template.recruit_type]
+                      return (
+                        <div
+                          key={template.id}
+                          className="group rounded-lg border bg-card p-3 transition-colors hover:bg-accent"
+                        >
+                          <div className="mb-2 flex items-start justify-between gap-2">
+                            <button
+                              onClick={() => handleLoadTemplate(template)}
+                              className="flex-1 text-left"
+                            >
+                              <div className="mb-1 flex items-center gap-2">
+                                <FolderOpen className="h-4 w-4 shrink-0 text-primary" />
+                                <span className="text-sm font-medium">{template.template_name}</span>
+                              </div>
+                              <div className="space-y-1 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1">
+                                  <span className="font-medium">{typeConfig.label}</span>
+                                  {template.location && (
+                                    <>
+                                      <span>·</span>
+                                      <span>{template.location}</span>
+                                    </>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <span className="font-medium">인원:</span>
+                                  <span>{formatSlots(template.slots)}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <span className="font-medium">방식:</span>
+                                  <span>{template.join_mode === "approval" ? "승인제" : "선착순"}</span>
+                                </div>
+                                {template.description && (
+                                  <div className="mt-1 line-clamp-2 text-xs">
+                                    {template.description}
+                                  </div>
+                                )}
+                              </div>
+                            </button>
+                            <Button
+                              variant="ghost"
+                              size="icon-xs"
+                              className="shrink-0 text-destructive opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
+                              onClick={() => handleDeleteTemplate(template.id, template.template_name)}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {templates.length === 0 && (
+                <div className="rounded-lg border border-dashed p-6 text-center">
+                  <FolderOpen className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">
+                    저장된 템플릿이 없습니다
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    자주 사용하는 설정을 저장해보세요
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }
