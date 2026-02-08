@@ -23,7 +23,7 @@ const NOTIFICATION_TESTS: NotificationTest[] = [
   {
     type: "party_application",
     title: "파티 신청",
-    message: "테스트유저님이 '카오스 타워 파티'에 참가 신청했습니다",
+    message: "테스트유저님이 '혼돈의 탑 파티'에 참가 신청했습니다",
     link: "/recruit",
     icon: "👥",
     color: "bg-blue-500/10 text-blue-500 border-blue-500/20",
@@ -31,7 +31,7 @@ const NOTIFICATION_TESTS: NotificationTest[] = [
   {
     type: "party_accepted",
     title: "파티 승인",
-    message: "테스트유저님이 '카오스 타워 파티' 참가를 승인했습니다",
+    message: "테스트유저님이 '혼돈의 탑 파티' 참가를 승인했습니다",
     link: "/recruit",
     icon: "✅",
     color: "bg-green-500/10 text-green-500 border-green-500/20",
@@ -39,7 +39,7 @@ const NOTIFICATION_TESTS: NotificationTest[] = [
   {
     type: "party_rejected",
     title: "파티 거절",
-    message: "테스트유저님이 '카오스 타워 파티' 참가를 거절했습니다",
+    message: "테스트유저님이 '혼돈의 탑 파티' 참가를 거절했습니다",
     link: "/recruit",
     icon: "❌",
     color: "bg-red-500/10 text-red-500 border-red-500/20",
@@ -47,7 +47,7 @@ const NOTIFICATION_TESTS: NotificationTest[] = [
   {
     type: "party_kicked",
     title: "파티 추방",
-    message: "'카오스 타워 파티'에서 추방되었습니다",
+    message: "'혼돈의 탑 파티'에서 추방되었습니다",
     link: "/recruit",
     icon: "🚫",
     color: "bg-orange-500/10 text-orange-500 border-orange-500/20",

@@ -467,7 +467,7 @@ export function NewRecruitPage() {
             <label className="text-sm font-medium">현재 설정을 템플릿으로 저장</label>
             <div className="flex gap-2">
               <Input
-                placeholder="템플릿 이름 (예: 카오스 타워 고정팟)"
+                placeholder="템플릿 이름 (예: 혼돈의 탑 고정팟)"
                 value={templateName}
                 onChange={(e) => setTemplateName(e.target.value)}
               />

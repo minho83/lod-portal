@@ -217,7 +217,7 @@ function IntroGuide() {
               <FeatureCard
                 icon={Users}
                 title="파티 모집"
-                description="카오스 타워, 길드전 등 파티원을 쉽게 모집하고 참가할 수 있습니다"
+                description="혼돈의 탑, 길드전 등 파티원을 쉽게 모집하고 참가할 수 있습니다"
               />
               <FeatureCard
                 icon={ShoppingBag}
@@ -782,7 +782,7 @@ function PartyGuide() {
               <div className="text-sm">
                 <div className="font-semibold mb-1">팁</div>
                 <div className="text-muted-foreground space-y-1">
-                  <div>• 제목은 간단명료하게 작성하세요 (예: "카오스 타워 전사 1명 구함")</div>
+                  <div>• 제목은 간단명료하게 작성하세요 (예: "혼돈의 탑 전사 1명 구함")</div>
                   <div>• 시간을 정확히 입력하면 참가율이 높아집니다</div>
                   <div>• 요구사항이 있다면 설명란에 자세히 작성하세요</div>
                   <div>• 승인제는 신중하게 선택할 수 있고, 선착순은 빠르게 모집됩니다</div>
