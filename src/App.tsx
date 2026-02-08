@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { AuthProvider } from "@/contexts/AuthContext"
 import { Layout } from "@/components/layout/Layout"
 import { PartyPage } from "@/pages/PartyPage"
@@ -19,34 +19,40 @@ import DevNotificationsPage from "@/pages/DevNotificationsPage"
 import AdminPage from "@/pages/AdminPage"
 import GuidePage from "@/pages/GuidePage"
 
+export function AppRoutes() {
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<PartyPage />} />
+        <Route path="/calculator" element={<CalculatorPage />} />
+        <Route path="/spirit" element={<SpiritPage />} />
+        <Route path="/npcmap" element={<NpcMapPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/wiki" element={<WikiPage />} />
+        <Route path="/guide" element={<GuidePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/recruit" element={<RecruitListPage />} />
+        <Route path="/recruit/new" element={<NewRecruitPage />} />
+        <Route path="/recruit/:id" element={<RecruitDetailPage />} />
+        <Route path="/market" element={<MarketPage />} />
+        <Route path="/market/new" element={<NewTradePage />} />
+        <Route path="/market/:id" element={<TradeDetailPage />} />
+        {/* 관리자 전용 */}
+        <Route path="/admin" element={<AdminPage />} />
+        {/* 개발자 전용 */}
+        <Route path="/dev/notifications" element={<DevNotificationsPage />} />
+      </Route>
+    </Routes>
+  )
+}
+
 export default function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<PartyPage />} />
-            <Route path="/calculator" element={<CalculatorPage />} />
-            <Route path="/spirit" element={<SpiritPage />} />
-            <Route path="/npcmap" element={<NpcMapPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/wiki" element={<WikiPage />} />
-            <Route path="/guide" element={<GuidePage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/recruit" element={<RecruitListPage />} />
-            <Route path="/recruit/new" element={<NewRecruitPage />} />
-            <Route path="/recruit/:id" element={<RecruitDetailPage />} />
-            <Route path="/market" element={<MarketPage />} />
-            <Route path="/market/new" element={<NewTradePage />} />
-            <Route path="/market/:id" element={<TradeDetailPage />} />
-            {/* 관리자 전용 */}
-            <Route path="/admin" element={<AdminPage />} />
-            {/* 개발자 전용 */}
-            <Route path="/dev/notifications" element={<DevNotificationsPage />} />
-          </Route>
-        </Routes>
+        <AppRoutes />
       </AuthProvider>
-    </HashRouter>
+    </BrowserRouter>
   )
 }

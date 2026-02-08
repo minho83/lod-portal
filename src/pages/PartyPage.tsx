@@ -20,6 +20,7 @@ import { LoadingSkeleton } from "@/components/game/party/LoadingSkeleton"
 import { BLANK_TEMPLATE } from "@/lib/party-utils"
 import { JOB_CLASSES, getPartySlots } from "@/lib/constants"
 import { usePartyData } from "@/hooks/usePartyData"
+import { safeLocalStorageGet } from "@/lib/ssr-utils"
 import type { JobClass, Party } from "@/types"
 import { RefreshCw, Copy, Search, X } from "lucide-react"
 
@@ -40,10 +41,10 @@ export function PartyPage() {
   const [jobFilter, setJobFilter] = useState<JobClass | "">("")
   const [timeSlotFilter, setTimeSlotFilter] = useState("")
   const [searchName, setSearchName] = useState(
-    () => localStorage.getItem("myCharName") || "",
+    () => safeLocalStorageGet("myCharName"),
   )
   const [activeSearch, setActiveSearch] = useState(
-    () => localStorage.getItem("myCharName") || "",
+    () => safeLocalStorageGet("myCharName"),
   )
   const searchInputRef = useRef<HTMLInputElement>(null)
 

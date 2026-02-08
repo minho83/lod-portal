@@ -3,71 +3,71 @@
   <!-- 메인 페이지 -->
   <url>
     <loc>https://lod-portal.cc/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- 파티 모집 -->
   <url>
-    <loc>https://lod-portal.cc/#/recruit</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://lod-portal.cc/recruit</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- 거래소 -->
   <url>
-    <loc>https://lod-portal.cc/#/market</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://lod-portal.cc/market</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- 라르 계산기 -->
   <url>
-    <loc>https://lod-portal.cc/#/calculator</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://lod-portal.cc/calculator</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- 정령 레벨업 계산기 -->
   <url>
-    <loc>https://lod-portal.cc/#/spirit</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://lod-portal.cc/spirit</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- NPC & 맵 찾기 -->
   <url>
-    <loc>https://lod-portal.cc/#/npcmap</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://lod-portal.cc/npcmap</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- DB 검색 -->
   <url>
-    <loc>https://lod-portal.cc/#/search</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://lod-portal.cc/search</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- 위키 -->
   <url>
-    <loc>https://lod-portal.cc/#/wiki</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://lod-portal.cc/wiki</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- 사용 가이드 -->
   <url>
-    <loc>https://lod-portal.cc/#/guide</loc>
-    <lastmod>2026-02-08</lastmod>
+    <loc>https://lod-portal.cc/guide</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

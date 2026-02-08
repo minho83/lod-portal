@@ -22,6 +22,7 @@ import { TradeCard } from "@/components/game/trade/TradeCard"
 import { TradeRow } from "@/components/game/trade/TradeRow"
 import type { Trade, TradeCategory, TradeType, MarketPrice } from "@/types"
 import { TRADE_CATEGORIES } from "@/types"
+import { safeLocalStorageGet } from "@/lib/ssr-utils"
 
 export function MarketPage() {
   const { user } = useAuth()
@@ -33,7 +34,7 @@ export function MarketPage() {
 
   // 뷰 모드
   const [viewMode, setViewMode] = useState<"grid" | "list">(() => {
-    return (localStorage.getItem("market-view") as "grid" | "list") || "grid"
+    return safeLocalStorageGet("market-view", "grid") as "grid" | "list"
   })
 
   const toggleView = (mode: "grid" | "list") => {

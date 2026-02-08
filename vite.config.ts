@@ -11,4 +11,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  ssr: {
+    noExternal: [
+      "react-router-dom",
+      "react-router",
+      "lucide-react",
+      "class-variance-authority",
+      "clsx",
+      "tailwind-merge",
+      "radix-ui",
+      "sonner",
+    ],
+  },
 })
