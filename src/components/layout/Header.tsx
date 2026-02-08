@@ -45,15 +45,8 @@ export function Header() {
             alt="LOD"
             className="h-9 w-9 rounded-lg transition-all md:h-10 md:w-10"
           />
-          <h1 className="max-w-0 overflow-hidden pr-0 text-lg font-black leading-none tracking-tight opacity-0 transition-all duration-300 xl:max-w-xs xl:pr-3 xl:opacity-100 xl:text-2xl" style={{
-            textShadow: '2px 2px 0px rgba(0,0,0,0.3)',
-            letterSpacing: '-0.5px',
-            fontStyle: 'italic'
-          }}>
-            <span className="bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
-              어둠의전설
-            </span>
-            <span className="ml-2 text-base font-bold text-primary">Portal</span>
+          <h1 className="max-w-0 overflow-hidden pr-0 text-xl font-bold leading-none tracking-tight opacity-0 transition-all duration-300 xl:max-w-xs xl:pr-3 xl:opacity-100 xl:text-2xl">
+            <span className="text-foreground">LOD-PORTAL</span>
           </h1>
         </NavLink>
 
