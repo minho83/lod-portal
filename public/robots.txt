@@ -2,15 +2,6 @@
 # https://lod-portal.cc
 
 User-agent: *
-Allow: /
+Disallow:
 
-# 크롤링 제외 경로 (개인정보 보호)
-Disallow: /profile
-Disallow: /admin
-Disallow: /dev
-
-# Sitemap
 Sitemap: https://lod-portal.cc/sitemap.xml
-
-# 크롤링 속도 조절 (선택사항)
-Crawl-delay: 1
