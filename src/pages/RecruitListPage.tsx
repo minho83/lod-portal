@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 import { Link } from "react-router-dom"
-import { Search, Plus, Users, Swords, Castle, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, Plus, Users, Swords, Castle, ChevronLeft, ChevronRight, Crown } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,12 +14,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useAuth } from "@/contexts/AuthContext"
-import { fetchRecruits, PAGE_SIZE, type RecruitFilters } from "@/lib/recruits"
-import { RecruitCard } from "@/components/game/RecruitCard"
+import { fetchRecruits, fetchMyActiveRecruits, fetchMyMemberships, PAGE_SIZE, type RecruitFilters } from "@/lib/recruits"
+import { RecruitCard, type ParticipationBadge } from "@/components/game/RecruitCard"
 import { EmptyState } from "@/components/game/EmptyState"
 import { Pagination } from "@/components/game/Pagination"
 import { JOB_OPTIONS } from "@/lib/constants"
-import type { PartyRecruit, RecruitType, RecruitJoinMode, RecruitStatus, JobClass } from "@/types"
+import type { PartyRecruit, PartyMember, RecruitType, RecruitJoinMode, RecruitStatus, JobClass } from "@/types"
 
 export function RecruitListPage() {
   const { user } = useAuth()
@@ -27,6 +27,10 @@ export function RecruitListPage() {
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
+
+  // 내 모집글 & 참가 상태
+  const [myRecruits, setMyRecruits] = useState<PartyRecruit[]>([])
+  const [myMemberships, setMyMemberships] = useState<PartyMember[]>([])
 
   // 필터
   const [recruitType, setRecruitType] = useState<RecruitType | "">("")
@@ -95,9 +99,49 @@ export function RecruitListPage() {
     setLoading(false)
   }, [recruitType, keyword, status, joinMode, jobClass, dayOffset, page])
 
+  // 참가 상태 맵: recruit_id → badge type
+  const membershipMap = useMemo(() => {
+    const map = new Map<string, ParticipationBadge>()
+    if (user) {
+      for (const r of myRecruits) {
+        map.set(r.id, "author")
+      }
+      for (const m of myMemberships) {
+        if (!map.has(m.recruit_id)) {
+          map.set(m.recruit_id, m.status === "accepted" ? "accepted" : "pending")
+        }
+      }
+    }
+    return map
+  }, [user, myRecruits, myMemberships])
+
+  // 내 모집글 & 참가 데이터 로드
+  const loadMyData = useCallback(async () => {
+    if (!user) {
+      setMyRecruits([])
+      setMyMemberships([])
+      return
+    }
+    try {
+      const [recruitsRes, membershipsRes] = await Promise.all([
+        fetchMyActiveRecruits(user.id),
+        fetchMyMemberships(user.id),
+      ])
+      setMyRecruits(recruitsRes)
+      setMyMemberships(membershipsRes)
+    } catch {
+      setMyRecruits([])
+      setMyMemberships([])
+    }
+  }, [user])
+
   useEffect(() => {
     loadRecruits()
   }, [loadRecruits])
+
+  useEffect(() => {
+    loadMyData()
+  }, [loadMyData])
 
   const handleSearch = () => {
     setKeyword(searchInput)
@@ -250,6 +294,22 @@ export function RecruitListPage() {
         </CardContent>
       </Card>
 
+      {/* 내 모집글 (로그인 + 활성 모집글 있을 때만) */}
+      {user && myRecruits.length > 0 && (
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Crown className="h-4 w-4 text-yellow-400" />
+            <h3 className="text-sm font-semibold text-yellow-400">내 모집글</h3>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {myRecruits.map((recruit) => (
+              <RecruitCard key={recruit.id} recruit={recruit} participationBadge="author" />
+            ))}
+          </div>
+          <hr className="border-border" />
+        </div>
+      )}
+
       {/* 목록 */}
       {loading ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -262,7 +322,11 @@ export function RecruitListPage() {
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {recruits.map((recruit) => (
-            <RecruitCard key={recruit.id} recruit={recruit} />
+            <RecruitCard
+              key={recruit.id}
+              recruit={recruit}
+              participationBadge={membershipMap.get(recruit.id)}
+            />
           ))}
         </div>
       )}

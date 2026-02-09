@@ -267,4 +267,33 @@ export async function getLastRecruitTime(): Promise<Date | null> {
   return new Date(data.created_at)
 }
 
+/**
+ * 내 모집글 목록 조회 (모집 목록 상단 고정용)
+ */
+export async function fetchMyActiveRecruits(userId: string): Promise<PartyRecruit[]> {
+  const { data, error } = await supabase
+    .from("party_recruits")
+    .select(RECRUIT_SELECT)
+    .eq("author_id", userId)
+    .in("status", ["open", "full"])
+    .order("created_at", { ascending: false })
+
+  if (error) throw error
+  return (data as PartyRecruit[]) ?? []
+}
+
+/**
+ * 내 파티 참여 목록 조회 (참가 상태 뱃지용)
+ */
+export async function fetchMyMemberships(userId: string): Promise<PartyMember[]> {
+  const { data, error } = await supabase
+    .from("party_members")
+    .select("*")
+    .eq("user_id", userId)
+    .in("status", ["accepted", "pending"])
+
+  if (error) throw error
+  return (data as PartyMember[]) ?? []
+}
+
 export { PAGE_SIZE }

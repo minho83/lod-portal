@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Clock, MapPin, Users, Zap, Shield, Swords, Castle, Calendar } from "lucide-react"
+import { Clock, MapPin, Users, Zap, Shield, Swords, Castle, Calendar, Crown, UserCheck, Hourglass } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn, timeAgo, formatScheduledDate } from "@/lib/utils"
@@ -16,11 +16,14 @@ const STATUS_CONFIG: Record<RecruitStatus, { label: string; variant: "default" |
   cancelled: { label: "취소됨", variant: "destructive" },
 }
 
+export type ParticipationBadge = "author" | "accepted" | "pending"
+
 interface RecruitCardProps {
   recruit: PartyRecruit
+  participationBadge?: ParticipationBadge
 }
 
-export function RecruitCard({ recruit }: RecruitCardProps) {
+export function RecruitCard({ recruit, participationBadge }: RecruitCardProps) {
   const statusInfo = STATUS_CONFIG[recruit.status]
   const authorName =
     recruit.author?.game_nickname ?? recruit.author?.discord_username ?? "알 수 없음"
@@ -62,6 +65,24 @@ export function RecruitCard({ recruit }: RecruitCardProps) {
               <Badge variant="outline" className="text-xs">
                 <MapPin className="mr-1 h-3 w-3" />
                 {recruit.location}
+              </Badge>
+            )}
+            {participationBadge === "author" && (
+              <Badge variant="outline" className="ml-auto border-yellow-500/30 bg-yellow-500/10 text-xs text-yellow-400">
+                <Crown className="mr-1 h-3 w-3" />
+                내 글
+              </Badge>
+            )}
+            {participationBadge === "accepted" && (
+              <Badge variant="outline" className="ml-auto border-green-500/30 bg-green-500/10 text-xs text-green-400">
+                <UserCheck className="mr-1 h-3 w-3" />
+                참가중
+              </Badge>
+            )}
+            {participationBadge === "pending" && (
+              <Badge variant="outline" className="ml-auto border-blue-500/30 bg-blue-500/10 text-xs text-blue-400">
+                <Hourglass className="mr-1 h-3 w-3" />
+                대기중
               </Badge>
             )}
           </div>
